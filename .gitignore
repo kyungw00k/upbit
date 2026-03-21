@@ -1,0 +1,10 @@
+bin/
+/upbit
+*.db
+.env*
+.claude/state/
+.claude/sessions/
+.claude/logs/
+.claude/agent-memory/
+.claude/memory/
+docs/upbit-api/
