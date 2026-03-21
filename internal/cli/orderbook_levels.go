@@ -4,19 +4,20 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderbookLevelsColumns = []output.TableColumn{
-	{Header: "마켓", Key: "market"},
-	{Header: "지원 단위", Key: "supported_levels"},
+	{Header: i18n.T(i18n.HdrMarket), Key: "market"},
+	{Header: i18n.T(i18n.HdrSupportedLevels), Key: "supported_levels"},
 }
 
 var orderbookLevelsCmd = &cobra.Command{
 	Use:     "orderbook-levels <market...>",
-	Short:   "호가 모아보기 단위 조회",
+	Short:   i18n.T(i18n.MsgOrderbookLevelsShort),
 	GroupID: "quotation",
-	Args:    RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Args:    RequireMinArgs(1, i18n.T(i18n.ErrOrderbookMarket)),
 	Example: `  upbit orderbook-levels KRW-BTC KRW-ETH    # 호가 모아보기 단위 조회
   upbit orderbook-levels KRW-BTC            # 단일 마켓`,
 	RunE: func(cmd *cobra.Command, args []string) error {

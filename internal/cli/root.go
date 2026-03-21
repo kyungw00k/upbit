@@ -8,6 +8,7 @@ import (
 
 	"github.com/kyungw00k/upbit/internal/api"
 	"github.com/kyungw00k/upbit/internal/config"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
@@ -24,8 +25,8 @@ var (
 // rootCmd 루트 Cobra 명령
 var rootCmd = &cobra.Command{
 	Use:   "upbit",
-	Short: "Upbit 거래소 CLI",
-	Long: `Upbit 거래소 CLI — 시세 조회, 거래, 입출금, 실시간 구독을 지원합니다.`,
+	Short: i18n.T(i18n.MsgRootShort),
+	Long:  i18n.T(i18n.MsgRootLong),
 	Version: Version,
 	// 인자 없이 실행 시 도움말 표시
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -41,21 +42,21 @@ func init() {
 
 	// 카테고리 그룹 등록
 	rootCmd.AddGroup(
-		&cobra.Group{ID: "quotation", Title: "시세 명령어:"},
-		&cobra.Group{ID: "trading", Title: "거래 명령어:"},
-		&cobra.Group{ID: "wallet", Title: "입출금 명령어:"},
-		&cobra.Group{ID: "realtime", Title: "실시간 명령어:"},
-		&cobra.Group{ID: "util", Title: "유틸 명령어:"},
+		&cobra.Group{ID: "quotation", Title: i18n.T(i18n.GroupQuotation)},
+		&cobra.Group{ID: "trading", Title: i18n.T(i18n.GroupTrading)},
+		&cobra.Group{ID: "wallet", Title: i18n.T(i18n.GroupWallet)},
+		&cobra.Group{ID: "realtime", Title: i18n.T(i18n.GroupRealtime)},
+		&cobra.Group{ID: "util", Title: i18n.T(i18n.GroupUtil)},
 	)
 
 	// 글로벌 플래그 등록
 	pf := rootCmd.PersistentFlags()
 
 	pf.StringVarP(&flagOutput, "output", "o", "auto",
-		"출력 포맷: table, json, jsonl, csv, auto")
+		i18n.T(i18n.FlagOutputUsage))
 
 	pf.StringVar(&flagJSONFields, "json", "",
-		"JSON 출력 필드 목록 (쉼표 구분, 예: market,trade_price)")
+		i18n.T(i18n.FlagJSONFieldsUsage))
 
 	// --force는 확인 프롬프트가 있는 명령에만 로컬로 등록 (글로벌 X)
 
@@ -80,7 +81,7 @@ func RootCmd() *cobra.Command {
 func GetClient() *api.Client {
 	cfg, err := config.Load()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "설정 로드 실패:", err)
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.ErrConfigLoad)+":", err)
 		return api.NewClient("", "")
 	}
 	return api.NewClient(cfg.AccessKey, cfg.SecretKey)
@@ -92,12 +93,12 @@ func GetClientE(requireAuth bool) (*api.Client, error) {
 	cfg, err := config.Load()
 	if err != nil {
 		if requireAuth {
-			return nil, fmt.Errorf("설정 로드 실패: %w", err)
+			return nil, fmt.Errorf("%s: %w", i18n.T(i18n.ErrConfigLoad), err)
 		}
 		return api.NewClient("", ""), nil
 	}
 	if requireAuth && (cfg.AccessKey == "" || cfg.SecretKey == "") {
-		return nil, fmt.Errorf("인증이 필요합니다: ACCESS_KEY 및 SECRET_KEY를 설정하세요")
+		return nil, fmt.Errorf("%s", i18n.T(i18n.ErrAuthRequired))
 	}
 	return api.NewClient(cfg.AccessKey, cfg.SecretKey), nil
 }
@@ -120,5 +121,5 @@ func GetForce() bool {
 
 // AddForceFlag 명령에 --force 로컬 플래그를 등록하는 헬퍼
 func AddForceFlag(cmd *cobra.Command) {
-	cmd.Flags().BoolVarP(&flagForce, "force", "f", false, "확인 프롬프트 스킵")
+	cmd.Flags().BoolVarP(&flagForce, "force", "f", false, i18n.T(i18n.FlagForceUsage))
 }

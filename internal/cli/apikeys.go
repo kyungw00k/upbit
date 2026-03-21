@@ -6,18 +6,19 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 	"github.com/kyungw00k/upbit/internal/types"
 )
 
 var apiKeysColumns = []output.TableColumn{
-	{Header: "키(마스킹)", Key: "access_key"},
-	{Header: "만료일", Key: "expire_at", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrAccessKey), Key: "access_key"},
+	{Header: i18n.T(i18n.HdrExpireAt), Key: "expire_at", Format: "datetime"},
 }
 
 var apiKeysCmd = &cobra.Command{
 	Use:        "api-keys",
-	Short:      "API 키 목록 조회",
+	Short:      i18n.T(i18n.MsgApiKeysShort),
 	SuggestFor: []string{"apikey", "keys"},
 	GroupID:    "util",
 	Example: `  upbit api-keys              # 만료되지 않은 API 키만
@@ -54,7 +55,7 @@ var apiKeysCmd = &cobra.Command{
 			})
 		}
 
-		if emptyMessage(filtered, "유효한 API 키가 없습니다 (--all로 만료 포함 확인)") {
+		if emptyMessage(filtered, i18n.T(i18n.MsgApiKeysEmpty)) {
 			return nil
 		}
 		return formatter.Format(filtered)
@@ -70,6 +71,6 @@ func maskAccessKey(key string) string {
 }
 
 func init() {
-	apiKeysCmd.Flags().Bool("all", false, "만료된 키 포함 전체 표시")
+	apiKeysCmd.Flags().Bool("all", false, i18n.T(i18n.FlagApiKeysAllUsage))
 	rootCmd.AddCommand(apiKeysCmd)
 }

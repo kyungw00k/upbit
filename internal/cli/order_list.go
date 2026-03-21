@@ -4,24 +4,25 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderListColumns = []output.TableColumn{
 	{Header: "UUID", Key: "uuid"},
-	{Header: "마켓", Key: "market"},
-	{Header: "방향", Key: "side"},
-	{Header: "유형", Key: "ord_type"},
-	{Header: "가격", Key: "price", Format: "number"},
-	{Header: "수량", Key: "volume", Format: "number"},
-	{Header: "체결량", Key: "executed_volume", Format: "number"},
-	{Header: "상태", Key: "state"},
-	{Header: "생성시각", Key: "created_at", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrMarket), Key: "market"},
+	{Header: i18n.T(i18n.HdrSide), Key: "side"},
+	{Header: i18n.T(i18n.HdrOrdType), Key: "ord_type"},
+	{Header: i18n.T(i18n.HdrOrderPrice), Key: "price", Format: "number"},
+	{Header: i18n.T(i18n.HdrOrderVolume), Key: "volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrExecutedVol), Key: "executed_volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrState), Key: "state"},
+	{Header: i18n.T(i18n.HdrCreatedAt), Key: "created_at", Format: "datetime"},
 }
 
 var orderListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "주문 목록 조회",
+	Short: i18n.T(i18n.MsgOrderListShort),
 	Example: `  upbit order list                    # 체결 대기 주문
   upbit order list --closed           # 종료 주문
   upbit order list -m KRW-BTC         # 특정 마켓만
@@ -45,7 +46,7 @@ var orderListCmd = &cobra.Command{
 			if err != nil {
 				return err
 			}
-			if emptyMessage(orders, "종료된 주문이 없습니다") {
+			if emptyMessage(orders, i18n.T(i18n.MsgOrderListClosed)) {
 				return nil
 			}
 			return formatter.Format(orders)
@@ -55,7 +56,7 @@ var orderListCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		if emptyMessage(orders, "대기 중인 주문이 없습니다") {
+		if emptyMessage(orders, i18n.T(i18n.MsgOrderListOpen)) {
 			return nil
 		}
 		return formatter.Format(orders)
@@ -64,9 +65,9 @@ var orderListCmd = &cobra.Command{
 
 func init() {
 	f := orderListCmd.Flags()
-	f.Bool("closed", false, "종료 주문 조회")
-	f.StringP("market", "m", "", "마켓 필터 (예: KRW-BTC)")
-	f.IntP("count", "c", 20, "조회 개수")
-	f.Int("page", 1, "페이지 번호")
+	f.Bool("closed", false, i18n.T(i18n.FlagClosedUsage))
+	f.StringP("market", "m", "", i18n.T(i18n.FlagMarketFilterUsage))
+	f.IntP("count", "c", 20, i18n.T(i18n.FlagCountUsage))
+	f.Int("page", 1, i18n.T(i18n.FlagPageUsage))
 	orderCmd.AddCommand(orderListCmd)
 }

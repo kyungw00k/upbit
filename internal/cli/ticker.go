@@ -7,23 +7,24 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var tickerColumns = []output.TableColumn{
-	{Header: "마켓", Key: "market"},
-	{Header: "현재가", Key: "trade_price", Format: "number"},
-	{Header: "전일 대비", Key: "signed_change_price", Format: "number"},
-	{Header: "변동률", Key: "signed_change_rate", Format: "percent"},
-	{Header: "거래량(24h)", Key: "acc_trade_volume_24h", Format: "number"},
-	{Header: "거래대금(24h)", Key: "acc_trade_price_24h", Format: "number"},
-	{Header: "고가", Key: "high_price", Format: "number"},
-	{Header: "저가", Key: "low_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrMarket), Key: "market"},
+	{Header: i18n.T(i18n.HdrPrice), Key: "trade_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrChange), Key: "signed_change_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrChangeRate), Key: "signed_change_rate", Format: "percent"},
+	{Header: i18n.T(i18n.HdrVolume24h), Key: "acc_trade_volume_24h", Format: "number"},
+	{Header: i18n.T(i18n.HdrTradePrice24h), Key: "acc_trade_price_24h", Format: "number"},
+	{Header: i18n.T(i18n.HdrHigh), Key: "high_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrLow), Key: "low_price", Format: "number"},
 }
 
 var tickerCmd = &cobra.Command{
 	Use:        "ticker [market...]",
-	Short:      "현재가 조회",
+	Short:      i18n.T(i18n.MsgTickerShort),
 	SuggestFor: []string{"tick", "price"},
 	GroupID:    "quotation",
 	Args:       cobra.ArbitraryArgs,
@@ -52,7 +53,7 @@ var tickerCmd = &cobra.Command{
 
 		// 인자가 없으면 에러
 		if len(args) == 0 {
-			return fmt.Errorf("마켓 코드를 지정하세요 (예: KRW-BTC) 또는 --quote 플래그를 사용하세요\n\n사용법: %s", cmd.CommandPath())
+			return fmt.Errorf("%s", i18n.Tf(i18n.ErrTickerNoMarket, cmd.CommandPath()))
 		}
 
 		tickers, err := qc.GetTickers(cmd.Context(), args)
@@ -65,6 +66,6 @@ var tickerCmd = &cobra.Command{
 }
 
 func init() {
-	tickerCmd.Flags().StringP("quote", "q", "", "마켓 통화 코드로 전체 시세 조회 (예: KRW, BTC, USDT)")
+	tickerCmd.Flags().StringP("quote", "q", "", i18n.T(i18n.FlagTickerQuoteUsage))
 	rootCmd.AddCommand(tickerCmd)
 }

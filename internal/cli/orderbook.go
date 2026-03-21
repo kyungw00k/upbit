@@ -9,15 +9,16 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderbookCmd = &cobra.Command{
 	Use:        "orderbook [market...]",
-	Short:      "호가 조회",
+	Short:      i18n.T(i18n.MsgOrderbookShort),
 	SuggestFor: []string{"ob", "book"},
 	GroupID:    "quotation",
-	Args:    RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Args:    RequireMinArgs(1, i18n.T(i18n.ErrOrderbookMarket)),
 	Example: `  upbit orderbook KRW-BTC               # 비트코인 호가
   upbit orderbook KRW-BTC KRW-ETH      # 복수 마켓
   upbit orderbook KRW-BTC -o json      # JSON 출력`,
@@ -84,8 +85,8 @@ func formatOrderbookTable(orderbooks interface{}) error {
 		return s + strings.Repeat(" ", width-sw)
 	}
 
-	for i, ob := range m {
-		if i > 0 {
+	for idx, ob := range m {
+		if idx > 0 {
 			fmt.Fprintln(w)
 		}
 
@@ -93,13 +94,18 @@ func formatOrderbookTable(orderbooks interface{}) error {
 		totalAskSize, _ := ob["total_ask_size"].(float64)
 		totalBidSize, _ := ob["total_bid_size"].(float64)
 
-		fmt.Fprintf(w, "마켓: %s\n", market)
-		fmt.Fprintf(w, "총매도량: %s  총매수량: %s\n",
+		fmt.Fprint(w, i18n.Tf(i18n.MsgOrderbookMarket, market))
+		fmt.Fprint(w, i18n.Tf(i18n.MsgOrderbookTotalSizes,
 			output.FormatNumberPublic(totalAskSize),
-			output.FormatNumberPublic(totalBidSize))
+			output.FormatNumberPublic(totalBidSize)))
 		fmt.Fprintln(w)
 
-		headers := []string{"매도잔량", "매도호가", "매수호가", "매수잔량"}
+		headers := []string{
+			i18n.T(i18n.HdrAskSize),
+			i18n.T(i18n.HdrAskPrice),
+			i18n.T(i18n.HdrBidPrice),
+			i18n.T(i18n.HdrBidSize),
+		}
 
 		units, _ := ob["orderbook_units"].([]interface{})
 

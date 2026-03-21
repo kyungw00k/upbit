@@ -4,26 +4,27 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderShowColumns = []output.TableColumn{
 	{Header: "UUID", Key: "uuid"},
-	{Header: "마켓", Key: "market"},
-	{Header: "방향", Key: "side"},
-	{Header: "유형", Key: "ord_type"},
-	{Header: "가격", Key: "price", Format: "number"},
-	{Header: "수량", Key: "volume", Format: "number"},
-	{Header: "잔여수량", Key: "remaining_volume", Format: "number"},
-	{Header: "체결량", Key: "executed_volume", Format: "number"},
-	{Header: "상태", Key: "state"},
-	{Header: "생성시각", Key: "created_at", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrMarket), Key: "market"},
+	{Header: i18n.T(i18n.HdrSide), Key: "side"},
+	{Header: i18n.T(i18n.HdrOrdType), Key: "ord_type"},
+	{Header: i18n.T(i18n.HdrOrderPrice), Key: "price", Format: "number"},
+	{Header: i18n.T(i18n.HdrOrderVolume), Key: "volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrRemainingVol), Key: "remaining_volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrExecutedVol), Key: "executed_volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrState), Key: "state"},
+	{Header: i18n.T(i18n.HdrCreatedAt), Key: "created_at", Format: "datetime"},
 }
 
 var orderShowCmd = &cobra.Command{
 	Use:   "show <uuid...>",
-	Short: "주문 상세 조회",
-	Args:  RequireMinArgs(1, "주문 UUID를 지정하세요"),
+	Short: i18n.T(i18n.MsgOrderShowShort),
+	Args:  RequireMinArgs(1, i18n.T(i18n.ErrOrderShowArgs)),
 	Example: `  upbit order show 12345678-abcd-efgh-ijkl-1234567890ab            # 단일 조회
   upbit order show uuid1 uuid2 uuid3                                # 복수 UUID 조회
   upbit order show my-order-001 --id                                # Identifier로 조회`,
@@ -67,6 +68,6 @@ var orderShowCmd = &cobra.Command{
 }
 
 func init() {
-	orderShowCmd.Flags().Bool("id", false, "Identifier로 조회 (UUID 대신)")
+	orderShowCmd.Flags().Bool("id", false, i18n.T(i18n.FlagOrderShowIDUsage))
 	orderCmd.AddCommand(orderShowCmd)
 }

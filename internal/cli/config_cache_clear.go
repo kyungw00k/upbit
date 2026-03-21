@@ -8,12 +8,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/cache"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var cacheCmd = &cobra.Command{
 	Use:     "cache",
-	Short:   "캐시 관리",
+	Short:   i18n.T(i18n.MsgCacheShort),
 	GroupID: "util",
 	Example: `  upbit cache            # 캐시 정보 (경로, 크기)
   upbit cache --clear    # 캐시 삭제
@@ -29,9 +30,9 @@ var cacheCmd = &cobra.Command{
 }
 
 var cacheInfoColumns = []output.TableColumn{
-	{Header: "경로", Key: "path"},
-	{Header: "파일", Key: "files"},
-	{Header: "크기", Key: "size"},
+	{Header: i18n.T(i18n.HdrPath), Key: "path"},
+	{Header: i18n.T(i18n.HdrFiles), Key: "files"},
+	{Header: i18n.T(i18n.HdrSize), Key: "size"},
 }
 
 type cacheInfo struct {
@@ -43,7 +44,7 @@ type cacheInfo struct {
 func showCacheInfo() error {
 	dir, err := cache.CandleCacheDir()
 	if err != nil {
-		return fmt.Errorf("캐시 경로 확인 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrCachePathFailed), err)
 	}
 
 	var totalSize int64
@@ -59,7 +60,7 @@ func showCacheInfo() error {
 
 	info := cacheInfo{
 		Path:  dir,
-		Files: fmt.Sprintf("%d개", fileCount),
+		Files: i18n.Tf(i18n.MsgCacheFileCount, fileCount),
 		Size:  humanSize(totalSize),
 	}
 
@@ -70,23 +71,23 @@ func showCacheInfo() error {
 func clearCache(cmd *cobra.Command) error {
 	force := GetForce()
 
-	ok, err := output.Confirm("캐시를 삭제하시겠습니까?", force)
+	ok, err := output.Confirm(i18n.T(i18n.MsgCacheConfirmClear), force)
 	if err != nil {
 		return err
 	}
 	if !ok {
-		fmt.Fprintln(os.Stderr, "취소되었습니다.")
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCancelled))
 		return nil
 	}
 
 	cc, err := cache.NewCandleCache()
 	if err != nil {
-		return fmt.Errorf("캐시 열기 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrCacheOpenFailed), err)
 	}
 	defer cc.Close()
 
 	if err := cc.Clear(); err != nil {
-		return fmt.Errorf("캐시 삭제 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrCacheClearFailed), err)
 	}
 
 	dir, _ := cache.CandleCacheDir()
@@ -94,7 +95,7 @@ func clearCache(cmd *cobra.Command) error {
 		_ = os.Remove(filepath.Join(dir, "markets.json"))
 	}
 
-	fmt.Fprintln(os.Stderr, "캐시가 삭제되었습니다.")
+	fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheCleared))
 	return nil
 }
 
@@ -110,7 +111,7 @@ func humanSize(b int64) string {
 }
 
 func init() {
-	cacheCmd.Flags().Bool("clear", false, "캐시 삭제")
+	cacheCmd.Flags().Bool("clear", false, i18n.T(i18n.FlagCacheClearUsage))
 	AddForceFlag(cacheCmd)
 	rootCmd.AddCommand(cacheCmd)
 }

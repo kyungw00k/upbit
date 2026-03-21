@@ -16,6 +16,7 @@ import (
 	ws "github.com/kyungw00k/upbit/internal/api/websocket"
 	"github.com/kyungw00k/upbit/internal/cache"
 	"github.com/kyungw00k/upbit/internal/config"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
@@ -23,8 +24,8 @@ import (
 
 var watchTickerCmd = &cobra.Command{
 	Use:   "ticker <market...>",
-	Short: "현재가 실시간 스트림",
-	Args:  RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Short: i18n.T(i18n.MsgWatchTickerShort),
+	Args:  RequireMinArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit watch ticker KRW-BTC
   upbit watch ticker KRW-BTC KRW-ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -38,8 +39,8 @@ var watchTickerCmd = &cobra.Command{
 
 var watchOrderbookCmd = &cobra.Command{
 	Use:   "orderbook <market...>",
-	Short: "호가 실시간 스트림",
-	Args:  RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Short: i18n.T(i18n.MsgWatchOrderbookShort),
+	Args:  RequireMinArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit watch orderbook KRW-BTC
   upbit watch orderbook KRW-BTC KRW-ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -53,8 +54,8 @@ var watchOrderbookCmd = &cobra.Command{
 
 var watchTradeCmd = &cobra.Command{
 	Use:   "trade <market...>",
-	Short: "체결 실시간 스트림",
-	Args:  RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Short: i18n.T(i18n.MsgWatchTradeShort),
+	Args:  RequireMinArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit watch trade KRW-BTC
   upbit watch trade KRW-BTC KRW-ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -68,8 +69,8 @@ var watchTradeCmd = &cobra.Command{
 
 var watchCandleCmd = &cobra.Command{
 	Use:   "candle <market...>",
-	Short: "캔들 실시간 스트림",
-	Args:  RequireMinArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Short: i18n.T(i18n.MsgWatchCandleShort),
+	Args:  RequireMinArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit watch candle KRW-BTC -i 1m
   upbit watch candle KRW-BTC KRW-ETH -i 1s`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -85,7 +86,7 @@ var watchCandleCmd = &cobra.Command{
 
 var watchMyOrderCmd = &cobra.Command{
 	Use:   "my-order [market...]",
-	Short: "내 주문 실시간 스트림 (인증 필요)",
+	Short: i18n.T(i18n.MsgWatchMyOrderShort),
 	Args:  cobra.ArbitraryArgs,
 	Example: `  upbit watch my-order
   upbit watch my-order KRW-BTC`,
@@ -100,7 +101,7 @@ var watchMyOrderCmd = &cobra.Command{
 
 var watchMyAssetCmd = &cobra.Command{
 	Use:   "my-asset",
-	Short: "내 자산 실시간 스트림 (인증 필요)",
+	Short: i18n.T(i18n.MsgWatchMyAssetShort),
 	Args:  cobra.NoArgs,
 	Example: `  upbit watch my-asset`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -112,7 +113,7 @@ var watchMyAssetCmd = &cobra.Command{
 
 func init() {
 	watchCandleCmd.Flags().StringP("interval", "i", "1m",
-		"캔들 단위 (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m)")
+		i18n.T(i18n.FlagWatchIntervalUsage))
 
 	watchCmd.AddCommand(watchTickerCmd)
 	watchCmd.AddCommand(watchOrderbookCmd)
@@ -154,7 +155,7 @@ func validateMarkets(ctx context.Context, subs []ws.SubscriptionType) error {
 
 	for _, code := range codes {
 		if !validMarkets[code] {
-			return fmt.Errorf("존재하지 않는 마켓: %s\n\n유효한 마켓 목록은 'upbit market' 명령으로 확인하세요", code)
+			return fmt.Errorf("%s", i18n.Tf(i18n.ErrMarketNotFound, code))
 		}
 	}
 	return nil
@@ -197,10 +198,10 @@ func runPrivateStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn line
 	// 인증 확인
 	cfg, err := config.Load()
 	if err != nil {
-		return fmt.Errorf("설정 로드 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrConfigLoad), err)
 	}
 	if cfg.AccessKey == "" || cfg.SecretKey == "" {
-		return fmt.Errorf("인증이 필요합니다: ACCESS_KEY 및 SECRET_KEY를 설정하세요")
+		return fmt.Errorf("%s", i18n.T(i18n.ErrAuthRequired))
 	}
 
 	client := ws.NewWSClient(ws.PrivateURL, ws.WithAuth(cfg.AccessKey, cfg.SecretKey))
@@ -228,10 +229,10 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 	// 구독 메시지 생성 및 전송
 	subMsg, err := ws.BuildSubscribeMessage(subs)
 	if err != nil {
-		return fmt.Errorf("구독 메시지 생성 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrSubscribeBuild), err)
 	}
 	if err := client.Subscribe(subMsg); err != nil {
-		return fmt.Errorf("구독 전송 실패: %w", err)
+		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrSubscribeSend), err)
 	}
 
 	isTTY := output.IsTTY()
@@ -246,7 +247,7 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 			if gorillaWS.IsCloseError(err, gorillaWS.CloseNormalClosure, gorillaWS.CloseGoingAway) {
 				return nil
 			}
-			return fmt.Errorf("메시지 수신 오류: %w", err)
+			return fmt.Errorf("%s: %w", i18n.T(i18n.ErrMessageReceive), err)
 		}
 
 		// status 메시지 무시 ({"status":"UP"})
@@ -256,7 +257,7 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 
 		// 에러 메시지 처리 — 서버 에러 시 즉시 종료
 		if errMsg := parseErrorMessage(data); errMsg != "" {
-			return fmt.Errorf("서버 에러: %s", errMsg)
+			return fmt.Errorf("%s", i18n.Tf(i18n.ErrServerError, errMsg))
 		}
 
 		if isTTY {
@@ -316,9 +317,10 @@ func formatTicker(data []byte) string {
 		return ""
 	}
 	arrow := changeArrow(t.Change)
-	return fmt.Sprintf("%-12s %s %14s  %s%.2f%%  거래량: %.4f",
+	return fmt.Sprintf("%-12s %s %14s  %s%.2f%%  %s: %.4f",
 		t.Code, arrow, smartPrice(t.TradePrice),
 		signPrefix(t.SignedChangeRate), t.SignedChangeRate*100,
+		i18n.T(i18n.WatchVolume),
 		t.AccTradeVolume24h,
 	)
 }
@@ -333,10 +335,13 @@ func formatOrderbook(data []byte) string {
 	}
 	best := o.OrderbookUnits[0]
 	spread := best.AskPrice - best.BidPrice
-	return fmt.Sprintf("%-12s  매도: %s (%.4f)  매수: %s (%.4f)  스프레드: %s",
+	return fmt.Sprintf("%-12s  %s: %s (%.4f)  %s: %s (%.4f)  %s: %s",
 		o.Code,
+		i18n.T(i18n.WatchSell),
 		smartPrice(best.AskPrice), best.AskSize,
+		i18n.T(i18n.WatchBuy),
 		smartPrice(best.BidPrice), best.BidSize,
+		i18n.T(i18n.WatchSpread),
 		smartPrice(spread),
 	)
 }
@@ -346,13 +351,14 @@ func formatTrade(data []byte) string {
 	if err := json.Unmarshal(data, &t); err != nil {
 		return ""
 	}
-	side := "매수"
+	side := i18n.T(i18n.WatchBuy)
 	if t.AskBid == "ASK" {
-		side = "매도"
+		side = i18n.T(i18n.WatchSell)
 	}
 	ts := time.UnixMilli(t.TradeTimestamp).In(kstLoc).Format("15:04:05")
-	return fmt.Sprintf("%-12s  %s  %14s  수량: %.8f  %s",
-		t.Code, side, smartPrice(t.TradePrice), t.TradeVolume, ts,
+	return fmt.Sprintf("%-12s  %s  %14s  %s: %.8f  %s",
+		t.Code, side, smartPrice(t.TradePrice),
+		i18n.T(i18n.WatchQty), t.TradeVolume, ts,
 	)
 }
 
@@ -361,11 +367,13 @@ func formatCandle(data []byte) string {
 	if err := json.Unmarshal(data, &c); err != nil {
 		return ""
 	}
-	return fmt.Sprintf("%-12s  %s  시:%s 고:%s 저:%s 종:%s  거래량: %.4f",
+	return fmt.Sprintf("%-12s  %s  %s:%s %s:%s %s:%s %s:%s  %s: %.4f",
 		c.Code, c.CandleDateTimeKST,
-		smartPrice(c.OpeningPrice), smartPrice(c.HighPrice),
-		smartPrice(c.LowPrice), smartPrice(c.TradePrice),
-		c.CandleAccTradeVolume,
+		i18n.T(i18n.WatchOpen), smartPrice(c.OpeningPrice),
+		i18n.T(i18n.WatchHigh), smartPrice(c.HighPrice),
+		i18n.T(i18n.WatchLow), smartPrice(c.LowPrice),
+		i18n.T(i18n.WatchClose), smartPrice(c.TradePrice),
+		i18n.T(i18n.WatchVolume), c.CandleAccTradeVolume,
 	)
 }
 
@@ -374,15 +382,16 @@ func formatMyOrder(data []byte) string {
 	if err := json.Unmarshal(data, &o); err != nil {
 		return ""
 	}
-	side := "매수"
+	side := i18n.T(i18n.WatchBuy)
 	if o.AskBid == "ASK" {
-		side = "매도"
+		side = i18n.T(i18n.WatchSell)
 	}
 	ts := time.UnixMilli(o.Timestamp).In(kstLoc).Format("15:04:05")
-	return fmt.Sprintf("%-12s  %s  %s  %s  수량: %.8f  상태: %s  %s",
+	return fmt.Sprintf("%-12s  %s  %s  %s  %s: %.8f  %s: %s  %s",
 		o.Code, side, o.OrderType,
-		smartPrice(o.Price), o.Volume,
-		o.State, ts,
+		smartPrice(o.Price),
+		i18n.T(i18n.WatchQty), o.Volume,
+		i18n.T(i18n.WatchState), o.State, ts,
 	)
 }
 
@@ -394,8 +403,9 @@ func formatMyAsset(data []byte) string {
 	ts := time.UnixMilli(a.Timestamp).In(kstLoc).Format("15:04:05")
 	parts := make([]string, 0, len(a.Assets))
 	for _, asset := range a.Assets {
-		parts = append(parts, fmt.Sprintf("%s: %.8f (주문중: %.8f)",
-			asset.Currency, asset.Balance, asset.Locked))
+		parts = append(parts, fmt.Sprintf("%s: %.8f (%s: %.8f)",
+			asset.Currency, asset.Balance,
+			i18n.T(i18n.WatchLocking), asset.Locked))
 	}
 	return fmt.Sprintf("[%s] %s", ts, strings.Join(parts, " | "))
 }

@@ -4,22 +4,23 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var tradesColumns = []output.TableColumn{
-	{Header: "체결 시각", Key: "trade_time_utc", Format: "time"},
-	{Header: "체결가", Key: "trade_price", Format: "number"},
-	{Header: "체결량", Key: "trade_volume", Format: "number"},
-	{Header: "매수/매도", Key: "ask_bid"},
-	{Header: "전일 대비", Key: "change_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrTradeTime), Key: "trade_time_utc", Format: "time"},
+	{Header: i18n.T(i18n.HdrTradePrice), Key: "trade_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrTradeVolume), Key: "trade_volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrAskBid), Key: "ask_bid"},
+	{Header: i18n.T(i18n.HdrChangePrice), Key: "change_price", Format: "number"},
 }
 
 var tradesCmd = &cobra.Command{
 	Use:     "trades [market]",
-	Short:   "체결 내역 조회",
+	Short:   i18n.T(i18n.MsgTradesShort),
 	GroupID: "quotation",
-	Args:    RequireArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Args:    RequireArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit trades KRW-BTC                  # 최근 20건
   upbit trades KRW-BTC -c 100          # 최근 100건
   upbit trades KRW-BTC -o json         # JSON 출력`,
@@ -40,6 +41,6 @@ var tradesCmd = &cobra.Command{
 }
 
 func init() {
-	tradesCmd.Flags().IntP("count", "c", 20, "조회 개수")
+	tradesCmd.Flags().IntP("count", "c", 20, i18n.T(i18n.FlagCountUsage))
 	rootCmd.AddCommand(tradesCmd)
 }

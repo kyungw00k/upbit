@@ -6,6 +6,8 @@ import (
 	"reflect"
 
 	"github.com/spf13/cobra"
+
+	"github.com/kyungw00k/upbit/internal/i18n"
 )
 
 // emptyMessage 빈 결과일 때 stderr에 안내 메시지 출력 후 true 반환
@@ -29,7 +31,7 @@ func emptyMessage(data interface{}, msg string) bool {
 func RequireArgs(n int, usage string) cobra.PositionalArgs {
 	return func(cmd *cobra.Command, args []string) error {
 		if len(args) < n {
-			return fmt.Errorf("%s\n\n사용법: %s", usage, cmd.CommandPath())
+			return fmt.Errorf("%s\n\n%s: %s", usage, i18n.T(i18n.MsgUsagePrefix), cmd.CommandPath())
 		}
 		return nil
 	}
@@ -39,7 +41,7 @@ func RequireArgs(n int, usage string) cobra.PositionalArgs {
 func RequireMinArgs(n int, usage string) cobra.PositionalArgs {
 	return func(cmd *cobra.Command, args []string) error {
 		if len(args) < n {
-			return fmt.Errorf("%s\n\n사용법: %s", usage, cmd.CommandPath())
+			return fmt.Errorf("%s\n\n%s: %s", usage, i18n.T(i18n.MsgUsagePrefix), cmd.CommandPath())
 		}
 		return nil
 	}

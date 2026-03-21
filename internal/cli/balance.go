@@ -10,16 +10,17 @@ import (
 	"github.com/kyungw00k/upbit/internal/api"
 	"github.com/kyungw00k/upbit/internal/api/exchange"
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 	"github.com/kyungw00k/upbit/internal/types"
 )
 
 var balanceColumns = []output.TableColumn{
-	{Header: "통화", Key: "currency"},
-	{Header: "잔고", Key: "balance", Format: "number"},
-	{Header: "주문중", Key: "locked", Format: "number"},
-	{Header: "평균 매수가", Key: "avg_buy_price", Format: "number"},
-	{Header: "평가금액(KRW)", Key: "eval_krw", Format: "number"},
+	{Header: i18n.T(i18n.HdrCurrency), Key: "currency"},
+	{Header: i18n.T(i18n.HdrBalance), Key: "balance", Format: "number"},
+	{Header: i18n.T(i18n.HdrLocked), Key: "locked", Format: "number"},
+	{Header: i18n.T(i18n.HdrAvgBuyPrice), Key: "avg_buy_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrEvalKRW), Key: "eval_krw", Format: "number"},
 }
 
 // balanceWithEval 평가금액 포함 잔고
@@ -33,7 +34,7 @@ type balanceWithEval struct {
 
 var balanceCmd = &cobra.Command{
 	Use:     "balance [currency]",
-	Short:   "계정 잔고 조회",
+	Short:   i18n.T(i18n.MsgBalanceShort),
 	GroupID: "trading",
 	Args:    cobra.MaximumNArgs(1),
 	Example: `  upbit balance              # 전체 잔고
@@ -62,12 +63,12 @@ var balanceCmd = &cobra.Command{
 				}
 			}
 			if len(filtered) == 0 {
-				return fmt.Errorf("%s 잔고를 찾을 수 없습니다", currency)
+				return fmt.Errorf("%s", i18n.Tf(i18n.ErrBalanceNotFound, currency))
 			}
 			accounts = filtered
 		}
 
-		if emptyMessage(accounts, "보유 자산이 없습니다") {
+		if emptyMessage(accounts, i18n.T(i18n.MsgBalanceEmpty)) {
 			return nil
 		}
 

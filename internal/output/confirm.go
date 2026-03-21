@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/kyungw00k/upbit/internal/i18n"
 )
 
 // Confirm 사용자에게 확인 프롬프트를 표시하고 결과를 반환
@@ -20,7 +22,7 @@ func Confirm(message string, force bool) (bool, error) {
 
 	// non-tty 환경에서는 자동으로 거부 (안전 장치)
 	if !IsTTY() {
-		fmt.Fprintln(os.Stderr, "확인 프롬프트: non-tty 환경에서는 --force 플래그가 필요합니다.")
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgConfirmNonTTY))
 		return false, nil
 	}
 
@@ -30,7 +32,7 @@ func Confirm(message string, force bool) (bool, error) {
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		return false, fmt.Errorf("입력 읽기 실패: %w", err)
+		return false, fmt.Errorf("%s: %w", i18n.T(i18n.ErrInputRead), err)
 	}
 
 	input = strings.TrimSpace(strings.ToLower(input))

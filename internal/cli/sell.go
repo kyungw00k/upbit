@@ -7,14 +7,15 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var sellCmd = &cobra.Command{
 	Use:     "sell <market>",
-	Short:   "매도 주문",
+	Short:   i18n.T(i18n.MsgSellShort),
 	GroupID: "trading",
-	Args:    RequireArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Args:    RequireArgs(1, i18n.T(i18n.ErrSellArgsRequired)),
 	Example: `  upbit sell KRW-BTC -p 50000000 -V 0.001   # 지정가 매도
   upbit sell KRW-BTC -V 0.001               # 시장가 매도 (수량 지정)
   upbit sell KRW-BTC -p 50000000 -V 0.001 --test  # 테스트 주문
@@ -48,7 +49,7 @@ var sellCmd = &cobra.Command{
 			ordType = "market"
 			orderVolume = volume
 		default:
-			return fmt.Errorf("매도 주문에는 --price와 --volume (지정가) 또는 --volume만 (시장가)이 필요합니다")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrSellParamsRequired))
 		}
 
 		// 지정가 주문 시 호가 단위 자동 보정
@@ -58,7 +59,7 @@ var sellCmd = &cobra.Command{
 			originalPrice = orderPrice
 			adjustedPrice, adjusted, adjErr := adjustPrice(cmd.Context(), client, market, orderPrice, "ask")
 			if adjErr != nil {
-				fmt.Fprintf(os.Stderr, "호가 단위 확인 실패: %v\n", adjErr)
+				fmt.Fprint(os.Stderr, i18n.Tf(i18n.MsgTickCheckFailed, adjErr))
 			} else {
 				wasAdjusted = adjusted
 				orderPrice = adjustedPrice
@@ -79,14 +80,14 @@ var sellCmd = &cobra.Command{
 		// 확인 프롬프트
 		var msg string
 		if wasAdjusted {
-			msg = fmt.Sprintf("매도 주문: %s 단가=%s (호가 보정: %s→%s), 수량=%s (유형: %s)", market, orderPrice, originalPrice, orderPrice, orderVolume, ordType)
+			msg = i18n.Tf(i18n.MsgSellOrderAdjusted, market, orderPrice, originalPrice, orderPrice, orderVolume, ordType)
 		} else {
-			msg = fmt.Sprintf("매도 주문: %s %s (유형: %s)", market, describeSellOrder(ordType, orderPrice, orderVolume), ordType)
+			msg = i18n.Tf(i18n.MsgSellOrderNormal, market, describeSellOrder(ordType, orderPrice, orderVolume), ordType)
 		}
 
 		// --force여도 보정 사실은 stderr에 출력
 		if wasAdjusted && GetForce() {
-			fmt.Fprintf(os.Stderr, "호가 보정: %s → %s\n", originalPrice, orderPrice)
+			fmt.Fprint(os.Stderr, i18n.Tf(i18n.MsgTickAdjusted, originalPrice, orderPrice))
 		}
 
 		confirmed, err := output.Confirm(msg, GetForce())
@@ -94,7 +95,7 @@ var sellCmd = &cobra.Command{
 			return err
 		}
 		if !confirmed {
-			fmt.Fprintln(os.Stderr, "주문이 취소되었습니다")
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgOrderCancelled))
 			return nil
 		}
 
@@ -117,9 +118,9 @@ var sellCmd = &cobra.Command{
 func describeSellOrder(ordType, price, volume string) string {
 	switch ordType {
 	case "limit":
-		return fmt.Sprintf("단가=%s, 수량=%s", price, volume)
+		return i18n.Tf(i18n.MsgDescLimitOrder, price, volume)
 	case "market":
-		return fmt.Sprintf("수량=%s", volume)
+		return i18n.Tf(i18n.MsgDescMarketSell, volume)
 	default:
 		return ""
 	}
@@ -127,12 +128,12 @@ func describeSellOrder(ordType, price, volume string) string {
 
 func init() {
 	f := sellCmd.Flags()
-	f.StringP("price", "p", "", "주문 단가")
-	f.StringP("volume", "V", "", "주문 수량")
+	f.StringP("price", "p", "", i18n.T(i18n.FlagPriceUsage))
+	f.StringP("volume", "V", "", i18n.T(i18n.FlagVolumeUsage))
 	f.String("tif", "", "Time in Force (ioc, fok, post_only)")
-	f.String("smp", "", "자기 거래 방지 (cancel_maker, cancel_taker, reduce)")
-	f.String("id", "", "클라이언트 지정 주문 식별자")
-	f.Bool("test", false, "테스트 주문 (실제 체결 안됨)")
+	f.String("smp", "", i18n.T(i18n.FlagSMPUsage))
+	f.String("id", "", i18n.T(i18n.FlagIdentifierUsage))
+	f.Bool("test", false, i18n.T(i18n.FlagTestUsage))
 	AddForceFlag(sellCmd)
 	rootCmd.AddCommand(sellCmd)
 }

@@ -8,22 +8,23 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/wallet"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var withdrawResultColumns = []output.TableColumn{
 	{Header: "UUID", Key: "uuid"},
-	{Header: "통화", Key: "currency"},
-	{Header: "금액", Key: "amount", Format: "number"},
-	{Header: "수수료", Key: "fee", Format: "number"},
-	{Header: "상태", Key: "state"},
-	{Header: "생성시각", Key: "created_at", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrCurrency), Key: "currency"},
+	{Header: i18n.T(i18n.HdrAmount), Key: "amount", Format: "number"},
+	{Header: i18n.T(i18n.HdrFee), Key: "fee", Format: "number"},
+	{Header: i18n.T(i18n.HdrState), Key: "state"},
+	{Header: i18n.T(i18n.HdrCreatedAt), Key: "created_at", Format: "datetime"},
 }
 
 var withdrawRequestCmd = &cobra.Command{
 	Use:   "request <currency>",
-	Short: "출금 요청",
-	Args:  RequireArgs(1, "출금할 통화 코드를 지정하세요 (예: BTC, KRW)"),
+	Short: i18n.T(i18n.MsgWithdrawRequestShort),
+	Args:  RequireArgs(1, i18n.T(i18n.ErrWithdrawCurrRequired)),
 	Example: `  upbit withdraw request BTC --amount 0.5 --to 1A1zP1...       # BTC 출금
   upbit withdraw request XRP --amount 100 --to rN9qN... --secondary-address 3057887915
   upbit withdraw request KRW --amount 50000                    # KRW 원화 출금
@@ -46,22 +47,22 @@ var withdrawRequestCmd = &cobra.Command{
 		twoFactorType, _ := cmd.Flags().GetString("two-factor")
 
 		if amount == "" {
-			return fmt.Errorf("--amount 플래그는 필수입니다")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrAmountRequired))
 		}
 
 		// KRW 자동 감지: 원화 출금
 		if currency == "KRW" {
 			if twoFactorType == "" {
-				return fmt.Errorf("KRW 출금 시 --two-factor 플래그가 필요합니다 (kakao, naver, hana)")
+				return fmt.Errorf("%s", i18n.T(i18n.ErrTwoFactorRequired))
 			}
 
-			msg := fmt.Sprintf("출금: KRW %s", amount)
+			msg := i18n.Tf(i18n.MsgWithdrawConfirmKRW, amount)
 			confirmed, err := output.Confirm(msg, GetForce())
 			if err != nil {
 				return err
 			}
 			if !confirmed {
-				fmt.Fprintln(os.Stderr, "출금이 취소되었습니다")
+				fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgWithdrawCancelled))
 				return nil
 			}
 
@@ -74,7 +75,7 @@ var withdrawRequestCmd = &cobra.Command{
 
 		// 디지털 자산 출금
 		if address == "" {
-			return fmt.Errorf("디지털 자산 출금에는 --to (수신 주소) 플래그가 필요합니다")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrWithdrawAddrRequired))
 		}
 		if netType == "" {
 			netType = currency // 기본값: currency와 동일
@@ -82,7 +83,7 @@ var withdrawRequestCmd = &cobra.Command{
 		netType = strings.ToUpper(netType)
 
 		// 확인 프롬프트
-		msg := fmt.Sprintf("출금: %s %s -> %s", currency, amount, address)
+		msg := i18n.Tf(i18n.MsgWithdrawConfirmCoin, currency, amount, address)
 		if secondaryAddr != "" {
 			msg += fmt.Sprintf(" (tag: %s)", secondaryAddr)
 		}
@@ -91,7 +92,7 @@ var withdrawRequestCmd = &cobra.Command{
 			return err
 		}
 		if !confirmed {
-			fmt.Fprintln(os.Stderr, "출금이 취소되었습니다")
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgWithdrawCancelled))
 			return nil
 		}
 
@@ -114,12 +115,12 @@ var withdrawRequestCmd = &cobra.Command{
 
 func init() {
 	f := withdrawRequestCmd.Flags()
-	f.String("amount", "", "출금 수량/금액 (필수)")
-	f.String("to", "", "수신 주소 (디지털 자산 필수)")
-	f.String("secondary-address", "", "2차 주소 (태그/메모)")
-	f.String("net-type", "", "네트워크 유형 (기본: currency와 동일)")
-	f.String("tx-type", "", "트랜잭션 유형 (default, internal)")
-	f.String("two-factor", "", "2차 인증 수단 (kakao, naver, hana) — KRW 전용")
+	f.String("amount", "", i18n.T(i18n.FlagAmountUsage))
+	f.String("to", "", i18n.T(i18n.FlagToUsage))
+	f.String("secondary-address", "", i18n.T(i18n.FlagSecondaryAddrUsage))
+	f.String("net-type", "", i18n.T(i18n.FlagNetTypeUsage))
+	f.String("tx-type", "", i18n.T(i18n.FlagTxTypeUsage))
+	f.String("two-factor", "", i18n.T(i18n.FlagTwoFactorUsage))
 	AddForceFlag(withdrawRequestCmd)
 	withdrawCmd.AddCommand(withdrawRequestCmd)
 }

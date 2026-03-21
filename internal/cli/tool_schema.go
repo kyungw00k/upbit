@@ -8,6 +8,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
+	"github.com/kyungw00k/upbit/internal/i18n"
 )
 
 // ToolSchema tool-schema 출력용 구조체
@@ -35,7 +37,7 @@ type ToolSchemaProperty struct {
 
 var toolSchemaCmd = &cobra.Command{
 	Use:     "tool-schema [command]",
-	Short:   "명령어 JSON Schema 출력 (LLM/MCP용)",
+	Short:   i18n.T(i18n.MsgToolSchemaShort),
 	GroupID: "util",
 	Args:    cobra.MaximumNArgs(1),
 	Example: `  upbit tool-schema              # 전체 명령 스키마
@@ -49,7 +51,7 @@ var toolSchemaCmd = &cobra.Command{
 			target := args[0]
 			found := findCommandByName(rootCmd, target)
 			if found == nil {
-				return fmt.Errorf("명령을 찾을 수 없습니다: %s", target)
+				return fmt.Errorf("%s", i18n.Tf(i18n.ErrToolSchemaNotFound, target))
 			}
 			schema := buildSchema(found, "")
 			schemas = append(schemas, schema)
@@ -155,19 +157,19 @@ func buildSchema(cmd *cobra.Command, prefix string) ToolSchema {
 
 // argDescriptions 위치 인자별 설명 (명령 Use 이름 → 인자 이름 → 설명)
 var argDescriptions = map[string]map[string]string{
-	"ticker":    {"market": "마켓 코드 (예: KRW-BTC, KRW-ETH)"},
-	"orderbook": {"market": "마켓 코드 (예: KRW-BTC)"},
-	"trades":   {"market": "마켓 코드 (예: KRW-BTC)"},
-	"candle":   {"market": "마켓 코드 (예: KRW-BTC)"},
-	"buy":      {"market": "매수할 마켓 코드 (예: KRW-BTC)"},
-	"sell":     {"market": "매도할 마켓 코드 (예: KRW-BTC)"},
-	"balance":  {"currency": "조회할 통화 코드 (예: KRW, BTC)"},
-	"show":     {"uuid": "주문/입금/출금 UUID"},
-	"cancel":   {"uuid": "취소할 주문/출금 UUID"},
-	"replace":  {"uuid": "정정할 주문 UUID"},
-	"request":  {"currency": "출금할 통화 코드 (예: BTC, KRW)"},
-	"address":  {"currency": "입금 주소 조회할 통화 코드 (예: BTC)"},
-	"chance":   {"market": "주문 가능 정보 조회할 마켓 코드 (예: KRW-BTC)"},
+	"ticker":    {"market": i18n.T(i18n.ArgMarketCode)},
+	"orderbook": {"market": i18n.T(i18n.ArgOrderbookMarket)},
+	"trades":   {"market": i18n.T(i18n.ArgTradesMarket)},
+	"candle":   {"market": i18n.T(i18n.ArgCandleMarket)},
+	"buy":      {"market": i18n.T(i18n.ArgBuyMarket)},
+	"sell":     {"market": i18n.T(i18n.ArgSellMarket)},
+	"balance":  {"currency": i18n.T(i18n.ArgBalanceCurrency)},
+	"show":     {"uuid": i18n.T(i18n.ArgShowUUID)},
+	"cancel":   {"uuid": i18n.T(i18n.ArgCancelUUID)},
+	"replace":  {"uuid": i18n.T(i18n.ArgReplaceUUID)},
+	"request":  {"currency": i18n.T(i18n.ArgRequestCurrency)},
+	"address":  {"currency": i18n.T(i18n.ArgAddressCurrency)},
+	"chance":   {"market": i18n.T(i18n.ArgChanceMarket)},
 }
 
 // addArgsToSchema Use 필드에서 위치 인자를 추출하여 스키마에 추가

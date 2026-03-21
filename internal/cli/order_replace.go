@@ -7,13 +7,14 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderReplaceCmd = &cobra.Command{
 	Use:   "replace <uuid>",
-	Short: "주문 정정 (취소 후 재주문)",
-	Args:  RequireArgs(1, "정정할 주문 UUID를 지정하세요"),
+	Short: i18n.T(i18n.MsgOrderReplaceShort),
+	Args:  RequireArgs(1, i18n.T(i18n.ErrReplaceArgs)),
 	Example: `  upbit order replace 12345678-abcd -p 51000000 -V 0.001   # 가격·수량 변경
   upbit order replace 12345678-abcd -p 51000000            # 가격만 변경
   upbit order replace 12345678-abcd -V 0.002               # 수량만 변경
@@ -32,12 +33,12 @@ var orderReplaceCmd = &cobra.Command{
 		ordType, _ := cmd.Flags().GetString("ord-type")
 
 		if price == "" && volume == "" {
-			return fmt.Errorf("정정할 --price 또는 --volume을 지정하세요")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrReplaceNoParam))
 		}
 
 		// limit 타입이면 price 필수
 		if ordType == "limit" && price == "" {
-			return fmt.Errorf("limit 주문 정정에는 --price가 필요합니다")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrReplaceLimitNoPrice))
 		}
 
 		req := &exchange.CancelAndNewOrderRequest{
@@ -55,14 +56,14 @@ var orderReplaceCmd = &cobra.Command{
 		}
 
 		// 확인 프롬프트
-		msg := fmt.Sprintf("주문 %s 정정: ", uuid)
+		msg := i18n.Tf(i18n.MsgReplaceConfirm, uuid)
 		if price != "" {
-			msg += fmt.Sprintf("단가=%s ", price)
+			msg += i18n.Tf(i18n.MsgReplacePrice, price)
 		}
 		if volume != "" {
-			msg += fmt.Sprintf("수량=%s", volume)
+			msg += i18n.Tf(i18n.MsgReplaceVolume, volume)
 		} else {
-			msg += "(잔량 유지)"
+			msg += i18n.T(i18n.MsgReplaceRemain)
 		}
 
 		confirmed, err := output.Confirm(msg, GetForce())
@@ -70,7 +71,7 @@ var orderReplaceCmd = &cobra.Command{
 			return err
 		}
 		if !confirmed {
-			fmt.Fprintln(os.Stderr, "정정이 취소되었습니다")
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgReplaceCancelled))
 			return nil
 		}
 
@@ -84,9 +85,9 @@ var orderReplaceCmd = &cobra.Command{
 
 func init() {
 	f := orderReplaceCmd.Flags()
-	f.StringP("price", "p", "", "신규 주문 단가")
-	f.StringP("volume", "V", "", "신규 주문 수량")
-	f.String("ord-type", "limit", "주문 유형 (limit, best)")
+	f.StringP("price", "p", "", i18n.T(i18n.FlagNewPriceUsage))
+	f.StringP("volume", "V", "", i18n.T(i18n.FlagNewVolumeUsage))
+	f.String("ord-type", "limit", i18n.T(i18n.FlagOrdTypeUsage))
 	AddForceFlag(orderReplaceCmd)
 	orderCmd.AddCommand(orderReplaceCmd)
 }

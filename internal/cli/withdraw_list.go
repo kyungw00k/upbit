@@ -6,22 +6,23 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/wallet"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var withdrawListColumns = []output.TableColumn{
 	{Header: "UUID", Key: "uuid"},
-	{Header: "통화", Key: "currency"},
-	{Header: "금액", Key: "amount", Format: "number"},
-	{Header: "수수료", Key: "fee", Format: "number"},
-	{Header: "상태", Key: "state"},
-	{Header: "유형", Key: "transaction_type"},
-	{Header: "생성일", Key: "created_at", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrCurrency), Key: "currency"},
+	{Header: i18n.T(i18n.HdrAmount), Key: "amount", Format: "number"},
+	{Header: i18n.T(i18n.HdrFee), Key: "fee", Format: "number"},
+	{Header: i18n.T(i18n.HdrState), Key: "state"},
+	{Header: i18n.T(i18n.HdrTransType), Key: "transaction_type"},
+	{Header: i18n.T(i18n.HdrCreatedAt), Key: "created_at", Format: "datetime"},
 }
 
 var withdrawListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "출금 목록 조회",
+	Short: i18n.T(i18n.MsgWithdrawListShort),
 	Example: `  upbit withdraw list                        # 최근 출금 목록
   upbit withdraw list --currency BTC         # BTC 출금만
   upbit withdraw list --state DONE           # 완료된 출금만
@@ -47,7 +48,7 @@ var withdrawListCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		if emptyMessage(withdrawals, "출금 내역이 없습니다") {
+		if emptyMessage(withdrawals, i18n.T(i18n.MsgWithdrawListEmpty)) {
 			return nil
 		}
 		return formatter.Format(withdrawals)
@@ -56,9 +57,9 @@ var withdrawListCmd = &cobra.Command{
 
 func init() {
 	f := withdrawListCmd.Flags()
-	f.String("currency", "", "통화 코드 필터 (예: BTC, KRW)")
-	f.String("state", "", "출금 상태 필터 (WAITING, PROCESSING, DONE, FAILED, CANCELLED, REJECTED)")
-	f.IntP("count", "c", 20, "조회 개수")
-	f.Int("page", 1, "페이지 번호")
+	f.String("currency", "", i18n.T(i18n.FlagCurrencyUsage))
+	f.String("state", "", i18n.T(i18n.FlagWithdrawStateUsage))
+	f.IntP("count", "c", 20, i18n.T(i18n.FlagCountUsage))
+	f.Int("page", 1, i18n.T(i18n.FlagPageUsage))
 	withdrawCmd.AddCommand(withdrawListCmd)
 }

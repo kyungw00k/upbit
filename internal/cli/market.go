@@ -6,18 +6,19 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var marketColumns = []output.TableColumn{
-	{Header: "마켓", Key: "market"},
-	{Header: "한글명", Key: "korean_name"},
-	{Header: "영문명", Key: "english_name"},
+	{Header: i18n.T(i18n.HdrMarket), Key: "market"},
+	{Header: i18n.T(i18n.HdrKoreanName), Key: "korean_name"},
+	{Header: i18n.T(i18n.HdrEnglishName), Key: "english_name"},
 }
 
 var marketCmd = &cobra.Command{
 	Use:     "market",
-	Short:   "마켓 목록 조회",
+	Short:   i18n.T(i18n.MsgMarketShort),
 	GroupID: "quotation",
 	Example: `  upbit market              # 전체 마켓 목록
   upbit market -q KRW       # KRW 마켓만
@@ -43,7 +44,7 @@ var marketCmd = &cobra.Command{
 					filtered = append(filtered, m)
 				}
 			}
-			if emptyMessage(filtered, "--quote 필터 결과가 없습니다") {
+			if emptyMessage(filtered, i18n.T(i18n.MsgMarketFilterEmpty)) {
 				return nil
 			}
 			return formatter.Format(filtered)
@@ -54,6 +55,6 @@ var marketCmd = &cobra.Command{
 }
 
 func init() {
-	marketCmd.Flags().StringP("quote", "q", "", "호가 통화 필터 (KRW, BTC, USDT)")
+	marketCmd.Flags().StringP("quote", "q", "", i18n.T(i18n.FlagQuoteUsage))
 	rootCmd.AddCommand(marketCmd)
 }

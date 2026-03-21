@@ -12,24 +12,25 @@ import (
 
 	"github.com/kyungw00k/upbit/internal/api/quotation"
 	"github.com/kyungw00k/upbit/internal/cache"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 	"github.com/kyungw00k/upbit/internal/types"
 )
 
 var candleColumns = []output.TableColumn{
-	{Header: "시각", Key: "candle_date_time_kst", Format: "datetime"},
-	{Header: "시가", Key: "opening_price", Format: "number"},
-	{Header: "고가", Key: "high_price", Format: "number"},
-	{Header: "저가", Key: "low_price", Format: "number"},
-	{Header: "종가", Key: "trade_price", Format: "number"},
-	{Header: "거래량", Key: "candle_acc_trade_volume", Format: "number"},
+	{Header: i18n.T(i18n.HdrCandleTime), Key: "candle_date_time_kst", Format: "datetime"},
+	{Header: i18n.T(i18n.HdrOpen), Key: "opening_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrHigh), Key: "high_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrLow), Key: "low_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrClose), Key: "trade_price", Format: "number"},
+	{Header: i18n.T(i18n.HdrCandleVolume), Key: "candle_acc_trade_volume", Format: "number"},
 }
 
 var candleCmd = &cobra.Command{
 	Use:     "candle [market]",
-	Short:   "캔들 조회",
+	Short:   i18n.T(i18n.MsgCandleShort),
 	GroupID: "quotation",
-	Args:    RequireArgs(1, "마켓 코드를 지정하세요 (예: KRW-BTC)"),
+	Args:    RequireArgs(1, i18n.T(i18n.ErrCandleMarketRequired)),
 	Example: `  upbit candle KRW-BTC                        # 일봉 200개
   upbit candle KRW-BTC -i 1m -c 50          # 1분봉 50개
   upbit candle KRW-BTC -i 1w                # 주봉
@@ -43,12 +44,12 @@ var candleCmd = &cobra.Command{
 }
 
 func init() {
-	candleCmd.Flags().StringP("interval", "i", "1d", "캔들 간격 (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m, 1d, 1w, 1M, 1y)")
-	candleCmd.Flags().IntP("count", "c", 200, "조회 개수")
-	candleCmd.Flags().String("from", "", "시작 시각 (예: 2025-01-01, 2025-01-01T09:00:00+09:00)")
-	candleCmd.Flags().Bool("asc", true, "오래된 순 정렬 (기본)")
-	candleCmd.Flags().Bool("desc", false, "최신 순 정렬")
-	candleCmd.Flags().Bool("no-cache", false, "캐시 무시")
+	candleCmd.Flags().StringP("interval", "i", "1d", i18n.T(i18n.FlagIntervalUsage))
+	candleCmd.Flags().IntP("count", "c", 200, i18n.T(i18n.FlagCountUsage))
+	candleCmd.Flags().String("from", "", i18n.T(i18n.FlagFromUsage))
+	candleCmd.Flags().Bool("asc", true, i18n.T(i18n.FlagAscUsage))
+	candleCmd.Flags().Bool("desc", false, i18n.T(i18n.FlagDescUsage))
+	candleCmd.Flags().Bool("no-cache", false, i18n.T(i18n.FlagNoCacheUsage))
 	AddForceFlag(candleCmd)
 	rootCmd.AddCommand(candleCmd)
 }
@@ -96,7 +97,7 @@ func runCandle(cmd *cobra.Command, args []string) error {
 		var err error
 		fromTime, err = parseFrom(fromStr)
 		if err != nil {
-			return fmt.Errorf("--from 파싱 실패: %w", err)
+			return fmt.Errorf("%s: %w", i18n.T(i18n.ErrFromParse), err)
 		}
 	}
 
@@ -114,13 +115,13 @@ func runCandle(cmd *cobra.Command, args []string) error {
 
 	apiCalls := int(math.Ceil(float64(estimatedCount) / 200.0))
 	if apiCalls >= 10 {
-		msg := fmt.Sprintf("약 %d개 캔들, %d회 API 호출이 필요합니다. 계속하시겠습니까?", estimatedCount, apiCalls)
+		msg := i18n.Tf(i18n.MsgCandleConfirm, estimatedCount, apiCalls)
 		ok, err := output.Confirm(msg, force)
 		if err != nil {
 			return err
 		}
 		if !ok {
-			fmt.Fprintln(os.Stderr, "취소되었습니다.")
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCancelled))
 			return nil
 		}
 	}
@@ -175,7 +176,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 	cc, err := cache.NewCandleCache()
 	if err != nil {
 		// 캐시 생성 실패 시 직접 API 호출로 폴백
-		fmt.Fprintln(os.Stderr, "캐시 초기화 실패, API 직접 호출:", err)
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheInitFailed), err)
 		return qc.GetCandlesAll(cmd.Context(), market, interval, fromKST, count)
 	}
 	defer cc.Close()
@@ -183,7 +184,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 	// 캐시에서 현재 범위 확인
 	cachedOldest, cachedNewest, err := cc.GetRange(market, interval)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "캐시 범위 조회 실패:", err)
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheRangeError), err)
 	}
 
 	kst := time.FixedZone("KST", 9*3600)
@@ -205,7 +206,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 		// 오래된 구간 보충
 		olderCandles, err := qc.GetCandlesAll(cmd.Context(), market, interval, fromKST, 0)
 		if err != nil {
-			return nil, fmt.Errorf("이전 구간 조회 실패: %w", err)
+			return nil, fmt.Errorf("%s: %w", i18n.T(i18n.ErrOlderRangeFetch), err)
 		}
 		// cachedOldest 이전 캔들만 필터링하여 저장
 		var toSave []cache.CandleRow
@@ -216,7 +217,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 		}
 		if len(toSave) > 0 {
 			if err := cc.Save(market, interval, toSave); err != nil {
-				fmt.Fprintln(os.Stderr, "캐시 저장 실패:", err)
+				fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheSaveError), err)
 			}
 		}
 	}
@@ -225,18 +226,18 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 		// 최신 구간 보충
 		newerCandles, err := qc.GetCandlesAll(cmd.Context(), market, interval, cachedNewest, 0)
 		if err != nil {
-			return nil, fmt.Errorf("최신 구간 조회 실패: %w", err)
+			return nil, fmt.Errorf("%s: %w", i18n.T(i18n.ErrNewerRangeFetch), err)
 		}
 		if len(newerCandles) > 0 {
 			rows := cache.CandlesToRows(newerCandles)
 			// 마지막 캔들은 아직 닫히지 않았을 수 있으므로 UpdateLast
 			if len(rows) > 1 {
 				if err := cc.Save(market, interval, rows[:len(rows)-1]); err != nil {
-					fmt.Fprintln(os.Stderr, "캐시 저장 실패:", err)
+					fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheSaveError), err)
 				}
 			}
 			if err := cc.UpdateLast(market, interval, rows[len(rows)-1]); err != nil {
-				fmt.Fprintln(os.Stderr, "캐시 업데이트 실패:", err)
+				fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheUpdateError), err)
 			}
 		}
 	}
@@ -244,7 +245,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 	// 캐시에서 전체 범위 조회
 	rows, err := cc.Query(market, interval, fromKST, nowKST, true)
 	if err != nil {
-		return nil, fmt.Errorf("캐시 조회 실패: %w", err)
+		return nil, fmt.Errorf("%s: %w", i18n.T(i18n.ErrCacheQuery), err)
 	}
 
 	result := cache.RowsToCandles(market, interval, rows)
@@ -266,11 +267,11 @@ func saveToCacheAll(cc *cache.CandleCache, market, interval string, candles []ty
 	// 마지막 캔들(최신)은 UpdateLast, 나머지는 Save
 	if len(rows) > 1 {
 		if err := cc.Save(market, interval, rows[:len(rows)-1]); err != nil {
-			fmt.Fprintln(os.Stderr, "캐시 저장 실패:", err)
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheSaveError), err)
 		}
 	}
 	if err := cc.UpdateLast(market, interval, rows[len(rows)-1]); err != nil {
-		fmt.Fprintln(os.Stderr, "캐시 업데이트 실패:", err)
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheUpdateError), err)
 	}
 }
 
@@ -309,7 +310,7 @@ func parseFrom(s string) (time.Time, error) {
 		}
 	}
 
-	return time.Time{}, fmt.Errorf("인식할 수 없는 시각 형식: %s (예: 2025-01-01, 2025-01-01T09:00:00+09:00)", s)
+	return time.Time{}, fmt.Errorf("%s", i18n.Tf(i18n.ErrUnrecognizedTime, s))
 }
 
 // estimateCandleCount from 시각부터 현재까지 예상 캔들 개수 계산

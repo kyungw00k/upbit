@@ -7,12 +7,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var orderCancelCmd = &cobra.Command{
 	Use:   "cancel [uuid]",
-	Short: "주문 취소",
+	Short: i18n.T(i18n.MsgOrderCancelShort),
 	Args:  cobra.MaximumNArgs(1),
 	Example: `  upbit order cancel 12345678-abcd-efgh-ijkl-1234567890ab   # 단건 취소
   upbit order cancel --all                                  # 전체 대기 주문 취소
@@ -30,16 +31,16 @@ var orderCancelCmd = &cobra.Command{
 
 		if all {
 			// 전체 대기 주문 취소
-			msg := "모든 대기 주문을 취소합니다"
+			msg := i18n.T(i18n.MsgCancelAllOrders)
 			if market != "" {
-				msg = fmt.Sprintf("%s 마켓의 모든 대기 주문을 취소합니다", market)
+				msg = i18n.Tf(i18n.MsgCancelAllMarket, market)
 			}
 			confirmed, err := output.Confirm(msg, GetForce())
 			if err != nil {
 				return err
 			}
 			if !confirmed {
-				fmt.Fprintln(os.Stderr, "취소가 중단되었습니다")
+				fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCancelAborted))
 				return nil
 			}
 
@@ -55,12 +56,12 @@ var orderCancelCmd = &cobra.Command{
 			}
 
 			// 테이블: 결과 요약
-			fmt.Fprintf(os.Stdout, "취소 성공  %d건\n", result.Success.Count)
+			fmt.Fprint(os.Stdout, i18n.Tf(i18n.MsgCancelSuccess, result.Success.Count))
 			for _, o := range result.Success.Orders {
 				fmt.Fprintf(os.Stdout, "  %s  %s\n", o.UUID, o.Market)
 			}
 			if result.Failed.Count > 0 {
-				fmt.Fprintf(os.Stdout, "취소 실패  %d건\n", result.Failed.Count)
+				fmt.Fprint(os.Stdout, i18n.Tf(i18n.MsgCancelFailed, result.Failed.Count))
 				for _, o := range result.Failed.Orders {
 					fmt.Fprintf(os.Stdout, "  %s  %s\n", o.UUID, o.Market)
 				}
@@ -70,17 +71,17 @@ var orderCancelCmd = &cobra.Command{
 
 		// 단건 취소
 		if len(args) == 0 {
-			return fmt.Errorf("취소할 주문의 UUID를 지정하거나 --all 플래그를 사용하세요")
+			return fmt.Errorf("%s", i18n.T(i18n.ErrCancelNoUUID))
 		}
 
 		uuid := args[0]
-		msg := fmt.Sprintf("주문 %s을(를) 취소합니다", uuid)
+		msg := i18n.Tf(i18n.MsgCancelSingleOrder, uuid)
 		confirmed, err := output.Confirm(msg, GetForce())
 		if err != nil {
 			return err
 		}
 		if !confirmed {
-			fmt.Fprintln(os.Stderr, "취소가 중단되었습니다")
+			fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCancelAborted))
 			return nil
 		}
 
@@ -95,8 +96,8 @@ var orderCancelCmd = &cobra.Command{
 
 func init() {
 	f := orderCancelCmd.Flags()
-	f.Bool("all", false, "모든 대기 주문 일괄 취소")
-	f.StringP("market", "m", "", "마켓 필터 (--all과 함께 사용)")
+	f.Bool("all", false, i18n.T(i18n.FlagCancelAllUsage))
+	f.StringP("market", "m", "", i18n.T(i18n.FlagCancelMarketUsage))
 	AddForceFlag(orderCancelCmd)
 	orderCmd.AddCommand(orderCancelCmd)
 }

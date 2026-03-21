@@ -4,20 +4,21 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/wallet"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 var statusColumns = []output.TableColumn{
-	{Header: "통화", Key: "currency"},
-	{Header: "지갑 상태", Key: "wallet_state"},
-	{Header: "블록 상태", Key: "block_state"},
-	{Header: "네트워크", Key: "network_name"},
-	{Header: "네트워크 타입", Key: "net_type"},
+	{Header: i18n.T(i18n.HdrCurrency), Key: "currency"},
+	{Header: i18n.T(i18n.HdrWalletState), Key: "wallet_state"},
+	{Header: i18n.T(i18n.HdrBlockState), Key: "block_state"},
+	{Header: i18n.T(i18n.HdrNetwork), Key: "network_name"},
+	{Header: i18n.T(i18n.HdrNetworkType), Key: "net_type"},
 }
 
 var walletCmd = &cobra.Command{
 	Use:     "wallet",
-	Short:   "입출금 서비스 상태 조회",
+	Short:   i18n.T(i18n.MsgWalletShort),
 	GroupID: "wallet",
 	Example: `  upbit wallet                # 전체 입출금 서비스 상태
   upbit wallet -o json        # JSON 출력`,

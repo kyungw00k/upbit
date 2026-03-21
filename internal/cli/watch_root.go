@@ -2,11 +2,13 @@ package cli
 
 import (
 	"github.com/spf13/cobra"
+
+	"github.com/kyungw00k/upbit/internal/i18n"
 )
 
 var watchCmd = &cobra.Command{
 	Use:     "watch",
-	Short:   "실시간 WebSocket 스트림 구독",
+	Short:   i18n.T(i18n.MsgWatchShort),
 	GroupID: "realtime",
 	Example: `  upbit watch ticker KRW-BTC KRW-ETH
   upbit watch orderbook KRW-BTC

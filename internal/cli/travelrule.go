@@ -4,13 +4,14 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/api/wallet"
+	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )
 
 // travelruleCmd 트래블룰 부모 명령
 var travelruleCmd = &cobra.Command{
 	Use:     "travelrule",
-	Short:   "트래블룰 검증 관리",
+	Short:   i18n.T(i18n.MsgTravelruleShort),
 	GroupID: "wallet",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
@@ -19,21 +20,21 @@ var travelruleCmd = &cobra.Command{
 
 var vaspColumns = []output.TableColumn{
 	{Header: "UUID", Key: "vasp_uuid"},
-	{Header: "이름", Key: "vasp_name"},
-	{Header: "이름(영문)", Key: "en_name"},
-	{Header: "입금가능", Key: "depositable"},
-	{Header: "출금가능", Key: "withdrawable"},
+	{Header: i18n.T(i18n.HdrVaspName), Key: "vasp_name"},
+	{Header: i18n.T(i18n.HdrVaspNameEn), Key: "en_name"},
+	{Header: i18n.T(i18n.HdrDepositable), Key: "depositable"},
+	{Header: i18n.T(i18n.HdrWithdrawable), Key: "withdrawable"},
 }
 
 var travelruleVerifyColumns = []output.TableColumn{
-	{Header: "입금UUID", Key: "deposit_uuid"},
-	{Header: "검증결과", Key: "verification_result"},
-	{Header: "입금상태", Key: "deposit_state"},
+	{Header: i18n.T(i18n.HdrDepositUUID), Key: "deposit_uuid"},
+	{Header: i18n.T(i18n.HdrVerifyResult), Key: "verification_result"},
+	{Header: i18n.T(i18n.HdrDepositState), Key: "deposit_state"},
 }
 
 var travelruleVaspsCmd = &cobra.Command{
 	Use:   "vasps",
-	Short: "트래블룰 지원 거래소 목록 조회",
+	Short: i18n.T(i18n.MsgTravelruleVaspsShort),
 	Example: `  upbit travelrule vasps              # VASP 목록 조회
   upbit travelrule vasps -o json      # JSON 출력`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -55,8 +56,8 @@ var travelruleVaspsCmd = &cobra.Command{
 
 var travelruleVerifyTxIDCmd = &cobra.Command{
 	Use:   "verify-txid <txid>",
-	Short: "TxID 기반 트래블룰 검증 요청",
-	Args:  RequireArgs(1, "검증할 입금의 TxID를 지정하세요"),
+	Short: i18n.T(i18n.MsgTravelruleTxIDShort),
+	Args:  RequireArgs(1, i18n.T(i18n.ErrTravelruleTxIDArgs)),
 	Example: `  upbit travelrule verify-txid abc123 --vasp 8d4fe968-... --currency ETH --net-type ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client, err := GetClientE(true)
@@ -88,8 +89,8 @@ var travelruleVerifyTxIDCmd = &cobra.Command{
 
 var travelruleVerifyUUIDCmd = &cobra.Command{
 	Use:   "verify-uuid <deposit-uuid>",
-	Short: "UUID 기반 트래블룰 검증 요청",
-	Args:  RequireArgs(1, "검증할 입금의 UUID를 지정하세요"),
+	Short: i18n.T(i18n.MsgTravelruleUUIDShort),
+	Args:  RequireArgs(1, i18n.T(i18n.ErrTravelruleUUIDArgs)),
 	Example: `  upbit travelrule verify-uuid 5b871d34-... --vasp 8d4fe968-...`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client, err := GetClientE(true)
@@ -118,16 +119,16 @@ var travelruleVerifyUUIDCmd = &cobra.Command{
 func init() {
 	// verify-txid 플래그
 	ftxid := travelruleVerifyTxIDCmd.Flags()
-	ftxid.String("vasp", "", "상대 거래소 UUID (필수)")
-	ftxid.String("currency", "", "통화 코드 (예: ETH) (필수)")
-	ftxid.String("net-type", "", "네트워크 식별자 (예: ETH) (필수)")
+	ftxid.String("vasp", "", i18n.T(i18n.FlagVaspUsage))
+	ftxid.String("currency", "", i18n.T(i18n.FlagTRCurrencyUsage))
+	ftxid.String("net-type", "", i18n.T(i18n.FlagTRNetTypeUsage))
 	_ = travelruleVerifyTxIDCmd.MarkFlagRequired("vasp")
 	_ = travelruleVerifyTxIDCmd.MarkFlagRequired("currency")
 	_ = travelruleVerifyTxIDCmd.MarkFlagRequired("net-type")
 
 	// verify-uuid 플래그
 	fuuid := travelruleVerifyUUIDCmd.Flags()
-	fuuid.String("vasp", "", "상대 거래소 UUID (필수)")
+	fuuid.String("vasp", "", i18n.T(i18n.FlagVaspUsage))
 	_ = travelruleVerifyUUIDCmd.MarkFlagRequired("vasp")
 
 	// 서브커맨드 등록
