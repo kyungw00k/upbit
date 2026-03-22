@@ -11,6 +11,7 @@ import (
 
 	ws "github.com/kyungw00k/upbit/internal/api/websocket"
 	"github.com/kyungw00k/upbit/internal/i18n"
+	"github.com/kyungw00k/upbit/internal/output"
 )
 
 // TickerModel watch ticker TUI 모델
@@ -84,7 +85,7 @@ func (m TickerModel) View() string {
 			arrow:      changeArrowPlain(t.Change),
 			price:      smartPrice(t.TradePrice),
 			changeRate: fmt.Sprintf("%s%.2f%%", signPrefix(t.SignedChangeRate), t.SignedChangeRate*100),
-			volume:     fmt.Sprintf("%.4f", t.AccTradeVolume24h),
+			volume:     smartVolume(t.AccTradeVolume24h),
 			change:     t.Change,
 		})
 	}
@@ -194,6 +195,23 @@ func smartPrice(price float64) string {
 	default:
 		return fmt.Sprintf("%.8f", price)
 	}
+}
+
+// smartVolume 거래량/잔량을 사람이 읽기 좋게 포맷
+// 큰 수: 천 단위 쉼표 (1,234,567.89)
+// 작은 수: 소수점 유지 (0.00094340)
+func smartVolume(vol float64) string {
+	if vol == 0 {
+		return "0"
+	}
+	abs := vol
+	if abs < 0 {
+		abs = -abs
+	}
+	if abs >= 1 {
+		return output.FormatNumberPublic(vol)
+	}
+	return fmt.Sprintf("%.8f", vol)
 }
 
 // padRight runewidth 기반 오른쪽 패딩

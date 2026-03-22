@@ -227,12 +227,12 @@ func (m CandleModel) View() string {
 	b.WriteString(StyleTitle.Render(title))
 	b.WriteString("\n")
 
-	ohlcLine := fmt.Sprintf("  %s:%s  %s:%s  %s:%s  %s:%s  %s:%.4f",
+	ohlcLine := fmt.Sprintf("  %s:%s  %s:%s  %s:%s  %s:%s  %s:%s",
 		i18n.T(i18n.WatchOpen), priceStyle.Render(smartPrice(last.Open)),
 		i18n.T(i18n.WatchHigh), priceStyle.Render(smartPrice(last.High)),
 		i18n.T(i18n.WatchLow), priceStyle.Render(smartPrice(last.Low)),
 		i18n.T(i18n.WatchClose), priceStyle.Render(smartPrice(last.Close)),
-		i18n.T(i18n.WatchVolume), last.Volume)
+		i18n.T(i18n.WatchVolume), smartVolume(last.Volume))
 	b.WriteString(ohlcLine)
 	b.WriteString("\n\n")
 
@@ -653,13 +653,13 @@ func renderSummaryLine(candles []CandleData) string {
 	}
 
 	summary := fmt.Sprintf(
-		"%s: %s  %s: %s  %s: %s  %s: %s  %s: %s  %s: %.2f",
+		"%s: %s  %s: %s  %s: %s  %s: %s  %s: %s  %s: %s",
 		i18n.T(i18n.WatchClose), smartPrice(last.Close),
 		i18n.T(i18n.TUIHighest), smartPrice(highestPrice),
 		i18n.T(i18n.TUILowest), smartPrice(lowestPrice),
 		i18n.T(i18n.TUIVar), varStyle.Render(fmt.Sprintf("%s%.2f%%", varSign, varPct)),
 		i18n.T(i18n.TUIAvg), smartPrice(avgClose),
-		i18n.T(i18n.TUICumVol), totalVol,
+		i18n.T(i18n.TUICumVol), smartVolume(totalVol),
 	)
 
 	return StyleHint.Render(summary)

@@ -123,7 +123,7 @@ func (m TradeModel) View() string {
 
 		ts := time.UnixMilli(t.TradeTimestamp).In(types.KSTLoc).Format("15:04:05")
 		price := smartPrice(t.TradePrice)
-		volume := fmt.Sprintf("%.8f", t.TradeVolume)
+		volume := smartVolume(t.TradeVolume)
 
 		line := fmt.Sprintf("  %s  %s  %s  %s  %s",
 			padRight(currentMarket, 14),

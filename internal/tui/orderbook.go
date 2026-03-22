@@ -91,10 +91,10 @@ func (m OrderbookModel) View() string {
 	}
 
 	// 타이틀: 마켓명 + 총매도/총매수
-	title := fmt.Sprintf("%s %s  %s: %.4f  %s: %.4f",
+	title := fmt.Sprintf("%s %s  %s: %s  %s: %s",
 		i18n.T(i18n.TUIOrderbookTitle), StyleTitle.Render(currentMarket),
-		i18n.T(i18n.TUITotalAsk), o.TotalAskSize,
-		i18n.T(i18n.TUITotalBid), o.TotalBidSize)
+		i18n.T(i18n.TUITotalAsk), smartVolume(o.TotalAskSize),
+		i18n.T(i18n.TUITotalBid), smartVolume(o.TotalBidSize))
 	b.WriteString(StyleTitle.Render(title))
 	b.WriteString("\n\n")
 
@@ -149,7 +149,7 @@ func (m OrderbookModel) View() string {
 	for i := askStart; i >= 0; i-- {
 		u := units[i]
 		price := smartPrice(u.AskPrice)
-		size := fmt.Sprintf("%.4f", u.AskSize)
+		size := smartVolume(u.AskSize)
 		ratio := u.AskSize / maxSize
 		bar := barString(ratio, barMaxWidth)
 
@@ -175,7 +175,7 @@ func (m OrderbookModel) View() string {
 	for i := 0; i < showPerSide && i < len(units); i++ {
 		u := units[i]
 		price := smartPrice(u.BidPrice)
-		size := fmt.Sprintf("%.4f", u.BidSize)
+		size := smartVolume(u.BidSize)
 		ratio := u.BidSize / maxSize
 		bar := barString(ratio, barMaxWidth)
 
