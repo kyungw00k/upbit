@@ -83,13 +83,13 @@ PROMPT
 )
 
 # Z.AI API 호출
-response=$(curl -s -X POST "https://api.z.ai/v1/chat/completions" \
+response=$(curl -s -X POST "https://api.z.ai/api/paas/v4/chat/completions" \
     -H "Authorization: Bearer ${ZAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d "$(jq -n \
         --arg prompt "$prompt" \
         '{
-            "model": "claude-sonnet-4-20250514",
+            "model": "glm-4.7",
             "max_tokens": 4096,
             "messages": [{"role": "user", "content": $prompt}]
         }'

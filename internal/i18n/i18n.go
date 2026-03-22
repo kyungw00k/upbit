@@ -13,7 +13,11 @@ var current map[Key]string
 var isKorean bool
 
 func init() {
+	// POSIX locale 우선순위: LC_ALL > LC_MESSAGES > LANG
 	lang := os.Getenv("LC_ALL")
+	if lang == "" {
+		lang = os.Getenv("LC_MESSAGES")
+	}
 	if lang == "" {
 		lang = os.Getenv("LANG")
 	}
