@@ -60,12 +60,13 @@ type WSClient struct {
 	pingInterval time.Duration
 	maxRetries   int
 
-	conn     *websocket.Conn
-	mu       sync.Mutex
-	closed   bool
-	closeCh  chan struct{}
-	pingDone chan struct{}
-	pingWg   sync.WaitGroup
+	conn      *websocket.Conn
+	mu        sync.Mutex
+	closed    bool
+	closeCh   chan struct{}
+	closeOnce sync.Once
+	pingDone  chan struct{}
+	pingWg    sync.WaitGroup
 
 	// 자동 재연결용: 마지막 구독 메시지 보관
 	lastSubMsg []byte
@@ -134,6 +135,10 @@ func (c *WSClient) dial(ctx context.Context) error {
 
 	c.mu.Lock()
 	c.conn = conn
+	// S-1: 재연결 시 closeCh, closeOnce, closed 플래그를 리셋하여 ping 중단/double close panic 방지
+	c.closeCh = make(chan struct{})
+	c.closeOnce = sync.Once{}
+	c.closed = false
 	// C-1: 재연결 시 pingDone 채널을 매번 새로 생성하여 close panic 방지
 	c.pingDone = make(chan struct{})
 	c.mu.Unlock()
@@ -314,27 +319,28 @@ func (c *WSClient) cleanupConn() {
 
 // Close 연결 종료
 func (c *WSClient) Close() error {
-	c.mu.Lock()
-	if c.closed {
+	var closeErr error
+
+	c.closeOnce.Do(func() {
+		c.mu.Lock()
+		c.closed = true
+		close(c.closeCh)
+		conn := c.conn
+		c.conn = nil
 		c.mu.Unlock()
-		return nil
-	}
-	c.closed = true
-	close(c.closeCh)
-	conn := c.conn
-	c.conn = nil
-	c.mu.Unlock()
 
-	// W-3: pingLoop goroutine 종료 대기
-	c.pingWg.Wait()
+		// W-3: pingLoop goroutine 종료 대기
+		c.pingWg.Wait()
 
-	if conn != nil {
-		// graceful close: CloseMessage 전송 후 연결 닫기
-		_ = conn.WriteMessage(
-			websocket.CloseMessage,
-			websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
-		)
-		return conn.Close()
-	}
-	return nil
+		if conn != nil {
+			// graceful close: CloseMessage 전송 후 연결 닫기
+			_ = conn.WriteMessage(
+				websocket.CloseMessage,
+				websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
+			)
+			closeErr = conn.Close()
+		}
+	})
+
+	return closeErr
 }

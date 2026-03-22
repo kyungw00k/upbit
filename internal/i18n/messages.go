@@ -394,6 +394,8 @@ const (
 	ErrUpdateNoAsset      Key = "ErrUpdateNoAsset"
 	ErrUpdateDownload     Key = "ErrUpdateDownload"
 	ErrUpdateReplace      Key = "ErrUpdateReplace"
+	ErrUpdateChecksum     Key = "ErrUpdateChecksum"
+	MsgUpdateVerifying    Key = "MsgUpdateVerifying"
 	FlagUpdateCheckUsage  Key = "FlagUpdateCheckUsage"
 
 	// ── Confirm ──
@@ -766,6 +768,8 @@ var ko = map[Key]string{
 	ErrUpdateNoAsset:       "현재 플랫폼(%s/%s)에 맞는 바이너리를 찾을 수 없습니다",
 	ErrUpdateDownload:      "다운로드 실패",
 	ErrUpdateReplace:       "바이너리 교체 실패",
+	ErrUpdateChecksum:      "체크섬 불일치",
+	MsgUpdateVerifying:     "무결성 검증 중...",
 	FlagUpdateCheckUsage:   "업데이트 확인만 (다운로드 안 함)",
 
 	// Confirm
@@ -1137,6 +1141,8 @@ var en = map[Key]string{
 	ErrUpdateNoAsset:       "No binary found for %s/%s",
 	ErrUpdateDownload:      "Download failed",
 	ErrUpdateReplace:       "Failed to replace binary",
+	ErrUpdateChecksum:      "Checksum mismatch",
+	MsgUpdateVerifying:     "Verifying integrity...",
 	FlagUpdateCheckUsage:   "Check only, don't download",
 
 	// Confirm

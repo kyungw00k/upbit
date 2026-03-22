@@ -3,6 +3,8 @@ package cli
 import (
 	"archive/tar"
 	"compress/gzip"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,12 +12,16 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/kyungw00k/upbit/internal/i18n"
 )
+
+// maxExtractSize tar 엔트리 최대 크기 (100MB) — zip bomb 방지
+const maxExtractSize = 100 * 1024 * 1024
 
 // GitHub Release API 응답 구조체
 type githubRelease struct {
@@ -65,8 +71,8 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 
 	fmt.Fprintf(os.Stderr, "%s\n", i18n.Tf(i18n.MsgUpdateLatest, latestVersion))
 
-	// 2. 버전 비교
-	if latestClean == currentClean {
+	// 2. 시맨틱 버전 비교 (Q-4)
+	if compareVersions(currentClean, latestClean) >= 0 {
 		fmt.Fprintln(os.Stderr, i18n.Tf(i18n.MsgUpdateAlreadyLatest, currentVersion))
 		return nil
 	}
@@ -91,6 +97,18 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrUpdateDownload), err)
 	}
 	defer os.Remove(tmpFile)
+
+	// 4-1. 체크섬 검증 (S-2)
+	fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgUpdateVerifying))
+	if checksumAsset := findChecksumAsset(release.Assets); checksumAsset != nil {
+		expectedHash, err := fetchExpectedChecksum(checksumAsset, asset.Name)
+		if err == nil && expectedHash != "" {
+			if err := verifyChecksum(tmpFile, expectedHash); err != nil {
+				os.Remove(tmpFile)
+				return fmt.Errorf("%s: %w", i18n.T(i18n.ErrUpdateChecksum), err)
+			}
+		}
+	}
 
 	// 5. tar.gz인 경우 압축 해제
 	binaryPath := tmpFile
@@ -222,7 +240,9 @@ func extractTarGz(tarGzPath string) (string, error) {
 			}
 			defer tmpFile.Close()
 
-			if _, err := io.Copy(tmpFile, tr); err != nil {
+			// S-3: io.LimitReader로 100MB 제한 — zip bomb / decompression bomb 방지
+			limited := io.LimitReader(tr, maxExtractSize)
+			if _, err := io.Copy(tmpFile, limited); err != nil {
 				os.Remove(tmpFile.Name())
 				return "", err
 			}
@@ -261,6 +281,94 @@ func replaceBinary(newBinary string) error {
 
 	// .old 삭제
 	_ = os.Remove(oldPath)
+	return nil
+}
+
+// compareVersions 시맨틱 버전 비교 (Q-4)
+// a > b: 1, a == b: 0, a < b: -1
+func compareVersions(a, b string) int {
+	partsA := strings.Split(a, ".")
+	partsB := strings.Split(b, ".")
+
+	maxLen := len(partsA)
+	if len(partsB) > maxLen {
+		maxLen = len(partsB)
+	}
+
+	for i := 0; i < maxLen; i++ {
+		var va, vb int
+		if i < len(partsA) {
+			va, _ = strconv.Atoi(partsA[i])
+		}
+		if i < len(partsB) {
+			vb, _ = strconv.Atoi(partsB[i])
+		}
+		if va > vb {
+			return 1
+		}
+		if va < vb {
+			return -1
+		}
+	}
+	return 0
+}
+
+// findChecksumAsset release assets에서 checksums.txt 파일을 탐색
+func findChecksumAsset(assets []githubAsset) *githubAsset {
+	for i, a := range assets {
+		name := strings.ToLower(a.Name)
+		if name == "checksums.txt" || name == "sha256sums.txt" {
+			return &assets[i]
+		}
+	}
+	return nil
+}
+
+// fetchExpectedChecksum checksums.txt를 다운로드하고 대상 파일의 해시를 반환
+func fetchExpectedChecksum(checksumAsset *githubAsset, targetFilename string) (string, error) {
+	resp, err := http.Get(checksumAsset.BrowserDownloadURL)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("checksum download returned %d", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1024*1024)) // 1MB 제한
+	if err != nil {
+		return "", err
+	}
+
+	// goreleaser 기본 형식: "abc123def456...  upbit_darwin_arm64.tar.gz"
+	for _, line := range strings.Split(string(body), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) >= 2 && fields[1] == targetFilename {
+			return fields[0], nil
+		}
+	}
+
+	return "", fmt.Errorf("checksum for %s not found", targetFilename)
+}
+
+// verifyChecksum 파일의 SHA256 해시를 검증
+func verifyChecksum(filePath string, expectedHash string) error {
+	f, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	h := sha256.New()
+	if _, err := io.Copy(h, f); err != nil {
+		return err
+	}
+
+	actual := hex.EncodeToString(h.Sum(nil))
+	if actual != expectedHash {
+		return fmt.Errorf("expected %s, got %s", expectedHash, actual)
+	}
 	return nil
 }
 

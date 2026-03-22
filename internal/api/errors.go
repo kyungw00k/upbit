@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -101,14 +102,15 @@ func ParseAPIError(body []byte, statusCode int) *APIError {
 	}
 }
 
-// IsAPIError 에러가 APIError인지 확인
+// IsAPIError 에러가 APIError인지 확인 (래핑된 에러도 탐색)
 func IsAPIError(err error) bool {
-	_, ok := err.(*APIError)
-	return ok
+	var apiErr *APIError
+	return errors.As(err, &apiErr)
 }
 
-// AsAPIError 에러를 APIError로 변환 시도
+// AsAPIError 에러를 APIError로 변환 시도 (래핑된 에러도 탐색)
 func AsAPIError(err error) (*APIError, bool) {
-	apiErr, ok := err.(*APIError)
+	var apiErr *APIError
+	ok := errors.As(err, &apiErr)
 	return apiErr, ok
 }
