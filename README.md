@@ -183,6 +183,23 @@ upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
 | `cache` | Cache info / `--clear` |
 | `update` | Self-update / `--check` |
 
+## Real-time TUI
+
+Watch commands feature full-screen terminal UI powered by [Bubble Tea](https://github.com/charmbracelet/bubbletea):
+
+- **watch ticker** — Real-time price table with color (rise=green, fall=red)
+- **watch orderbook** — Bid/ask depth chart centered on spread
+- **watch trade** — Scrolling trade stream with color coding
+- **watch candle** — ASCII candlestick chart with volume pane
+
+Multi-market support: use Tab or ←/→ to switch between markets.
+
+```bash
+upbit watch ticker KRW-BTC KRW-ETH KRW-XRP
+upbit watch orderbook KRW-BTC
+upbit watch candle KRW-BTC -i 1m
+```
+
 ## Output Formats
 
 | Context | Default | Override |
@@ -196,6 +213,23 @@ upbit ticker KRW-BTC | jq .       # auto JSON (pipe)
 upbit ticker KRW-BTC -o csv       # CSV
 upbit ticker KRW-BTC --json price # selected fields
 ```
+
+## Self-Update
+
+```bash
+upbit update          # Download and install latest version
+upbit update --check  # Check only, don't download
+```
+
+## Release Workflow
+
+Releases are fully automated via [go-semantic-release](https://github.com/go-semantic-release/semantic-release) + [goreleaser](https://goreleaser.com):
+
+1. Push to `main` with [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, etc.)
+2. Version is determined automatically (semver)
+3. Cross-compiled binaries for Linux, macOS, Windows (amd64/arm64)
+4. GitHub Release created with changelog and checksums
+5. Users can update via `upbit update`
 
 ## Candle Cache
 

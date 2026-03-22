@@ -183,6 +183,23 @@ upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
 | `cache` | 캐시 정보 조회 / `--clear`로 삭제 |
 | `update` | 자체 업데이트 / `--check`로 확인만 |
 
+## 실시간 TUI
+
+Watch 명령은 [Bubble Tea](https://github.com/charmbracelet/bubbletea) 기반 전체 화면 터미널 UI를 제공합니다:
+
+- **watch ticker** — 실시간 가격 테이블 (상승=초록, 하락=빨강)
+- **watch orderbook** — 스프레드 중심 매수/매도 호가 차트
+- **watch trade** — 체결 스트림 스크롤
+- **watch candle** — ASCII 캔들스틱 차트 + 거래량 바
+
+복수 마켓: Tab 또는 ←/→로 전환
+
+```bash
+upbit watch ticker KRW-BTC KRW-ETH KRW-XRP
+upbit watch orderbook KRW-BTC
+upbit watch candle KRW-BTC -i 1m
+```
+
 ## 출력 포맷
 
 | 컨텍스트 | 기본값 | 변경 |
@@ -196,6 +213,23 @@ upbit ticker KRW-BTC | jq .       # 자동 JSON (파이프)
 upbit ticker KRW-BTC -o csv       # CSV
 upbit ticker KRW-BTC --json price # 특정 필드만
 ```
+
+## 자체 업데이트
+
+```bash
+upbit update          # 최신 버전 다운로드 및 설치
+upbit update --check  # 확인만 하고 다운로드하지 않음
+```
+
+## 릴리스 워크플로우
+
+릴리스는 [go-semantic-release](https://github.com/go-semantic-release/semantic-release) + [goreleaser](https://goreleaser.com)를 통해 완전 자동화됩니다:
+
+1. [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:` 등)로 `main`에 푸시
+2. 버전이 자동으로 결정됨 (semver)
+3. Linux, macOS, Windows (amd64/arm64) 크로스 컴파일 바이너리 생성
+4. 변경 이력과 체크섬이 포함된 GitHub Release 생성
+5. `upbit update`로 업데이트 가능
 
 ## 캔들 캐시
 
