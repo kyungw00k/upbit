@@ -406,6 +406,7 @@ const (
 	TUITotalAsk       Key = "TUITotalAsk"
 	TUITotalBid       Key = "TUITotalBid"
 	TUITradeTitle     Key = "TUITradeTitle"
+	TUICandleTitle    Key = "TUICandleTitle"
 	TUIConfirmYes     Key = "TUIConfirmYes"
 	TUIConfirmNo      Key = "TUIConfirmNo"
 
@@ -790,6 +791,7 @@ var ko = map[Key]string{
 	TUITotalAsk:       "총매도",
 	TUITotalBid:       "총매수",
 	TUITradeTitle:     "체결 내역",
+	TUICandleTitle:    "캔들 차트",
 	TUIConfirmYes:     "[Y] 확인",
 	TUIConfirmNo:      "[N] 취소",
 
@@ -1173,6 +1175,7 @@ var en = map[Key]string{
 	TUITotalAsk:       "Total Ask",
 	TUITotalBid:       "Total Bid",
 	TUITradeTitle:     "Recent Trades",
+	TUICandleTitle:    "Candle Chart",
 	TUIConfirmYes:     "[Y] Confirm",
 	TUIConfirmNo:      "[N] Cancel",
 

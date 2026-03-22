@@ -80,7 +80,7 @@ var watchCandleCmd = &cobra.Command{
 		candleType := "candle." + interval
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: candleType, Codes: codes}}
-		return runPublicStream(cmd, sub, formatCandle, nil)
+		return runPublicStream(cmd, sub, formatCandle, func() tea.Model { return tui.NewCandleModel() })
 	},
 }
 
