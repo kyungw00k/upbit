@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	gorillaWS "github.com/gorilla/websocket"
 	"github.com/spf13/cobra"
 
@@ -18,6 +19,7 @@ import (
 	"github.com/kyungw00k/upbit/internal/config"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
+	"github.com/kyungw00k/upbit/internal/tui"
 )
 
 // --- watch ticker ---
@@ -31,7 +33,7 @@ var watchTickerCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: "ticker", Codes: codes}}
-		return runPublicStream(cmd, sub, formatTicker)
+		return runPublicStream(cmd, sub, formatTicker, func() tea.Model { return tui.NewTickerModel() })
 	},
 }
 
@@ -46,7 +48,7 @@ var watchOrderbookCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: "orderbook", Codes: codes}}
-		return runPublicStream(cmd, sub, formatOrderbook)
+		return runPublicStream(cmd, sub, formatOrderbook, func() tea.Model { return tui.NewOrderbookModel() })
 	},
 }
 
@@ -61,7 +63,7 @@ var watchTradeCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: "trade", Codes: codes}}
-		return runPublicStream(cmd, sub, formatTrade)
+		return runPublicStream(cmd, sub, formatTrade, func() tea.Model { return tui.NewTradeModel() })
 	},
 }
 
@@ -78,7 +80,7 @@ var watchCandleCmd = &cobra.Command{
 		candleType := "candle." + interval
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: candleType, Codes: codes}}
-		return runPublicStream(cmd, sub, formatCandle)
+		return runPublicStream(cmd, sub, formatCandle, nil)
 	},
 }
 
@@ -93,7 +95,7 @@ var watchMyOrderCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: "myOrder", Codes: codes}}
-		return runPrivateStream(cmd, sub, formatMyOrder)
+		return runPrivateStream(cmd, sub, formatMyOrder, nil)
 	},
 }
 
@@ -107,7 +109,7 @@ var watchMyAssetCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// myAsset은 codes를 지원하지 않음
 		sub := []ws.SubscriptionType{{Type: "myAsset"}}
-		return runPrivateStream(cmd, sub, formatMyAsset)
+		return runPrivateStream(cmd, sub, formatMyAsset, nil)
 	},
 }
 
@@ -126,15 +128,16 @@ func init() {
 // --- 공통 스트림 실행 함수 ---
 
 type lineFormatter func(data []byte) string
+type tuiModelFactory func() tea.Model
 
 // runPublicStream Public WebSocket 스트림 실행
-func runPublicStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn lineFormatter) error {
+func runPublicStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn lineFormatter, modelFn tuiModelFactory) error {
 	// 마켓 유효성 검증
 	if err := validateMarkets(cmd.Context(), subs); err != nil {
 		return err
 	}
 	client := ws.NewWSClient(ws.PublicURL)
-	return runStream(cmd, client, subs, fmtFn)
+	return runStream(cmd, client, subs, fmtFn, modelFn)
 }
 
 // validateMarkets 구독 대상 마켓이 실제 존재하는지 확인 (캐시 활용)
@@ -194,7 +197,7 @@ func getValidMarkets(ctx context.Context) map[string]bool {
 }
 
 // runPrivateStream Private WebSocket 스트림 실행 (인증 필요)
-func runPrivateStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn lineFormatter) error {
+func runPrivateStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn lineFormatter, modelFn tuiModelFactory) error {
 	// 인증 확인
 	cfg, err := config.Load()
 	if err != nil {
@@ -205,11 +208,11 @@ func runPrivateStream(cmd *cobra.Command, subs []ws.SubscriptionType, fmtFn line
 	}
 
 	client := ws.NewWSClient(ws.PrivateURL, ws.WithAuth(cfg.AccessKey, cfg.SecretKey))
-	return runStream(cmd, client, subs, fmtFn)
+	return runStream(cmd, client, subs, fmtFn, modelFn)
 }
 
 // runStream WebSocket 스트림 메인 루프
-func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionType, fmtFn lineFormatter) error {
+func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionType, fmtFn lineFormatter, modelFn tuiModelFactory) error {
 	ctx, stop := signal.NotifyContext(cmd.Context(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
@@ -219,13 +222,6 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 	}
 	defer client.Close()
 
-	// SIGINT/SIGTERM 시 ReadMessage 블로킹을 즉시 해제하기 위해
-	// 별도 goroutine에서 ctx 취소를 감지하여 연결을 닫음
-	go func() {
-		<-ctx.Done()
-		client.Close()
-	}()
-
 	// 구독 메시지 생성 및 전송
 	subMsg, err := ws.BuildSubscribeMessage(subs)
 	if err != nil {
@@ -234,6 +230,18 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 	if err := client.Subscribe(subMsg); err != nil {
 		return fmt.Errorf("%s: %w", i18n.T(i18n.ErrSubscribeSend), err)
 	}
+
+	// TTY + TUI 모델이 있으면 bubbletea TUI 실행
+	if output.IsTTY() && modelFn != nil {
+		return runStreamTUI(ctx, stop, client, modelFn())
+	}
+
+	// SIGINT/SIGTERM 시 ReadMessage 블로킹을 즉시 해제하기 위해
+	// 별도 goroutine에서 ctx 취소를 감지하여 연결을 닫음
+	go func() {
+		<-ctx.Done()
+		client.Close()
+	}()
 
 	isTTY := output.IsTTY()
 
@@ -261,7 +269,7 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 		}
 
 		if isTTY {
-			// tty: 한 줄 테이블 형태
+			// tty (TUI 모델 없는 스트림): 한 줄 테이블 형태
 			line := fmtFn(data)
 			if line != "" {
 				fmt.Println(line)
@@ -271,6 +279,54 @@ func runStream(cmd *cobra.Command, client *ws.WSClient, subs []ws.SubscriptionTy
 			fmt.Println(string(data))
 		}
 	}
+}
+
+// runStreamTUI bubbletea TUI로 WebSocket 스트림 표시
+func runStreamTUI(ctx context.Context, stop context.CancelFunc, client *ws.WSClient, model tea.Model) error {
+	p := tea.NewProgram(model, tea.WithAltScreen())
+
+	// WebSocket -> TUI 브릿지
+	go func() {
+		defer func() {
+			stop()
+			client.Close()
+		}()
+		for {
+			_, data, err := client.ReadMessageWithReconnect(ctx)
+			if err != nil {
+				if ctx.Err() != nil {
+					return
+				}
+				if gorillaWS.IsCloseError(err, gorillaWS.CloseNormalClosure, gorillaWS.CloseGoingAway) {
+					return
+				}
+				p.Send(tui.ErrMsg{Err: err})
+				return
+			}
+
+			// status 메시지 무시
+			if isStatusMessage(data) {
+				continue
+			}
+
+			// 에러 메시지 처리
+			if errMsg := parseErrorMessage(data); errMsg != "" {
+				p.Send(tui.ServerErrMsg{Message: errMsg})
+				return
+			}
+
+			p.Send(tui.WsMsg{Data: data})
+		}
+	}()
+
+	// ctx 취소 시 TUI 종료
+	go func() {
+		<-ctx.Done()
+		p.Quit()
+	}()
+
+	_, err := p.Run()
+	return err
 }
 
 // --- 유틸 함수 ---

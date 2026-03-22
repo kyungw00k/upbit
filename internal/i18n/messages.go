@@ -398,6 +398,17 @@ const (
 	MsgUpdateVerifying    Key = "MsgUpdateVerifying"
 	FlagUpdateCheckUsage  Key = "FlagUpdateCheckUsage"
 
+	// ── TUI ──
+
+	TUIQuitHint       Key = "TUIQuitHint"
+	TUITickerHeader   Key = "TUITickerHeader"
+	TUIOrderbookTitle Key = "TUIOrderbookTitle"
+	TUITotalAsk       Key = "TUITotalAsk"
+	TUITotalBid       Key = "TUITotalBid"
+	TUITradeTitle     Key = "TUITradeTitle"
+	TUIConfirmYes     Key = "TUIConfirmYes"
+	TUIConfirmNo      Key = "TUIConfirmNo"
+
 	// ── Confirm ──
 
 	MsgConfirmNonTTY Key = "MsgConfirmNonTTY"
@@ -772,6 +783,16 @@ var ko = map[Key]string{
 	MsgUpdateVerifying:     "무결성 검증 중...",
 	FlagUpdateCheckUsage:   "업데이트 확인만 (다운로드 안 함)",
 
+	// TUI
+	TUIQuitHint:       "q: 종료",
+	TUITickerHeader:   "마켓          현재가           변동률       거래량",
+	TUIOrderbookTitle: "호가창",
+	TUITotalAsk:       "총매도",
+	TUITotalBid:       "총매수",
+	TUITradeTitle:     "체결 내역",
+	TUIConfirmYes:     "[Y] 확인",
+	TUIConfirmNo:      "[N] 취소",
+
 	// Confirm
 	MsgConfirmNonTTY: "확인 프롬프트: non-tty 환경에서는 --force 플래그가 필요합니다.",
 	ErrInputRead:     "입력 읽기 실패",
@@ -1144,6 +1165,16 @@ var en = map[Key]string{
 	ErrUpdateChecksum:      "Checksum mismatch",
 	MsgUpdateVerifying:     "Verifying integrity...",
 	FlagUpdateCheckUsage:   "Check only, don't download",
+
+	// TUI
+	TUIQuitHint:       "q: quit",
+	TUITickerHeader:   "MARKET        PRICE            CHANGE       VOLUME",
+	TUIOrderbookTitle: "Orderbook",
+	TUITotalAsk:       "Total Ask",
+	TUITotalBid:       "Total Bid",
+	TUITradeTitle:     "Recent Trades",
+	TUIConfirmYes:     "[Y] Confirm",
+	TUIConfirmNo:      "[N] Cancel",
 
 	// Confirm
 	MsgConfirmNonTTY: "Confirmation prompt: --force flag required in non-tty environment.",
