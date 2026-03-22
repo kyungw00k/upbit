@@ -1,0 +1,51 @@
+version: 2
+
+project_name: upbit
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - main: ./cmd/upbit
+    binary: upbit
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/kyungw00k/upbit/internal/cli.Version={{.Version}}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+
+release:
+  github:
+    owner: kyungw00k
+    name: upbit
+  draft: false
+  prerelease: auto
+  name_template: "v{{.Version}}"
