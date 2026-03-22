@@ -48,6 +48,7 @@ type CandleData struct {
 type CandleModel struct {
 	candles    []CandleData
 	market     string
+	interval   string
 	width      int
 	height     int
 	maxCandles int
@@ -62,10 +63,11 @@ func NewCandleModel() CandleModel {
 }
 
 // NewCandleModelWithData creates a CandleModel pre-loaded with historical candles
-func NewCandleModelWithData(market string, initial []CandleData) CandleModel {
+func NewCandleModelWithData(market, interval string, initial []CandleData) CandleModel {
 	return CandleModel{
 		candles:    initial,
 		market:     market,
+		interval:   interval,
 		maxCandles: 40,
 	}
 }
@@ -167,9 +169,14 @@ func (m CandleModel) View() string {
 	}
 	priceStyle := PriceStyle(direction)
 
-	title := fmt.Sprintf("%s %s",
+	intervalLabel := m.interval
+	if intervalLabel == "" {
+		intervalLabel = "?"
+	}
+	title := fmt.Sprintf("%s %s [%s]",
 		i18n.T(i18n.TUICandleTitle),
-		StyleTitle.Render(m.market))
+		StyleTitle.Render(m.market),
+		intervalLabel)
 	b.WriteString(StyleTitle.Render(title))
 	b.WriteString("\n")
 

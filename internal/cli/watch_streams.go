@@ -86,7 +86,7 @@ var watchCandleCmd = &cobra.Command{
 			market := codes[0]
 			initial := preloadCandles(cmd.Context(), market, interval, 50)
 			if len(initial) > 0 {
-				return tui.NewCandleModelWithData(market, initial)
+				return tui.NewCandleModelWithData(market, interval, initial)
 			}
 			return tui.NewCandleModel()
 		}
