@@ -64,44 +64,96 @@ func (m TickerModel) View() string {
 		return "\n  Waiting for data...\n"
 	}
 
-	var b strings.Builder
-
-	// 헤더
-	header := i18n.T(i18n.TUITickerHeader)
-	b.WriteString(StyleHeader.Render(header))
-	b.WriteString("\n")
-
-	// 각 마켓별 행
+	// 1. 전체 데이터를 순수 텍스트로 준비
+	type rowData struct {
+		code       string
+		arrow      string
+		price      string
+		changeRate string
+		volume     string
+		change     string // 색상 판단용
+	}
+	rows := make([]rowData, 0, len(m.markets))
 	for _, code := range m.markets {
 		t, ok := m.data[code]
 		if !ok {
 			continue
 		}
-		style := PriceStyle(t.Change)
+		rows = append(rows, rowData{
+			code:       code,
+			arrow:      changeArrowPlain(t.Change),
+			price:      smartPrice(t.TradePrice),
+			changeRate: fmt.Sprintf("%s%.2f%%", signPrefix(t.SignedChangeRate), t.SignedChangeRate*100),
+			volume:     fmt.Sprintf("%.4f", t.AccTradeVolume24h),
+			change:     t.Change,
+		})
+	}
 
-		arrow := changeArrow(t.Change)
-		price := smartPrice(t.TradePrice)
-		changeRate := fmt.Sprintf("%s%.2f%%", signPrefix(t.SignedChangeRate), t.SignedChangeRate*100)
-		volume := fmt.Sprintf("%.4f", t.AccTradeVolume24h)
+	// 2. 각 컬럼 최대 폭 계산
+	headers := [5]string{"Market", "  ", "Price", "Change", "Volume(24h)"}
+	if i18n.IsKorean() {
+		headers = [5]string{"마켓", "  ", "현재가", "변동률", "거래량(24h)"}
+	}
+	widths := [5]int{
+		runewidth.StringWidth(headers[0]),
+		2,
+		runewidth.StringWidth(headers[2]),
+		runewidth.StringWidth(headers[3]),
+		runewidth.StringWidth(headers[4]),
+	}
+	for _, r := range rows {
+		if w := runewidth.StringWidth(r.code); w > widths[0] { widths[0] = w }
+		if w := runewidth.StringWidth(r.price); w > widths[2] { widths[2] = w }
+		if w := runewidth.StringWidth(r.changeRate); w > widths[3] { widths[3] = w }
+		if w := runewidth.StringWidth(r.volume); w > widths[4] { widths[4] = w }
+	}
 
-		// runewidth 기반 정렬
-		codePad := padRight(code, 14)
-		pricePad := padLeft(price, 16)
-		changePad := padLeft(changeRate, 12)
+	var b strings.Builder
 
-		line := fmt.Sprintf("%s %s %s  %s  %s",
-			codePad, arrow, style.Render(pricePad), style.Render(changePad), volume)
+	// 3. 헤더 출력
+	headerLine := fmt.Sprintf("%s  %s  %s  %s  %s",
+		padRight(headers[0], widths[0]),
+		padRight(headers[1], widths[1]),
+		padLeft(headers[2], widths[2]),
+		padLeft(headers[3], widths[3]),
+		padLeft(headers[4], widths[4]),
+	)
+	b.WriteString(StyleHeader.Render(headerLine))
+	b.WriteString("\n")
 
+	// 4. 데이터 행 출력 (패딩 후 색상)
+	for _, r := range rows {
+		style := PriceStyle(r.change)
+		arrow := changeArrow(r.change)
+
+		line := fmt.Sprintf("%s  %s  %s  %s  %s",
+			padRight(r.code, widths[0]),
+			arrow,
+			style.Render(padLeft(r.price, widths[2])),
+			style.Render(padLeft(r.changeRate, widths[3])),
+			padLeft(r.volume, widths[4]),
+		)
 		b.WriteString(line)
 		b.WriteString("\n")
 	}
 
-	// 하단 힌트
 	b.WriteString("\n")
 	b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
 	b.WriteString("\n")
 
 	return b.String()
+}
+
+// changeArrowPlain 색상 없는 화살표 (폭 계산용)
+func changeArrowPlain(change string) string {
+	switch change {
+	case "RISE":
+		return "▲"
+	case "FALL":
+		return "▼"
+	default:
+		return "-"
+	}
 }
 
 // --- 유틸 함수 (watch_streams.go에서 이동) ---
