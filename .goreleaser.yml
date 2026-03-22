@@ -45,7 +45,7 @@ changelog:
 brews:
   - repository:
       owner: kyungw00k
-      name: homebrew-upbit
+      name: homebrew-cli
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     homepage: "https://github.com/kyungw00k/upbit"
     description: "AI-native CLI for Upbit cryptocurrency exchange"

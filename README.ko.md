@@ -15,7 +15,7 @@
 ## 설치
 
 ```bash
-brew install kyungw00k/upbit/upbit    # Homebrew
+brew install kyungw00k/cli/upbit    # Homebrew
 # or
 curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/
 ```
