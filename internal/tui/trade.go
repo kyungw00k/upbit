@@ -16,17 +16,19 @@ var kstLoc = time.FixedZone("KST", 9*60*60)
 
 // TradeModel watch trade TUI 모델
 type TradeModel struct {
-	trades   []ws.TradeStream // 최근 N건 유지 (ring buffer 대신 슬라이스)
-	maxLines int
-	width    int
-	height   int
+	tradesMap map[string][]ws.TradeStream // 마켓별 체결 데이터
+	markets   []string
+	current   int
+	maxLines  int
+	width     int
+	height    int
 }
 
 // NewTradeModel TradeModel 생성
 func NewTradeModel() TradeModel {
 	return TradeModel{
-		trades:   make([]ws.TradeStream, 0),
-		maxLines: 30, // 기본값, WindowSizeMsg로 조정
+		tradesMap: make(map[string][]ws.TradeStream),
+		maxLines:  30, // 기본값, WindowSizeMsg로 조정
 	}
 }
 
@@ -40,6 +42,14 @@ func (m TradeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
+		case "tab", "right":
+			if len(m.markets) > 0 {
+				m.current = (m.current + 1) % len(m.markets)
+			}
+		case "shift+tab", "left":
+			if len(m.markets) > 0 {
+				m.current = (m.current - 1 + len(m.markets)) % len(m.markets)
+			}
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
@@ -50,16 +60,22 @@ func (m TradeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.maxLines = 5
 		}
 		// 기존 데이터가 maxLines 초과하면 자름
-		if len(m.trades) > m.maxLines {
-			m.trades = m.trades[:m.maxLines]
+		for code, trades := range m.tradesMap {
+			if len(trades) > m.maxLines {
+				m.tradesMap[code] = trades[:m.maxLines]
+			}
 		}
 	case WsMsg:
 		var t ws.TradeStream
 		if err := json.Unmarshal(msg.Data, &t); err == nil && t.Code != "" {
+			if _, exists := m.tradesMap[t.Code]; !exists {
+				m.markets = append(m.markets, t.Code)
+				m.tradesMap[t.Code] = make([]ws.TradeStream, 0)
+			}
 			// 새 체결을 맨 앞에 추가
-			m.trades = append([]ws.TradeStream{t}, m.trades...)
-			if len(m.trades) > m.maxLines {
-				m.trades = m.trades[:m.maxLines]
+			m.tradesMap[t.Code] = append([]ws.TradeStream{t}, m.tradesMap[t.Code]...)
+			if len(m.tradesMap[t.Code]) > m.maxLines {
+				m.tradesMap[t.Code] = m.tradesMap[t.Code][:m.maxLines]
 			}
 		}
 	case ErrMsg:
@@ -71,18 +87,34 @@ func (m TradeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m TradeModel) View() string {
-	if len(m.trades) == 0 {
+	multiMarket := len(m.markets) > 1
+
+	// 현재 마켓 결정
+	var currentMarket string
+	var trades []ws.TradeStream
+	if len(m.markets) > 0 {
+		currentMarket = m.markets[m.current]
+		trades = m.tradesMap[currentMarket]
+	}
+
+	if len(trades) == 0 {
 		return "\n  Waiting for data...\n"
 	}
 
 	var b strings.Builder
+
+	// 탭 바 (복수 마켓일 때만)
+	if multiMarket {
+		b.WriteString(RenderTabBar(m.markets, m.current))
+		b.WriteString("\n\n")
+	}
 
 	// 타이틀
 	b.WriteString(StyleTitle.Render(i18n.T(i18n.TUITradeTitle)))
 	b.WriteString("\n")
 
 	// 각 체결 행
-	for _, t := range m.trades {
+	for _, t := range trades {
 		side := i18n.T(i18n.WatchBuy)
 		style := StyleRise
 		if t.AskBid == "ASK" {
@@ -95,7 +127,7 @@ func (m TradeModel) View() string {
 		volume := fmt.Sprintf("%.8f", t.TradeVolume)
 
 		line := fmt.Sprintf("  %s  %s  %s  %s  %s",
-			padRight(t.Code, 14),
+			padRight(currentMarket, 14),
 			style.Render(padRight(side, 4)),
 			style.Render(padLeft(price, 16)),
 			padLeft(volume, 16),
@@ -106,7 +138,11 @@ func (m TradeModel) View() string {
 
 	// 하단 힌트
 	b.WriteString("\n")
-	b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	if multiMarket {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUITabHint)))
+	} else {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	}
 	b.WriteString("\n")
 
 	return TruncateToHeight(b.String(), m.height)

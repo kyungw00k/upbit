@@ -13,15 +13,18 @@ import (
 
 // OrderbookModel watch orderbook TUI 모델
 type OrderbookModel struct {
-	data   *ws.OrderbookStream
-	market string
-	width  int
-	height int
+	dataMap map[string]*ws.OrderbookStream // 마켓별 데이터
+	markets []string                       // 마켓 순서 (수신 순)
+	current int                            // 현재 선택 인덱스
+	width   int
+	height  int
 }
 
 // NewOrderbookModel OrderbookModel 생성
 func NewOrderbookModel() OrderbookModel {
-	return OrderbookModel{}
+	return OrderbookModel{
+		dataMap: make(map[string]*ws.OrderbookStream),
+	}
 }
 
 func (m OrderbookModel) Init() tea.Cmd {
@@ -34,6 +37,14 @@ func (m OrderbookModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
+		case "tab", "right":
+			if len(m.markets) > 0 {
+				m.current = (m.current + 1) % len(m.markets)
+			}
+		case "shift+tab", "left":
+			if len(m.markets) > 0 {
+				m.current = (m.current - 1 + len(m.markets)) % len(m.markets)
+			}
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
@@ -41,8 +52,10 @@ func (m OrderbookModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case WsMsg:
 		var o ws.OrderbookStream
 		if err := json.Unmarshal(msg.Data, &o); err == nil && o.Code != "" {
-			m.data = &o
-			m.market = o.Code
+			if _, exists := m.dataMap[o.Code]; !exists {
+				m.markets = append(m.markets, o.Code)
+			}
+			m.dataMap[o.Code] = &o
 		}
 	case ErrMsg:
 		return m, tea.Quit
@@ -53,17 +66,33 @@ func (m OrderbookModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m OrderbookModel) View() string {
-	if m.data == nil || len(m.data.OrderbookUnits) == 0 {
+	multiMarket := len(m.markets) > 1
+
+	// 현재 마켓 결정
+	var currentMarket string
+	var data *ws.OrderbookStream
+	if len(m.markets) > 0 {
+		currentMarket = m.markets[m.current]
+		data = m.dataMap[currentMarket]
+	}
+
+	if data == nil || len(data.OrderbookUnits) == 0 {
 		return "\n  Waiting for data...\n"
 	}
 
-	o := m.data
+	o := data
 	units := o.OrderbookUnits
 	var b strings.Builder
 
+	// 탭 바 (복수 마켓일 때만)
+	if multiMarket {
+		b.WriteString(RenderTabBar(m.markets, m.current))
+		b.WriteString("\n\n")
+	}
+
 	// 타이틀: 마켓명 + 총매도/총매수
 	title := fmt.Sprintf("%s %s  %s: %.4f  %s: %.4f",
-		i18n.T(i18n.TUIOrderbookTitle), StyleTitle.Render(m.market),
+		i18n.T(i18n.TUIOrderbookTitle), StyleTitle.Render(currentMarket),
 		i18n.T(i18n.TUITotalAsk), o.TotalAskSize,
 		i18n.T(i18n.TUITotalBid), o.TotalBidSize)
 	b.WriteString(StyleTitle.Render(title))
@@ -93,8 +122,12 @@ func (m OrderbookModel) View() string {
 	}
 
 	// 터미널 높이에 맞게 스프레드 중심으로 위/아래 동일 개수 표시
-	// 고정 줄: 헤더(2) + 스프레드(1) + 하단(2) = 5줄
-	availableLines := m.height - 5
+	// 고정 줄: 탭바(복수 마켓시 2줄) + 헤더(2) + 스프레드(1) + 하단(2) = 5 or 7줄
+	fixedLines := 5
+	if multiMarket {
+		fixedLines = 7
+	}
+	availableLines := m.height - fixedLines
 	if availableLines < 2 {
 		availableLines = 2
 	}
@@ -156,7 +189,11 @@ func (m OrderbookModel) View() string {
 
 	// 하단 힌트
 	b.WriteString("\n")
-	b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	if multiMarket {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUITabHint)))
+	} else {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	}
 	b.WriteString("\n")
 
 	return TruncateToHeight(b.String(), m.height)

@@ -50,6 +50,20 @@ func SideStyle(askBid string) lipgloss.Style {
 	return StyleRise
 }
 
+// RenderTabBar 마켓 탭 바 렌더링
+// 선택된 탭: StyleTitle (bold + 색상), 비선택: StyleHint (어두운 회색)
+func RenderTabBar(markets []string, current int) string {
+	var parts []string
+	for i, m := range markets {
+		if i == current {
+			parts = append(parts, StyleTitle.Render("["+m+"]"))
+		} else {
+			parts = append(parts, StyleHint.Render(m))
+		}
+	}
+	return strings.Join(parts, "  ")
+}
+
 // TruncateToHeight 터미널 높이 초과 시 위에서부터 유지하고 아래를 자름
 func TruncateToHeight(s string, height int) string {
 	if height <= 0 {

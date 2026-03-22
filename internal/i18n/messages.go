@@ -401,6 +401,7 @@ const (
 	// ── TUI ──
 
 	TUIQuitHint       Key = "TUIQuitHint"
+	TUITabHint        Key = "TUITabHint"
 	TUITickerHeader   Key = "TUITickerHeader"
 	TUIOrderbookTitle Key = "TUIOrderbookTitle"
 	TUITotalAsk       Key = "TUITotalAsk"
@@ -791,6 +792,7 @@ var ko = map[Key]string{
 
 	// TUI
 	TUIQuitHint:       "q: 종료",
+	TUITabHint:        "←/→: 마켓 전환  q: 종료",
 	TUITickerHeader:   "마켓          현재가           변동률       거래량",
 	TUIOrderbookTitle: "호가창",
 	TUITotalAsk:       "총매도",
@@ -1180,6 +1182,7 @@ var en = map[Key]string{
 
 	// TUI
 	TUIQuitHint:       "q: quit",
+	TUITabHint:        "←/→: switch market  q: quit",
 	TUITickerHeader:   "MARKET        PRICE            CHANGE       VOLUME",
 	TUIOrderbookTitle: "Orderbook",
 	TUITotalAsk:       "Total Ask",
