@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-runewidth"
 )
 
@@ -51,6 +52,34 @@ func padRight(s string, width int) string {
 }
 
 // Format 테이블로 출력
+// 테이블 스타일 (lipgloss) — tty에서만 적용
+var (
+	styleHeader = lipgloss.NewStyle().Bold(true)
+	styleRise   = lipgloss.NewStyle().Foreground(lipgloss.Color("2")) // green
+	styleFall   = lipgloss.NewStyle().Foreground(lipgloss.Color("1")) // red
+)
+
+// colorize 포맷 타입과 값에 따라 색상 적용
+func colorize(padded, raw, format string) string {
+	if !IsTTY() {
+		return padded
+	}
+	switch format {
+	case "percent":
+		if strings.HasPrefix(raw, "+") {
+			return styleRise.Render(padded)
+		} else if strings.HasPrefix(raw, "-") {
+			return styleFall.Render(padded)
+		}
+	case "number":
+		// signed change price 등 음수면 빨강
+		if strings.HasPrefix(raw, "-") {
+			return styleFall.Render(padded)
+		}
+	}
+	return padded
+}
+
 func (f *TableFormatter) Format(data interface{}) error {
 	// 컬럼이 지정된 경우 컬럼 기반 출력
 	if len(f.columns) > 0 {
@@ -136,18 +165,19 @@ func (f *TableFormatter) formatSliceWithColumns(rv reflect.Value, columns []Tabl
 		}
 	}
 
-	// 3. 헤더 출력 (패딩 적용)
+	// 3. 헤더 출력 (bold + 패딩)
 	headerParts := make([]string, len(columns))
 	for j, col := range columns {
-		headerParts[j] = padRight(col.Header, colWidths[j])
+		headerParts[j] = styleHeader.Render(padRight(col.Header, colWidths[j]))
 	}
 	fmt.Fprintln(f.writer, strings.Join(headerParts, "  "))
 
-	// 4. 데이터 행 출력 (패딩 적용)
+	// 4. 데이터 행 출력 (패딩 + 포맷별 색상)
 	for _, row := range allRows {
 		parts := make([]string, len(row))
 		for j, val := range row {
-			parts[j] = padRight(val, colWidths[j])
+			padded := padRight(val, colWidths[j])
+			parts[j] = colorize(padded, val, columns[j].Format)
 		}
 		fmt.Fprintln(f.writer, strings.Join(parts, "  "))
 	}
