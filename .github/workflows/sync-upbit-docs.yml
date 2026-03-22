@@ -1,0 +1,74 @@
+name: Sync Upbit API Docs
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 매일 UTC 00:00 (KST 09:00)
+  workflow_dispatch:       # 수동 실행
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download latest llms.txt
+        run: |
+          curl -sf https://docs.upbit.com/kr/llms.txt -o docs/upbit-api/llms.txt.new
+
+      - name: Check for changes
+        id: check
+        run: |
+          if [ ! -f docs/upbit-api/llms.txt ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "First run — no existing llms.txt"
+            exit 0
+          fi
+          if diff -q docs/upbit-api/llms.txt docs/upbit-api/llms.txt.new > /dev/null 2>&1; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes in llms.txt"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "llms.txt changed:"
+            diff docs/upbit-api/llms.txt docs/upbit-api/llms.txt.new || true
+          fi
+
+      - name: Update llms.txt
+        if: steps.check.outputs.changed == 'true'
+        run: mv docs/upbit-api/llms.txt.new docs/upbit-api/llms.txt
+
+      - name: Cleanup if no changes
+        if: steps.check.outputs.changed == 'false'
+        run: rm -f docs/upbit-api/llms.txt.new
+
+      - name: Sync documentation files
+        if: steps.check.outputs.changed == 'true'
+        id: sync
+        run: |
+          chmod +x scripts/sync-docs.sh
+          scripts/sync-docs.sh
+
+      - name: Analyze impact with LLM
+        if: steps.check.outputs.changed == 'true'
+        env:
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+        run: |
+          chmod +x scripts/analyze-changes.sh
+          scripts/analyze-changes.sh
+
+      - name: Create Pull Request
+        if: steps.check.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: sync Upbit API documentation"
+          title: "docs: Upbit API documentation update"
+          body-path: docs/upbit-api/ANALYSIS.md
+          branch: auto/sync-upbit-docs
+          delete-branch: true
+          labels: |
+            documentation
+            automated
