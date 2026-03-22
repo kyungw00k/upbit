@@ -10,13 +10,9 @@
 
 ## Quick Demo
 
-<!-- TODO: Replace with asciinema recording -->
-<!-- The demo would show:
-  1. `upbit ticker KRW-BTC` displaying a price table
-  2. `upbit candle KRW-BTC -i 1d -c 5` showing OHLCV data
-  3. `upbit tool-schema buy` exporting JSON Schema
-  4. `upbit watch ticker KRW-BTC` streaming live prices
--->
+[![demo](https://github.com/kyungw00k/upbit/raw/main/docs/demo.gif)](docs/demo.cast)
+
+<!-- Play locally: asciinema play docs/demo.cast -->
 
 ## Why upbit?
 

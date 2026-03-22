@@ -10,13 +10,9 @@
 
 ## 빠른 데모
 
-<!-- TODO: asciinema 녹화로 교체 -->
-<!-- 데모에서 보여줄 내용:
-  1. `upbit ticker KRW-BTC` — 현재가 테이블 출력
-  2. `upbit candle KRW-BTC -i 1d -c 5` — OHLCV 데이터 출력
-  3. `upbit tool-schema buy` — JSON Schema 내보내기
-  4. `upbit watch ticker KRW-BTC` — 실시간 가격 스트리밍
--->
+[![demo](https://github.com/kyungw00k/upbit/raw/main/docs/demo.gif)](docs/demo.cast)
+
+<!-- 로컬 재생: asciinema play docs/demo.cast -->
 
 ## 왜 upbit인가?
 
