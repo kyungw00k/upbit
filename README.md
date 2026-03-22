@@ -38,7 +38,13 @@
 
 ## Installation
 
-### From Release (recommended)
+### Homebrew (macOS / Linux)
+
+```bash
+brew install kyungw00k/upbit/upbit
+```
+
+### From Release
 
 ```bash
 # macOS / Linux

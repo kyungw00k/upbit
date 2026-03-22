@@ -26,6 +26,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           hooks: goreleaser
           changelog-file: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
 
       - name: Summary
         if: steps.semrel.outputs.version != ''

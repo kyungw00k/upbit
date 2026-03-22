@@ -38,7 +38,13 @@
 
 ## 설치
 
-### 릴리스에서 설치 (권장)
+### Homebrew (macOS / Linux)
+
+```bash
+brew install kyungw00k/upbit/upbit
+```
+
+### 릴리스에서 설치
 
 ```bash
 # macOS / Linux
