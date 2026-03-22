@@ -350,11 +350,16 @@ func runStreamTUI(ctx context.Context, stop context.CancelFunc, client *ws.WSCli
 
 // --- 유틸 함수 ---
 
-// upperCodes 마켓 코드 대문자 변환
+// upperCodes 마켓 코드 대문자 변환 + 중복 제거
 func upperCodes(args []string) []string {
-	codes := make([]string, len(args))
-	for i, a := range args {
-		codes[i] = strings.ToUpper(a)
+	seen := make(map[string]bool, len(args))
+	var codes []string
+	for _, a := range args {
+		code := strings.ToUpper(a)
+		if !seen[code] {
+			seen[code] = true
+			codes = append(codes, code)
+		}
 	}
 	return codes
 }
