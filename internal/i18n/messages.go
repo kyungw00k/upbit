@@ -407,6 +407,11 @@ const (
 	TUITotalBid       Key = "TUITotalBid"
 	TUITradeTitle     Key = "TUITradeTitle"
 	TUICandleTitle    Key = "TUICandleTitle"
+	TUIHighest        Key = "TUIHighest"
+	TUILowest         Key = "TUILowest"
+	TUIVar            Key = "TUIVar"
+	TUIAvg            Key = "TUIAvg"
+	TUICumVol         Key = "TUICumVol"
 	TUIConfirmYes     Key = "TUIConfirmYes"
 	TUIConfirmNo      Key = "TUIConfirmNo"
 
@@ -792,6 +797,11 @@ var ko = map[Key]string{
 	TUITotalBid:       "총매수",
 	TUITradeTitle:     "체결 내역",
 	TUICandleTitle:    "캔들 차트",
+	TUIHighest:        "최고",
+	TUILowest:         "최저",
+	TUIVar:            "등락",
+	TUIAvg:            "평균",
+	TUICumVol:         "누적거래량",
 	TUIConfirmYes:     "[Y] 확인",
 	TUIConfirmNo:      "[N] 취소",
 
@@ -1176,6 +1186,11 @@ var en = map[Key]string{
 	TUITotalBid:       "Total Bid",
 	TUITradeTitle:     "Recent Trades",
 	TUICandleTitle:    "Candle Chart",
+	TUIHighest:        "Highest",
+	TUILowest:         "Lowest",
+	TUIVar:            "Var",
+	TUIAvg:            "Avg",
+	TUICumVol:         "CumVol",
 	TUIConfirmYes:     "[Y] Confirm",
 	TUIConfirmNo:      "[N] Cancel",
 

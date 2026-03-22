@@ -27,14 +27,15 @@ const (
 )
 
 const (
-	candleWidth = 3  // 1 space + 1 body + 1 space
-	yAxisWidth  = 12 // right-side price label width
-	headerLines = 3  // title + OHLC info + blank
-	footerLines = 2  // time axis + quit hint
+	candleWidth  = 3  // 1 space + 1 body + 1 space
+	yAxisWidth   = 12 // right-side price label width
+	headerLines  = 3  // title + OHLC info + blank
+	footerLines  = 4  // time axis + summary line + quit hint + blank
+	volumeHeight = 3  // height of the volume bar pane
 )
 
-// candleData holds OHLC data for a single candle
-type candleData struct {
+// CandleData holds OHLC data for a single candle
+type CandleData struct {
 	Open   float64
 	High   float64
 	Low    float64
@@ -45,7 +46,7 @@ type candleData struct {
 
 // CandleModel watch candle TUI model
 type CandleModel struct {
-	candles    []candleData
+	candles    []CandleData
 	market     string
 	width      int
 	height     int
@@ -55,8 +56,25 @@ type CandleModel struct {
 // NewCandleModel creates a new CandleModel
 func NewCandleModel() CandleModel {
 	return CandleModel{
-		candles:    make([]candleData, 0),
+		candles:    make([]CandleData, 0),
 		maxCandles: 40,
+	}
+}
+
+// NewCandleModelWithData creates a CandleModel pre-loaded with historical candles
+func NewCandleModelWithData(market string, initial []CandleData) CandleModel {
+	return CandleModel{
+		candles:    initial,
+		market:     market,
+		maxCandles: 40,
+	}
+}
+
+// CandleDataFromOHLCV creates CandleData from raw values (for preloading)
+func CandleDataFromOHLCV(open, high, low, close, volume float64, time string) CandleData {
+	return CandleData{
+		Open: open, High: high, Low: low, Close: close,
+		Volume: volume, Time: time,
 	}
 }
 
@@ -82,7 +100,7 @@ func (m CandleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		var c ws.CandleStream
 		if err := json.Unmarshal(msg.Data, &c); err == nil && c.Code != "" {
 			m.market = c.Code
-			cd := candleData{
+			cd := CandleData{
 				Open:   c.OpeningPrice,
 				High:   c.HighPrice,
 				Low:    c.LowPrice,
@@ -121,7 +139,7 @@ func (m CandleModel) View() string {
 	var b strings.Builder
 
 	// Determine visible candles
-	chartHeight := m.height - headerLines - footerLines
+	chartHeight := m.height - headerLines - footerLines - volumeHeight
 	if chartHeight < 5 {
 		chartHeight = 5
 	}
@@ -164,12 +182,19 @@ func (m CandleModel) View() string {
 	b.WriteString(ohlcLine)
 	b.WriteString("\n\n")
 
-	// Render chart
+	// Render candle chart
 	chart := renderCandleChart(visible, chartHeight)
 	b.WriteString(chart)
 
+	// Render volume bar pane
+	b.WriteString(renderVolumePane(visible, volumeHeight))
+
 	// Footer: time labels
 	b.WriteString(renderTimeAxis(visible, maxCandles))
+	b.WriteString("\n")
+
+	// Summary line
+	b.WriteString(renderSummaryLine(visible))
 	b.WriteString("\n")
 
 	// Quit hint
@@ -180,7 +205,7 @@ func (m CandleModel) View() string {
 }
 
 // renderCandleChart renders the candlestick chart area
-func renderCandleChart(candles []candleData, chartHeight int) string {
+func renderCandleChart(candles []CandleData, chartHeight int) string {
 	if len(candles) == 0 || chartHeight < 1 {
 		return ""
 	}
@@ -376,7 +401,7 @@ func charForCell(topSub, botSub, highSR, lowSR, bodyTop, bodyBot int) rune {
 }
 
 // renderTimeAxis renders the time labels below the chart
-func renderTimeAxis(candles []candleData, maxCandles int) string {
+func renderTimeAxis(candles []CandleData, maxCandles int) string {
 	if len(candles) == 0 {
 		return ""
 	}
@@ -421,4 +446,126 @@ func extractTime(datetime string) string {
 		return datetime[len(datetime)-5:]
 	}
 	return datetime
+}
+
+// renderVolumePane renders a volume bar chart pane below the candle chart.
+// height specifies the number of display rows for the pane.
+func renderVolumePane(candles []CandleData, height int) string {
+	if len(candles) == 0 || height < 1 {
+		return ""
+	}
+
+	// Find max volume
+	maxVol := 0.0
+	for _, c := range candles {
+		if c.Volume > maxVol {
+			maxVol = c.Volume
+		}
+	}
+	if maxVol == 0 {
+		maxVol = 1
+	}
+
+	// Use half-character resolution: each row represents 2 sub-rows
+	subRows := height * 2
+
+	var b strings.Builder
+	for row := 0; row < height; row++ {
+		// topSub: sub-row index from top (0 = top of pane, subRows-1 = bottom)
+		// We render top-to-bottom, so row 0 is the topmost row.
+		// A bar of ratio r fills sub-rows from bottom up to int(r * subRows).
+		for _, c := range candles {
+			ratio := c.Volume / maxVol
+			filledSubRows := int(math.Round(ratio * float64(subRows)))
+			if filledSubRows > subRows {
+				filledSubRows = subRows
+			}
+
+			// The current display row covers sub-rows (from bottom):
+			// botSubFromBottom = (height - 1 - row) * 2
+			// topSubFromBottom = botSubFromBottom + 1
+			botSubFromBottom := (height - 1 - row) * 2
+			topSubFromBottom := botSubFromBottom + 1
+
+			topFilled := topSubFromBottom < filledSubRows
+			botFilled := botSubFromBottom < filledSubRows
+
+			var style lipgloss.Style
+			if c.Close >= c.Open {
+				style = StyleRise
+			} else {
+				style = StyleFall
+			}
+
+			var ch string
+			switch {
+			case topFilled && botFilled:
+				ch = style.Render("█")
+			case !topFilled && botFilled:
+				ch = style.Render("▄")
+			default:
+				ch = " "
+			}
+
+			b.WriteByte(' ')
+			b.WriteString(ch)
+			b.WriteByte(' ')
+		}
+		b.WriteByte('\n')
+	}
+
+	return b.String()
+}
+
+// renderSummaryLine renders a one-line summary of visible candles.
+func renderSummaryLine(candles []CandleData) string {
+	if len(candles) == 0 {
+		return ""
+	}
+
+	last := candles[len(candles)-1]
+	first := candles[0]
+
+	// Highest / Lowest across all visible candles
+	highestPrice := -math.MaxFloat64
+	lowestPrice := math.MaxFloat64
+	totalVol := 0.0
+	sumClose := 0.0
+	for _, c := range candles {
+		if c.High > highestPrice {
+			highestPrice = c.High
+		}
+		if c.Low < lowestPrice {
+			lowestPrice = c.Low
+		}
+		totalVol += c.Volume
+		sumClose += c.Close
+	}
+	avgClose := sumClose / float64(len(candles))
+
+	// Var: (last close - first open) / first open * 100
+	varPct := 0.0
+	if first.Open != 0 {
+		varPct = (last.Close - first.Open) / first.Open * 100
+	}
+	varSign := "+"
+	varStyle := StyleRise
+	if varPct < 0 {
+		varSign = ""
+		varStyle = StyleFall
+	} else if varPct == 0 {
+		varStyle = StyleFlat
+	}
+
+	summary := fmt.Sprintf(
+		"%s: %s  %s: %s  %s: %s  %s: %s  %s: %s  %s: %.2f",
+		i18n.T(i18n.WatchClose), smartPrice(last.Close),
+		i18n.T(i18n.TUIHighest), smartPrice(highestPrice),
+		i18n.T(i18n.TUILowest), smartPrice(lowestPrice),
+		i18n.T(i18n.TUIVar), varStyle.Render(fmt.Sprintf("%s%.2f%%", varSign, varPct)),
+		i18n.T(i18n.TUIAvg), smartPrice(avgClose),
+		i18n.T(i18n.TUICumVol), totalVol,
+	)
+
+	return StyleHint.Render(summary)
 }

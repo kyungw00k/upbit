@@ -80,7 +80,18 @@ var watchCandleCmd = &cobra.Command{
 		candleType := "candle." + interval
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: candleType, Codes: codes}}
-		return runPublicStream(cmd, sub, formatCandle, func() tea.Model { return tui.NewCandleModel() })
+
+		// 초기 캔들 프리로드 (REST API → TUI에 주입)
+		modelFn := func() tea.Model {
+			market := codes[0]
+			initial := preloadCandles(cmd.Context(), market, interval, 50)
+			if len(initial) > 0 {
+				return tui.NewCandleModelWithData(market, initial)
+			}
+			return tui.NewCandleModel()
+		}
+
+		return runPublicStream(cmd, sub, formatCandle, modelFn)
 	},
 }
 
@@ -431,6 +442,26 @@ func formatCandle(data []byte) string {
 		i18n.T(i18n.WatchClose), smartPrice(c.TradePrice),
 		i18n.T(i18n.WatchVolume), c.CandleAccTradeVolume,
 	)
+}
+
+// preloadCandles REST API로 초기 캔들을 미리 로드
+func preloadCandles(ctx context.Context, market, interval string, count int) []tui.CandleData {
+	client := GetClient()
+	qc := quotation.NewQuotationClient(client)
+	candles, err := qc.GetCandles(ctx, market, interval, count)
+	if err != nil || len(candles) == 0 {
+		return nil
+	}
+
+	// API는 최신→오래된 순 → 뒤집기
+	result := make([]tui.CandleData, len(candles))
+	for i, c := range candles {
+		result[len(candles)-1-i] = tui.CandleDataFromOHLCV(
+			c.OpeningPrice, c.HighPrice, c.LowPrice, c.TradePrice,
+			c.CandleAccTradeVolume, c.CandleDateTimeKst,
+		)
+	}
+	return result
 }
 
 func formatMyOrder(data []byte) string {
