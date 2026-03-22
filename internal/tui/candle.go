@@ -75,6 +75,16 @@ func NewCandleModelWithData(market, interval string, initial []CandleData) Candl
 	}
 }
 
+// NewCandleModelWithMultiData creates a CandleModel pre-loaded with multiple markets' candles
+func NewCandleModelWithMultiData(markets []string, interval string, data map[string][]CandleData) CandleModel {
+	return CandleModel{
+		candlesMap: data,
+		markets:    markets,
+		interval:   interval,
+		maxCandles: 40,
+	}
+}
+
 // CandleDataFromOHLCV creates CandleData from raw values (for preloading)
 func CandleDataFromOHLCV(open, high, low, close, volume float64, time string) CandleData {
 	return CandleData{

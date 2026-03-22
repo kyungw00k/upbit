@@ -135,8 +135,7 @@ func runCandle(cmd *cobra.Command, args []string) error {
 	// from을 KST ISO 8601 형태로 변환 (API 및 캐시에서 사용)
 	var fromKST string
 	if fromStr != "" {
-		kst := time.FixedZone("KST", 9*3600)
-		fromKST = fromTime.In(kst).Format("2006-01-02T15:04:05")
+		fromKST = fromTime.In(types.KSTLoc).Format("2006-01-02T15:04:05")
 	}
 
 	var candles []types.Candle
@@ -187,8 +186,7 @@ func fetchWithCache(cmd *cobra.Command, qc *quotation.QuotationClient, market, i
 		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgCacheRangeError), err)
 	}
 
-	kst := time.FixedZone("KST", 9*3600)
-	nowKST := time.Now().In(kst).Format("2006-01-02T15:04:05")
+	nowKST := time.Now().In(types.KSTLoc).Format("2006-01-02T15:04:05")
 
 	if cachedOldest == "" {
 		// 캐시 비어있음 → 전체 API 호출
@@ -277,8 +275,6 @@ func saveToCacheAll(cc *cache.CandleCache, market, interval string, candles []ty
 
 // parseFrom 다양한 형식의 시각 문자열을 time.Time으로 파싱
 func parseFrom(s string) (time.Time, error) {
-	kst := time.FixedZone("KST", 9*3600)
-
 	formats := []struct {
 		layout string
 		loc    *time.Location
@@ -287,11 +283,11 @@ func parseFrom(s string) (time.Time, error) {
 		{"2006-01-02T15:04:05Z07:00", nil},
 		{"2006-01-02T15:04:05Z", time.UTC},
 		// 타임존 없는 형식 → KST 가정
-		{"2006-01-02T15:04:05", kst},
-		{"2006-01-02T15:04", kst},
+		{"2006-01-02T15:04:05", types.KSTLoc},
+		{"2006-01-02T15:04", types.KSTLoc},
 		// 날짜만 → KST 00:00:00
-		{"2006-01-02", kst},
-		{"2006/01/02", kst},
+		{"2006-01-02", types.KSTLoc},
+		{"2006/01/02", types.KSTLoc},
 	}
 
 	s = strings.TrimSpace(s)

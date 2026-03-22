@@ -10,9 +10,8 @@ import (
 
 	ws "github.com/kyungw00k/upbit/internal/api/websocket"
 	"github.com/kyungw00k/upbit/internal/i18n"
+	"github.com/kyungw00k/upbit/internal/types"
 )
-
-var kstLoc = time.FixedZone("KST", 9*60*60)
 
 // TradeModel watch trade TUI 모델
 type TradeModel struct {
@@ -122,7 +121,7 @@ func (m TradeModel) View() string {
 			style = StyleFall
 		}
 
-		ts := time.UnixMilli(t.TradeTimestamp).In(kstLoc).Format("15:04:05")
+		ts := time.UnixMilli(t.TradeTimestamp).In(types.KSTLoc).Format("15:04:05")
 		price := smartPrice(t.TradePrice)
 		volume := fmt.Sprintf("%.8f", t.TradeVolume)
 

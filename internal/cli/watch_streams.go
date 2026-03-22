@@ -20,6 +20,7 @@ import (
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 	"github.com/kyungw00k/upbit/internal/tui"
+	"github.com/kyungw00k/upbit/internal/types"
 )
 
 // --- watch ticker ---
@@ -81,12 +82,19 @@ var watchCandleCmd = &cobra.Command{
 		codes := upperCodes(args)
 		sub := []ws.SubscriptionType{{Type: candleType, Codes: codes}}
 
-		// 초기 캔들 프리로드 (REST API → TUI에 주입)
+		// 초기 캔들 프리로드 (REST API → TUI에 주입, 모든 마켓)
 		modelFn := func() tea.Model {
-			market := codes[0]
-			initial := preloadCandles(cmd.Context(), market, interval, 50)
-			if len(initial) > 0 {
-				return tui.NewCandleModelWithData(market, interval, initial)
+			cm := make(map[string][]tui.CandleData)
+			var markets []string
+			for _, market := range codes {
+				candles := preloadCandles(cmd.Context(), market, interval, 50)
+				if len(candles) > 0 {
+					cm[market] = candles
+					markets = append(markets, market)
+				}
+			}
+			if len(markets) > 0 {
+				return tui.NewCandleModelWithMultiData(markets, interval, cm)
 			}
 			return tui.NewCandleModel()
 		}
@@ -422,7 +430,7 @@ func formatTrade(data []byte) string {
 	if t.AskBid == "ASK" {
 		side = i18n.T(i18n.WatchSell)
 	}
-	ts := time.UnixMilli(t.TradeTimestamp).In(kstLoc).Format("15:04:05")
+	ts := time.UnixMilli(t.TradeTimestamp).In(types.KSTLoc).Format("15:04:05")
 	return fmt.Sprintf("%-12s  %s  %14s  %s: %.8f  %s",
 		t.Code, side, smartPrice(t.TradePrice),
 		i18n.T(i18n.WatchQty), t.TradeVolume, ts,
@@ -473,7 +481,7 @@ func formatMyOrder(data []byte) string {
 	if o.AskBid == "ASK" {
 		side = i18n.T(i18n.WatchSell)
 	}
-	ts := time.UnixMilli(o.Timestamp).In(kstLoc).Format("15:04:05")
+	ts := time.UnixMilli(o.Timestamp).In(types.KSTLoc).Format("15:04:05")
 	return fmt.Sprintf("%-12s  %s  %s  %s  %s: %.8f  %s: %s  %s",
 		o.Code, side, o.OrderType,
 		smartPrice(o.Price),
@@ -487,7 +495,7 @@ func formatMyAsset(data []byte) string {
 	if err := json.Unmarshal(data, &a); err != nil {
 		return ""
 	}
-	ts := time.UnixMilli(a.Timestamp).In(kstLoc).Format("15:04:05")
+	ts := time.UnixMilli(a.Timestamp).In(types.KSTLoc).Format("15:04:05")
 	parts := make([]string, 0, len(a.Assets))
 	for _, asset := range a.Assets {
 		parts = append(parts, fmt.Sprintf("%s: %.8f (%s: %.8f)",
@@ -520,9 +528,6 @@ func signPrefix(rate float64) string {
 // smartPrice 가격을 크기에 맞게 포맷
 // KRW 마켓 (큰 숫자): 106,000,000
 // BTC 마켓 (소수점): 0.00002045
-// kstLoc KST 시간대
-var kstLoc = time.FixedZone("KST", 9*60*60)
-
 func smartPrice(price float64) string {
 	if price == 0 {
 		return "0"

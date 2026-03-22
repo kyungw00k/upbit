@@ -8,6 +8,9 @@ import (
 	"time"
 )
 
+// KSTLoc 한국 표준시 (UTC+9)
+var KSTLoc = time.FixedZone("KST", 9*60*60)
+
 // Float64 JSON 문자열/숫자 양방향 파싱 타입
 // Upbit API가 숫자를 문자열로 반환하는 경우 대응
 type Float64 float64

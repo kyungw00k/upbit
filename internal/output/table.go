@@ -12,6 +12,8 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-runewidth"
+
+	"github.com/kyungw00k/upbit/internal/types"
 )
 
 // TableColumn 테이블 컬럼 정의
@@ -224,9 +226,6 @@ func toMap(item interface{}) map[string]interface{} {
 	return m
 }
 
-// KST 시간대
-var kstLoc = time.FixedZone("KST", 9*60*60)
-
 // formatColumnValue 컬럼 포맷에 따라 값을 문자열로 변환
 func formatColumnValue(v interface{}, format string) string {
 	if v == nil {
@@ -272,7 +271,7 @@ func formatDateTimeKST(v interface{}) string {
 	}
 	for _, f := range formats {
 		if t, err := time.Parse(f, s); err == nil {
-			return t.In(kstLoc).Format("2006-01-02 15:04:05")
+			return t.In(types.KSTLoc).Format("2006-01-02 15:04:05")
 		}
 	}
 	return s
@@ -291,7 +290,7 @@ func formatTimeKST(v interface{}) string {
 	}
 	// UTC로 해석하여 KST로 변환
 	utc := time.Date(0, 1, 1, t.Hour(), t.Minute(), t.Second(), 0, time.UTC)
-	return utc.In(kstLoc).Format("15:04:05")
+	return utc.In(types.KSTLoc).Format("15:04:05")
 }
 
 // toFloat64 interface{}를 float64로 변환
