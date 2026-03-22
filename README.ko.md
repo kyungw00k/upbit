@@ -10,9 +10,7 @@
 
 ## 빠른 데모
 
-[![demo](https://github.com/kyungw00k/upbit/raw/main/docs/demo.gif)](docs/demo.cast)
-
-<!-- 로컬 재생: asciinema play docs/demo.cast -->
+![demo](docs/demo.ko.gif)
 
 ## 왜 upbit인가?
 

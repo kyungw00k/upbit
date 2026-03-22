@@ -10,9 +10,7 @@
 
 ## Quick Demo
 
-[![demo](https://github.com/kyungw00k/upbit/raw/main/docs/demo.gif)](docs/demo.cast)
-
-<!-- Play locally: asciinema play docs/demo.cast -->
+![demo](docs/demo.gif)
 
 ## Why upbit?
 
