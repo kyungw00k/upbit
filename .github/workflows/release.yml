@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -20,9 +20,16 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - uses: goreleaser/goreleaser-action@v6
+      - uses: go-semantic-release/action@v1
+        id: semrel
         with:
-          version: latest
-          args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          hooks: goreleaser
+          changelog-file: CHANGELOG.md
+
+      - name: Summary
+        if: steps.semrel.outputs.version != ''
+        run: |
+          echo "### Released v${{ steps.semrel.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tag: v${{ steps.semrel.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- [Release](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semrel.outputs.version }})" >> $GITHUB_STEP_SUMMARY
