@@ -92,8 +92,25 @@ func (m OrderbookModel) View() string {
 		}
 	}
 
-	// 매도 호가 (역순: 가장 먼 호가부터, 중앙에 가까운 것이 마지막)
-	for i := len(units) - 1; i >= 0; i-- {
+	// 터미널 높이에 맞게 스프레드 중심으로 위/아래 동일 개수 표시
+	// 사용 가능 줄 = 전체 높이 - 헤더(2) - 스프레드(1) - 하단(2)
+	availableLines := m.height - 5
+	if availableLines < 4 {
+		availableLines = 4
+	}
+	showPerSide := availableLines / 2
+	if showPerSide > len(units) {
+		showPerSide = len(units)
+	}
+
+	// 매도 호가 (스프레드에 가까운 showPerSide개만, 역순)
+	askStart := 0
+	if showPerSide < len(units) {
+		askStart = showPerSide - 1
+	} else {
+		askStart = len(units) - 1
+	}
+	for i := askStart; i >= 0; i-- {
 		u := units[i]
 		price := smartPrice(u.AskPrice)
 		size := fmt.Sprintf("%.4f", u.AskSize)
@@ -118,8 +135,9 @@ func (m OrderbookModel) View() string {
 		b.WriteString("\n")
 	}
 
-	// 매수 호가 (정순: 가장 가까운 호가부터)
-	for _, u := range units {
+	// 매수 호가 (스프레드에 가까운 showPerSide개)
+	for i := 0; i < showPerSide && i < len(units); i++ {
+		u := units[i]
 		price := smartPrice(u.BidPrice)
 		size := fmt.Sprintf("%.4f", u.BidSize)
 		ratio := u.BidSize / maxSize
