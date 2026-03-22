@@ -222,6 +222,10 @@ export UPBIT_SECRET_KEY=your_secret_key
 
 시세 조회 명령어는 인증 없이 사용할 수 있습니다. 거래, 입출금, 실시간 개인 스트림(`watch my-order`, `watch my-asset`)은 인증이 필요합니다.
 
+## 감사의 글
+
+- 캔들스틱 차트 렌더링은 [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)에서 영감을 받았습니다
+
 ## 라이선스
 
 MIT

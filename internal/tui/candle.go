@@ -46,8 +46,9 @@ type CandleData struct {
 
 // CandleModel watch candle TUI model
 type CandleModel struct {
-	candles    []CandleData
-	market     string
+	candlesMap map[string][]CandleData // 마켓별 캔들 데이터
+	markets    []string                // 마켓 순서
+	current    int                     // 현재 선택 인덱스
 	interval   string
 	width      int
 	height     int
@@ -57,16 +58,18 @@ type CandleModel struct {
 // NewCandleModel creates a new CandleModel
 func NewCandleModel() CandleModel {
 	return CandleModel{
-		candles:    make([]CandleData, 0),
+		candlesMap: make(map[string][]CandleData),
 		maxCandles: 40,
 	}
 }
 
 // NewCandleModelWithData creates a CandleModel pre-loaded with historical candles
 func NewCandleModelWithData(market, interval string, initial []CandleData) CandleModel {
+	cm := make(map[string][]CandleData)
+	cm[market] = initial
 	return CandleModel{
-		candles:    initial,
-		market:     market,
+		candlesMap: cm,
+		markets:    []string{market},
 		interval:   interval,
 		maxCandles: 40,
 	}
@@ -90,6 +93,14 @@ func (m CandleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
+		case "tab", "right":
+			if len(m.markets) > 0 {
+				m.current = (m.current + 1) % len(m.markets)
+			}
+		case "shift+tab", "left":
+			if len(m.markets) > 0 {
+				m.current = (m.current - 1 + len(m.markets)) % len(m.markets)
+			}
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
@@ -101,7 +112,11 @@ func (m CandleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case WsMsg:
 		var c ws.CandleStream
 		if err := json.Unmarshal(msg.Data, &c); err == nil && c.Code != "" {
-			m.market = c.Code
+			code := c.Code
+			if _, exists := m.candlesMap[code]; !exists {
+				m.markets = append(m.markets, code)
+				m.candlesMap[code] = make([]CandleData, 0)
+			}
 			cd := CandleData{
 				Open:   c.OpeningPrice,
 				High:   c.HighPrice,
@@ -110,20 +125,22 @@ func (m CandleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				Volume: c.CandleAccTradeVolume,
 				Time:   c.CandleDateTimeKST,
 			}
+			candles := m.candlesMap[code]
 			// Same time → update last candle; new time → append
-			if len(m.candles) > 0 && m.candles[len(m.candles)-1].Time == cd.Time {
-				m.candles[len(m.candles)-1] = cd
+			if len(candles) > 0 && candles[len(candles)-1].Time == cd.Time {
+				candles[len(candles)-1] = cd
 			} else {
-				m.candles = append(m.candles, cd)
+				candles = append(candles, cd)
 			}
-			// Trim old candles beyond buffer (keep 2x maxCandles for safety)
+			// Trim buffer
 			bufSize := m.maxCandles * 2
 			if bufSize < 100 {
 				bufSize = 100
 			}
-			if len(m.candles) > bufSize {
-				m.candles = m.candles[len(m.candles)-bufSize:]
+			if len(candles) > bufSize {
+				candles = candles[len(candles)-bufSize:]
 			}
+			m.candlesMap[code] = candles
 		}
 	case ErrMsg:
 		return m, tea.Quit
@@ -134,14 +151,34 @@ func (m CandleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m CandleModel) View() string {
-	if len(m.candles) == 0 {
+	multiMarket := len(m.markets) > 1
+
+	// 현재 마켓 결정
+	var currentMarket string
+	var candles []CandleData
+	if len(m.markets) > 0 {
+		currentMarket = m.markets[m.current]
+		candles = m.candlesMap[currentMarket]
+	}
+
+	if len(candles) == 0 {
 		return "\n  Waiting for data...\n"
 	}
 
 	var b strings.Builder
 
+	// 탭 바 (복수 마켓일 때만)
+	if multiMarket {
+		b.WriteString(RenderTabBar(m.markets, m.current))
+		b.WriteString("\n\n")
+	}
+
 	// Determine visible candles
-	chartHeight := m.height - headerLines - footerLines - volumeHeight
+	extraLines := 0
+	if multiMarket {
+		extraLines = 2 // 탭 바 + 빈 줄
+	}
+	chartHeight := m.height - headerLines - footerLines - volumeHeight - extraLines
 	if chartHeight < 5 {
 		chartHeight = 5
 	}
@@ -153,7 +190,7 @@ func (m CandleModel) View() string {
 		}
 	}
 
-	visible := m.candles
+	visible := candles
 	if len(visible) > maxCandles {
 		visible = visible[len(visible)-maxCandles:]
 	}
@@ -175,7 +212,7 @@ func (m CandleModel) View() string {
 	}
 	title := fmt.Sprintf("%s %s [%s]",
 		i18n.T(i18n.TUICandleTitle),
-		StyleTitle.Render(m.market),
+		StyleTitle.Render(currentMarket),
 		intervalLabel)
 	b.WriteString(StyleTitle.Render(title))
 	b.WriteString("\n")
@@ -204,8 +241,12 @@ func (m CandleModel) View() string {
 	b.WriteString(renderSummaryLine(visible))
 	b.WriteString("\n")
 
-	// Quit hint
-	b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	// Hint
+	if multiMarket {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUITabHint)))
+	} else {
+		b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
+	}
 	b.WriteString("\n")
 
 	return TruncateToHeight(b.String(), m.height)

@@ -222,6 +222,10 @@ export UPBIT_SECRET_KEY=your_secret_key
 
 Market data commands work without authentication. Trading, deposits/withdrawals, and personal WebSocket streams (`watch my-order`, `watch my-asset`) require authentication.
 
+## Acknowledgements
+
+- Candlestick chart rendering inspired by [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)
+
 ## License
 
 MIT
