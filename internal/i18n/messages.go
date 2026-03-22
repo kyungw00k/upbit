@@ -381,6 +381,21 @@ const (
 	ErrPriceParse     Key = "ErrPriceParse"
 	ErrUnknownSide    Key = "ErrUnknownSide"
 
+	// ── Update ──
+
+	MsgUpdateShort        Key = "MsgUpdateShort"
+	MsgUpdateChecking     Key = "MsgUpdateChecking"
+	MsgUpdateLatest       Key = "MsgUpdateLatest"
+	MsgUpdateAvailable    Key = "MsgUpdateAvailable"
+	MsgUpdateDownloading  Key = "MsgUpdateDownloading"
+	MsgUpdateComplete     Key = "MsgUpdateComplete"
+	MsgUpdateAlreadyLatest Key = "MsgUpdateAlreadyLatest"
+	ErrUpdateFetch        Key = "ErrUpdateFetch"
+	ErrUpdateNoAsset      Key = "ErrUpdateNoAsset"
+	ErrUpdateDownload     Key = "ErrUpdateDownload"
+	ErrUpdateReplace      Key = "ErrUpdateReplace"
+	FlagUpdateCheckUsage  Key = "FlagUpdateCheckUsage"
+
 	// ── Confirm ──
 
 	MsgConfirmNonTTY Key = "MsgConfirmNonTTY"
@@ -739,6 +754,20 @@ var ko = map[Key]string{
 	ErrPriceParse:    "가격 파싱 실패",
 	ErrUnknownSide:   "알 수 없는 side: %s",
 
+	// Update
+	MsgUpdateShort:         "최신 버전 확인 및 업데이트",
+	MsgUpdateChecking:      "최신 버전 확인 중...",
+	MsgUpdateLatest:        "최신 버전: %s",
+	MsgUpdateAvailable:     "업데이트 가능: %s → %s",
+	MsgUpdateDownloading:   "다운로드 중...",
+	MsgUpdateComplete:      "업데이트 완료: %s → %s",
+	MsgUpdateAlreadyLatest: "이미 최신 버전입니다 (%s)",
+	ErrUpdateFetch:         "최신 버전 확인 실패",
+	ErrUpdateNoAsset:       "현재 플랫폼(%s/%s)에 맞는 바이너리를 찾을 수 없습니다",
+	ErrUpdateDownload:      "다운로드 실패",
+	ErrUpdateReplace:       "바이너리 교체 실패",
+	FlagUpdateCheckUsage:   "업데이트 확인만 (다운로드 안 함)",
+
 	// Confirm
 	MsgConfirmNonTTY: "확인 프롬프트: non-tty 환경에서는 --force 플래그가 필요합니다.",
 	ErrInputRead:     "입력 읽기 실패",
@@ -1095,6 +1124,20 @@ var en = map[Key]string{
 	ErrTickSizeZero:  "Tick size is 0: %s",
 	ErrPriceParse:    "Failed to parse price",
 	ErrUnknownSide:   "Unknown side: %s",
+
+	// Update
+	MsgUpdateShort:         "Check and install latest version",
+	MsgUpdateChecking:      "Checking for updates...",
+	MsgUpdateLatest:        "Latest version: %s",
+	MsgUpdateAvailable:     "Update available: %s → %s",
+	MsgUpdateDownloading:   "Downloading...",
+	MsgUpdateComplete:      "Updated: %s → %s",
+	MsgUpdateAlreadyLatest: "Already up to date (%s)",
+	ErrUpdateFetch:         "Failed to check latest version",
+	ErrUpdateNoAsset:       "No binary found for %s/%s",
+	ErrUpdateDownload:      "Download failed",
+	ErrUpdateReplace:       "Failed to replace binary",
+	FlagUpdateCheckUsage:   "Check only, don't download",
 
 	// Confirm
 	MsgConfirmNonTTY: "Confirmation prompt: --force flag required in non-tty environment.",
