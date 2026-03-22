@@ -6,188 +6,83 @@
 
 [![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![API Coverage](https://img.shields.io/badge/Upbit_API-35_commands-brightgreen)]()
+[![Release](https://img.shields.io/github/v/release/kyungw00k/upbit)](https://github.com/kyungw00k/upbit/releases)
 
-## Quick Demo
+## Demo
 
 ![demo](docs/demo.gif)
 
-## Why upbit?
-
-### AI-First Design
-- `upbit tool-schema` exports JSON Schema for LLM tool calling (OpenAI/MCP) — 35 commands covered
-- Non-TTY auto-detects and outputs JSON — perfect for AI agent pipelines
-- Structured error codes for programmatic error handling
-- Designed to be used as an AI agent's tool alongside human terminal use
-
-### Smart Trading
-- Tick-size auto-correction prevents order failures across KRW/BTC/USDT markets
-- SQLite candle cache with auto-pagination (`--from 2025-01-01` fetches all history)
-- Market validation before WebSocket subscriptions
-- Buy/sell confirmation prompts with `--force` for automation
-
-### Multilingual
-- `LANG=ko_KR` → Korean interface
-- Default → English interface
-- POSIX locale standard (LC_ALL > LC_MESSAGES > LANG)
-
-### Self-contained
-- Single static binary, zero runtime dependencies
-- Self-update: `upbit update`
-- Cross-platform: Linux, macOS, Windows (amd64, arm64)
-
 ## Installation
 
-### Homebrew (macOS / Linux)
-
 ```bash
-brew install kyungw00k/upbit/upbit
-```
-
-### From Release
-
-```bash
-# macOS / Linux
-curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz
-mv upbit ~/.local/bin/
-```
-
-### From Source
-
-```bash
-git clone https://github.com/kyungw00k/upbit.git
-cd upbit
-make install   # installs to ~/.local/bin/upbit
-```
-
-### Via Go
-
-```bash
-go install github.com/kyungw00k/upbit/cmd/upbit@latest
+brew install kyungw00k/upbit/upbit    # Homebrew
+# or
+curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/
 ```
 
 ## Quick Start
 
 ```bash
-# No auth required — market data
-upbit ticker KRW-BTC
-upbit candle KRW-BTC -i 1d -c 5
+upbit ticker KRW-BTC                           # Current price
+upbit candle KRW-BTC -i 1d --from 2025-01-01   # Historical candles (cached)
+upbit watch candle KRW-BTC -i 1m               # Live candlestick chart (TUI)
 
-# Set API keys (env vars only — never stored on disk)
-export UPBIT_ACCESS_KEY=your_key
-export UPBIT_SECRET_KEY=your_secret
-
-# Trading
-upbit buy KRW-BTC -p 100000000 -V 0.001
-upbit sell KRW-BTC -p 110000000 -V 0.001
-upbit balance
+export UPBIT_ACCESS_KEY=... UPBIT_SECRET_KEY=...
+upbit buy KRW-BTC -p 100000000 -V 0.001        # Limit buy
+upbit balance                                   # Portfolio with KRW evaluation
 ```
 
-## AI Integration
+## Features
 
-```bash
-# Export all command schemas for LLM function calling
-upbit tool-schema
+**AI-First** — `upbit tool-schema` exports JSON Schema for LLM/MCP tool calling. Non-TTY auto-outputs JSON for seamless AI agent pipelines.
 
-# Export specific command schema
-upbit tool-schema buy
+**Real-time TUI** — `watch ticker/orderbook/trade/candle` powered by Bubble Tea. Multi-market Tab switching. ASCII candlestick chart with volume pane.
 
-# AI agents get JSON automatically (non-TTY)
-upbit ticker KRW-BTC | jq '.trade_price'
+**Smart Trading** — Tick-size auto-correction prevents order failures across KRW/BTC/USDT markets. Confirmation prompts (`--force` to skip). Test orders (`--test`).
 
-# Force JSON in any context
-upbit ticker KRW-BTC -o json
+**Candle Cache** — SQLite cache with `--from` auto-pagination fetches full history. `upbit cache` to inspect or `--clear`.
 
-# Select specific fields
-upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
-```
+**i18n** — `LANG=ko_KR` → Korean, default → English. POSIX locale standard (LC_ALL > LC_MESSAGES > LANG).
 
-### Example: tool-schema output
-
-```json
-[
-  {
-    "name": "upbit_buy",
-    "description": "Buy order",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "market": { "type": "string", "description": "Market code (e.g. KRW-BTC)" },
-        "price": { "type": "string", "description": "Order price" },
-        "volume": { "type": "string", "description": "Order volume" },
-        "total": { "type": "string", "description": "Order total (market buy)" },
-        "force": { "type": "boolean", "description": "Skip confirmation prompt" },
-        "test": { "type": "boolean", "description": "Test order (no real execution)" }
-      },
-      "required": ["market"]
-    }
-  }
-]
-```
+**Self-Update** — `upbit update` downloads latest from GitHub Releases with SHA256 verification. `--check` to preview.
 
 ## Commands
 
-### Market Data (no auth)
+Run `upbit --help` for full list. Key commands:
 
-| Command | Description |
-|---------|-------------|
-| `ticker <market...>` | Current price |
-| `candle <market>` | OHLCV candles |
-| `orderbook <market...>` | Order book |
-| `trades <market>` | Recent trades |
-| `market` | List all markets |
-| `tick-size <market...>` | Tick size info |
-| `orderbook-levels <market...>` | Orderbook depth levels |
+| Category | Commands |
+|----------|----------|
+| Market Data | `ticker`, `candle`, `orderbook`, `trades`, `market`, `tick-size` |
+| Trading | `buy`, `sell`, `balance`, `order list/show/cancel/replace` |
+| Wallet | `wallet`, `deposit list/show/address`, `withdraw list/show/request` |
+| Real-time | `watch ticker/orderbook/trade/candle/my-order/my-asset` |
+| Utilities | `tool-schema`, `api-keys`, `cache`, `update` |
 
-### Trading (auth required)
+## Output
 
-| Command | Description |
-|---------|-------------|
-| `buy <market>` | Buy order (`-p` price, `-V` volume, `-t` total) |
-| `sell <market>` | Sell order |
-| `balance [currency]` | Account balance with KRW evaluation |
-| `order list` | Open/closed orders |
-| `order show <uuid>` | Order details |
-| `order cancel <uuid>` | Cancel order |
-| `order replace <uuid>` | Modify order (cancel and re-order) |
-| `order chance <market>` | Order constraints |
+```bash
+upbit ticker KRW-BTC              # Table (terminal)
+upbit ticker KRW-BTC | jq .       # JSON (pipe, auto)
+upbit ticker KRW-BTC -o csv       # CSV
+upbit ticker KRW-BTC --json price # Field selection
+```
 
-### Deposits & Withdrawals (auth required)
+| Context | Default | Override |
+|---------|---------|---------|
+| Terminal (TTY) | Aligned table | `-o json`, `-o csv` |
+| Pipe (non-TTY) | Compact JSON | `-o table`, `-o jsonl` |
 
-| Command | Description |
-|---------|-------------|
-| `wallet` | Wallet service status |
-| `deposit list` | List deposits |
-| `deposit show <uuid>` | Deposit details |
-| `deposit address [currency]` | Deposit address |
-| `deposit address create` | Generate new deposit address |
-| `withdraw list` | List withdrawals |
-| `withdraw show <uuid>` | Withdrawal details |
-| `withdraw request` | Request withdrawal |
-| `withdraw cancel <uuid>` | Cancel withdrawal |
-| `travelrule vasps` | Travel rule supported exchanges |
-| `travelrule verify-txid` | Verify by TxID |
-| `travelrule verify-uuid` | Verify by UUID |
+## Authentication
 
-### Real-time (WebSocket)
+API keys are read **only from environment variables** — never stored on disk.
 
-| Command | Description |
-|---------|-------------|
-| `watch ticker <market...>` | Live price stream |
-| `watch orderbook <market...>` | Live order book |
-| `watch trade <market...>` | Live trades |
-| `watch candle <market...>` | Live candles |
-| `watch my-order` | My order events (auth) |
-| `watch my-asset` | My asset changes (auth) |
+```bash
+export UPBIT_ACCESS_KEY=your_access_key
+export UPBIT_SECRET_KEY=your_secret_key
+```
 
-### Utilities
-
-| Command | Description |
-|---------|-------------|
-| `tool-schema [cmd]` | JSON Schema for LLM/MCP |
-| `api-keys` | API key list |
-| `cache` | Cache info / `--clear` |
-| `update` | Self-update / `--check` |
+Market data commands work without authentication.
+Trading, deposits/withdrawals, and personal WebSocket streams (`watch my-order`, `watch my-asset`) require authentication.
 
 ## Real-time TUI
 
@@ -206,18 +101,32 @@ upbit watch orderbook KRW-BTC
 upbit watch candle KRW-BTC -i 1m
 ```
 
-## Output Formats
-
-| Context | Default | Override |
-|---------|---------|---------|
-| Terminal (TTY) | Aligned table | `-o json`, `-o csv` |
-| Pipe (non-TTY) | Compact JSON | `-o table`, `-o jsonl` |
+## Candle Cache
 
 ```bash
-upbit ticker KRW-BTC              # table (terminal)
-upbit ticker KRW-BTC | jq .       # auto JSON (pipe)
-upbit ticker KRW-BTC -o csv       # CSV
-upbit ticker KRW-BTC --json price # selected fields
+upbit candle KRW-BTC --from 2025-01-01   # Auto-paginate (SQLite cached)
+upbit candle KRW-BTC --from 2025-01-01 --no-cache
+upbit cache                               # Cache info
+upbit cache --clear                       # Clear cache
+```
+
+## AI Integration
+
+```bash
+# Export all command schemas for LLM function calling
+upbit tool-schema
+
+# AI agents get JSON automatically (non-TTY)
+upbit ticker KRW-BTC | jq '.trade_price'
+
+# Select specific fields
+upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
+```
+
+## Claude Code Integration
+
+```bash
+claude skill add --url https://kyungw00k.github.io/upbit/skill.md
 ```
 
 ## Self-Update
@@ -227,44 +136,11 @@ upbit update          # Download and install latest version
 upbit update --check  # Check only, don't download
 ```
 
-## Release Workflow
-
-Releases are fully automated via [go-semantic-release](https://github.com/go-semantic-release/semantic-release) + [goreleaser](https://goreleaser.com):
-
-1. Push to `main` with [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, etc.)
-2. Version is determined automatically (semver)
-3. Cross-compiled binaries for Linux, macOS, Windows (amd64/arm64)
-4. GitHub Release created with changelog and checksums
-5. Users can update via `upbit update`
-
-## Candle Cache
-
-```bash
-# Auto-paginate from date (cached in SQLite)
-upbit candle KRW-BTC --from 2025-01-01
-
-# Bypass cache
-upbit candle KRW-BTC --from 2025-01-01 --no-cache
-
-# Cache info and management
-upbit cache
-upbit cache --clear
-```
-
-## Authentication
-
-API keys are read **only from environment variables** — never stored on disk.
-
-```bash
-export UPBIT_ACCESS_KEY=your_access_key
-export UPBIT_SECRET_KEY=your_secret_key
-```
-
-Market data commands work without authentication. Trading, deposits/withdrawals, and personal WebSocket streams (`watch my-order`, `watch my-asset`) require authentication.
+Single static binary, zero runtime dependencies. Cross-platform: Linux, macOS, Windows (amd64, arm64).
 
 ## Acknowledgements
 
-- Candlestick chart rendering inspired by [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)
+- Candlestick chart inspired by [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)
 
 ## License
 
