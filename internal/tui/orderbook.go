@@ -93,12 +93,15 @@ func (m OrderbookModel) View() string {
 	}
 
 	// 터미널 높이에 맞게 스프레드 중심으로 위/아래 동일 개수 표시
-	// 사용 가능 줄 = 전체 높이 - 헤더(2) - 스프레드(1) - 하단(2)
+	// 고정 줄: 헤더(2) + 스프레드(1) + 하단(2) = 5줄
 	availableLines := m.height - 5
-	if availableLines < 4 {
-		availableLines = 4
+	if availableLines < 2 {
+		availableLines = 2
 	}
 	showPerSide := availableLines / 2
+	if showPerSide < 1 {
+		showPerSide = 1
+	}
 	if showPerSide > len(units) {
 		showPerSide = len(units)
 	}
