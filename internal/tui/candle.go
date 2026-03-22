@@ -406,30 +406,67 @@ func renderTimeAxis(candles []CandleData, maxCandles int) string {
 		return ""
 	}
 
-	var b strings.Builder
-
-	// Show time labels at intervals
-	labelInterval := len(candles) / 5
-	if labelInterval < 1 {
-		labelInterval = 1
+	// 시간 라벨은 "HH:MM" (5글자), 캔들 폭은 3글자
+	// 라벨이 겹치지 않도록 최소 2캔들(6글자) 간격으로 표시
+	const labelWidth = 5
+	minGap := (labelWidth + candleWidth - 1) / candleWidth // 캔들 단위 최소 간격 = 2
+	if minGap < 2 {
+		minGap = 2
 	}
 
-	// Build time axis with spacing
+	labelInterval := len(candles) / 5
+	if labelInterval < minGap {
+		labelInterval = minGap
+	}
+
+	// 라벨 위치 결정
+	labelAt := make(map[int]string)
 	for i, c := range candles {
-		if i%labelInterval == 0 || i == len(candles)-1 {
-			// Extract HH:MM from datetime string (format: YYYY-MM-DDTHH:MM:SS)
-			timeLabel := extractTime(c.Time)
-			// Pad/truncate to candleWidth
-			if len(timeLabel) >= candleWidth {
-				b.WriteString(StyleHint.Render(timeLabel[:candleWidth]))
-			} else {
-				b.WriteString(StyleHint.Render(timeLabel))
-				for j := len(timeLabel); j < candleWidth; j++ {
-					b.WriteByte(' ')
-				}
+		if i%labelInterval == 0 {
+			labelAt[i] = extractTime(c.Time)
+		}
+	}
+	// 마지막 캔들도 항상 표시 (겹치지 않으면)
+	lastIdx := len(candles) - 1
+	if _, exists := labelAt[lastIdx]; !exists {
+		// 이전 라벨과 충분한 거리?
+		tooClose := false
+		for idx := range labelAt {
+			if lastIdx-idx < minGap {
+				tooClose = true
+				break
 			}
+		}
+		if !tooClose {
+			labelAt[lastIdx] = extractTime(candles[lastIdx].Time)
+		}
+	}
+
+	// 렌더링: 각 캔들 위치에 라벨 또는 공백
+	var b strings.Builder
+	skip := 0
+	for i := range candles {
+		if skip > 0 {
+			skip--
+			continue
+		}
+		if label, ok := labelAt[i]; ok {
+			b.WriteString(StyleHint.Render(label))
+			// 라벨이 차지하는 추가 캔들 수 = (labelWidth - candleWidth) / candleWidth
+			extraCandles := (labelWidth - candleWidth) / candleWidth
+			if extraCandles < 0 {
+				extraCandles = 0
+			}
+			// 라벨 후 다음 캔들까지 패딩
+			remaining := candleWidth*(extraCandles+1) - labelWidth
+			for j := 0; j < remaining; j++ {
+				b.WriteByte(' ')
+			}
+			skip = extraCandles
 		} else {
-			b.WriteString("   ")
+			for j := 0; j < candleWidth; j++ {
+				b.WriteByte(' ')
+			}
 		}
 	}
 
