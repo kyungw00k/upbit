@@ -159,5 +159,5 @@ func (m OrderbookModel) View() string {
 	b.WriteString(StyleHint.Render(i18n.T(i18n.TUIQuitHint)))
 	b.WriteString("\n")
 
-	return b.String()
+	return TruncateToHeight(b.String(), m.height)
 }

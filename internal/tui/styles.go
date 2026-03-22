@@ -1,6 +1,10 @@
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"strings"
+
+	"github.com/charmbracelet/lipgloss"
+)
 
 var (
 	// StyleRise 상승 (초록)
@@ -44,4 +48,16 @@ func SideStyle(askBid string) lipgloss.Style {
 		return StyleFall
 	}
 	return StyleRise
+}
+
+// TruncateToHeight 터미널 높이 초과 시 위에서부터 유지하고 아래를 자름
+func TruncateToHeight(s string, height int) string {
+	if height <= 0 {
+		return s
+	}
+	lines := strings.Split(s, "\n")
+	if len(lines) > height {
+		lines = lines[:height]
+	}
+	return strings.Join(lines, "\n")
 }
