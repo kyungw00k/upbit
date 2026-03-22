@@ -17,6 +17,21 @@ type ToolSchema struct {
 	Name        string              `json:"name"`
 	Description string              `json:"description"`
 	Parameters  ToolSchemaParams    `json:"parameters"`
+	Response    *ToolSchemaResponse `json:"response,omitempty"`
+}
+
+// ToolSchemaResponse 응답 스키마 정의
+type ToolSchemaResponse struct {
+	Type        string                       `json:"type"`
+	Description string                       `json:"description,omitempty"`
+	Items       *ToolSchemaResponseObject    `json:"items,omitempty"`
+	Properties  map[string]ToolSchemaProperty `json:"properties,omitempty"`
+}
+
+// ToolSchemaResponseObject 배열 내 객체 정의
+type ToolSchemaResponseObject struct {
+	Type       string                       `json:"type"`
+	Properties map[string]ToolSchemaProperty `json:"properties"`
 }
 
 // ToolSchemaParams JSON Schema 파라미터 정의
@@ -152,7 +167,92 @@ func buildSchema(cmd *cobra.Command, prefix string) ToolSchema {
 		}
 	})
 
+	// 응답 스키마 매핑
+	if resp, ok := responseSchemas[fullName]; ok {
+		schema.Response = resp
+	}
+
 	return schema
+}
+
+// orderResponseProps buy/sell/order show/order list 공용 주문 응답 필드
+var orderResponseProps = map[string]ToolSchemaProperty{
+	"uuid":             {Type: "string", Description: "Order UUID"},
+	"market":           {Type: "string", Description: "Market code"},
+	"side":             {Type: "string", Description: "Order side: bid (buy) or ask (sell)"},
+	"ord_type":         {Type: "string", Description: "Order type: limit, price (market buy), market (market sell), best"},
+	"price":            {Type: "string", Description: "Order price (for limit orders)"},
+	"volume":           {Type: "string", Description: "Order volume"},
+	"remaining_volume": {Type: "string", Description: "Remaining unfilled volume"},
+	"executed_volume":  {Type: "string", Description: "Filled volume"},
+	"state":            {Type: "string", Description: "Order state: wait, watch, done, cancel"},
+	"created_at":       {Type: "string", Description: "Order creation time (ISO 8601)"},
+}
+
+// responseSchemas 명령별 응답 스키마 (키: fullName, 예: "upbit_ticker")
+var responseSchemas = map[string]*ToolSchemaResponse{
+	"upbit_ticker": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":               {Type: "string", Description: "Market code (e.g. KRW-BTC)"},
+		"trade_price":          {Type: "number", Description: "Current trade price"},
+		"opening_price":        {Type: "number", Description: "Opening price of the day"},
+		"high_price":           {Type: "number", Description: "Highest price of the day"},
+		"low_price":            {Type: "number", Description: "Lowest price of the day"},
+		"prev_closing_price":   {Type: "number", Description: "Previous closing price"},
+		"change":               {Type: "string", Description: "Price change direction: RISE, EVEN, FALL"},
+		"change_price":         {Type: "number", Description: "Absolute price change from previous close"},
+		"change_rate":          {Type: "number", Description: "Price change rate (unsigned, e.g. 0.023 = 2.3%)"},
+		"signed_change_price":  {Type: "number", Description: "Signed price change (positive=rise, negative=fall)"},
+		"signed_change_rate":   {Type: "number", Description: "Signed change rate (e.g. 0.023 = +2.3%, -0.01 = -1%)"},
+		"trade_volume":         {Type: "number", Description: "Last trade volume"},
+		"acc_trade_volume_24h": {Type: "number", Description: "24h accumulated trade volume"},
+		"acc_trade_price_24h":  {Type: "number", Description: "24h accumulated trade price (KRW)"},
+		"timestamp":            {Type: "number", Description: "Timestamp in milliseconds"},
+	}}},
+	"upbit_candle": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":                   {Type: "string", Description: "Market code"},
+		"candle_date_time_utc":     {Type: "string", Description: "Candle start time (UTC, ISO 8601)"},
+		"candle_date_time_kst":     {Type: "string", Description: "Candle start time (KST, ISO 8601)"},
+		"opening_price":            {Type: "number", Description: "Open price"},
+		"high_price":               {Type: "number", Description: "High price"},
+		"low_price":                {Type: "number", Description: "Low price"},
+		"trade_price":              {Type: "number", Description: "Close price"},
+		"candle_acc_trade_volume":  {Type: "number", Description: "Volume during candle period"},
+		"candle_acc_trade_price":   {Type: "number", Description: "Trade amount during candle period"},
+	}}},
+	"upbit_balance": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"currency":      {Type: "string", Description: "Currency code (e.g. KRW, BTC)"},
+		"balance":       {Type: "string", Description: "Available balance"},
+		"locked":        {Type: "string", Description: "Locked balance (in pending orders)"},
+		"avg_buy_price": {Type: "string", Description: "Average buy price"},
+		"eval_krw":      {Type: "string", Description: "Estimated KRW value (balance * current price)"},
+	}}},
+	"upbit_buy":  {Type: "object", Properties: orderResponseProps},
+	"upbit_sell": {Type: "object", Properties: orderResponseProps},
+	"upbit_market": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":       {Type: "string", Description: "Market code (e.g. KRW-BTC)"},
+		"korean_name":  {Type: "string", Description: "Korean name of the asset"},
+		"english_name": {Type: "string", Description: "English name of the asset"},
+	}}},
+	"upbit_orderbook": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":          {Type: "string", Description: "Market code"},
+		"total_ask_size":  {Type: "number", Description: "Total ask (sell) volume"},
+		"total_bid_size":  {Type: "number", Description: "Total bid (buy) volume"},
+		"orderbook_units": {Type: "array", Description: "List of price levels with ask_price, bid_price, ask_size, bid_size"},
+	}}},
+	"upbit_trades": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":          {Type: "string", Description: "Market code"},
+		"trade_price":     {Type: "number", Description: "Trade price"},
+		"trade_volume":    {Type: "number", Description: "Trade volume"},
+		"ask_bid":         {Type: "string", Description: "Trade side: ASK (sell) or BID (buy)"},
+		"trade_timestamp": {Type: "number", Description: "Trade timestamp in milliseconds"},
+	}}},
+	"upbit_order_list": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: orderResponseProps}},
+	"upbit_order_show": {Type: "object", Properties: orderResponseProps},
+	"upbit_tick-size": {Type: "array", Items: &ToolSchemaResponseObject{Type: "object", Properties: map[string]ToolSchemaProperty{
+		"market":         {Type: "string", Description: "Market code"},
+		"quote_currency": {Type: "string", Description: "Quote currency (KRW, BTC, USDT)"},
+		"tick_size":      {Type: "string", Description: "Minimum price unit for orders"},
+	}}},
 }
 
 // argDescriptions 위치 인자별 설명 (명령 Use 이름 → 인자 이름 → 설명)
