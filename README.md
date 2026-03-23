@@ -15,9 +15,8 @@
 ## Installation
 
 ```bash
-brew install kyungw00k/cli/upbit    # Homebrew
-# or
-curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/
+curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # Quick install
+brew install kyungw00k/cli/upbit                          # Homebrew
 ```
 
 ## Quick Start
@@ -125,29 +124,13 @@ upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
 
 ## AI Agent Integration
 
-### Claude Code
+Install the upbit skill for your AI agent:
 
 ```bash
-# Project-level (auto-discovered from repo)
-# Just clone this repo — .claude/skills/upbit-cli/ is included
-
-# Or install from URL
-claude skill add --url https://kyungw00k.github.io/upbit/skill.md
+curl -sSL https://kyungw00k.dev/upbit/install-skill.sh | sh
 ```
 
-### Other AI Agents ([agentskills.io](https://agentskills.io) compatible)
-
-Copy `.agents/skills/upbit/` to your project or `~/.agents/skills/`:
-
-```bash
-# Project-level
-mkdir -p .agents/skills
-cp -r <upbit-repo>/.agents/skills/upbit .agents/skills/
-
-# User-level (all projects)
-mkdir -p ~/.agents/skills
-cp -r <upbit-repo>/.agents/skills/upbit ~/.agents/skills/
-```
+This installs to both `~/.agents/skills/upbit/` ([agentskills.io](https://agentskills.io)) and `.claude/skills/upbit/` (Claude Code).
 
 ### Tool Schema for LLM Function Calling
 

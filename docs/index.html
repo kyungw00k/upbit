@@ -48,8 +48,8 @@
 
     <div class="section">
       <h2>Install</h2>
+      <pre><code>curl -sSL https://kyungw00k.dev/upbit/install.sh | sh</code></pre>
       <pre><code>brew install kyungw00k/cli/upbit</code></pre>
-      <pre><code>curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/</code></pre>
     </div>
 
     <div class="grid">
@@ -73,12 +73,11 @@
 
     <div class="section">
       <h2>AI Agent Skills</h2>
-
-      <h3 style="margin-top:1rem; font-size:0.95rem;">Claude Code</h3>
-      <pre><code>claude skill add --url https://kyungw00k.github.io/upbit/skill.md</code></pre>
-
-      <h3 style="margin-top:1rem; font-size:0.95rem;">agentskills.io compatible</h3>
-      <pre><code>cp -r .agents/skills/upbit ~/.agents/skills/</code></pre>
+      <pre><code>curl -sSL https://kyungw00k.dev/upbit/install-skill.sh | sh</code></pre>
+      <p style="color: var(--dim); font-size: 0.9rem; margin-top: 0.5rem;">
+        Installs to <code>~/.agents/skills/upbit/</code> (<a href="https://agentskills.io">agentskills.io</a>)
+        and <code>.claude/skills/upbit/</code> (Claude Code).
+      </p>
 
       <h3 style="margin-top:1rem; font-size:0.95rem;">LLM Tool Schema</h3>
       <pre><code>upbit tool-schema        # All 35 commands as JSON Schema

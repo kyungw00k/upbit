@@ -15,9 +15,8 @@
 ## 설치
 
 ```bash
-brew install kyungw00k/cli/upbit    # Homebrew
-# or
-curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/
+curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # 빠른 설치
+brew install kyungw00k/cli/upbit                          # Homebrew
 ```
 
 ## 빠른 시작
@@ -112,29 +111,13 @@ upbit cache --clear                       # 캐시 삭제
 
 ## AI 에이전트 연동
 
-### Claude Code
+AI 에이전트용 upbit 스킬 설치:
 
 ```bash
-# 프로젝트 레벨 (리포 클론 시 자동 인식)
-# .claude/skills/upbit-cli/ 포함됨
-
-# 또는 URL로 설치
-claude skill add --url https://kyungw00k.github.io/upbit/skill.md
+curl -sSL https://kyungw00k.dev/upbit/install-skill.sh | sh
 ```
 
-### 기타 AI 에이전트 ([agentskills.io](https://agentskills.io) 호환)
-
-`.agents/skills/upbit/` 디렉토리를 프로젝트 또는 `~/.agents/skills/`에 복사:
-
-```bash
-# 프로젝트 레벨
-mkdir -p .agents/skills
-cp -r <upbit-repo>/.agents/skills/upbit .agents/skills/
-
-# 사용자 레벨 (모든 프로젝트)
-mkdir -p ~/.agents/skills
-cp -r <upbit-repo>/.agents/skills/upbit ~/.agents/skills/
-```
+`~/.agents/skills/upbit/` ([agentskills.io](https://agentskills.io))과 `.claude/skills/upbit/` (Claude Code) 양쪽에 설치됩니다.
 
 ### LLM 도구 호출용 스키마
 
