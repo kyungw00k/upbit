@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>upbit — AI-native CLI for Upbit Exchange</title>
+  <style>
+    :root { --bg: #0d1117; --fg: #e6edf3; --accent: #58a6ff; --green: #3fb950; --dim: #8b949e; --card: #161b22; --border: #30363d; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    h1 span { color: var(--accent); }
+    .tagline { color: var(--dim); font-size: 1.1rem; margin-bottom: 2rem; }
+    .demo { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+    .demo img { width: 100%; display: block; }
+    .section { margin-bottom: 2rem; }
+    .section h2 { font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--accent); }
+    pre { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    code { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--green); }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+    .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .card p { color: var(--dim); font-size: 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badges { margin-bottom: 1.5rem; }
+    .badges img { height: 20px; margin-right: 6px; }
+    .footer { color: var(--dim); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><span>upbit</span> — AI-native CLI</h1>
+    <p class="tagline">The only Upbit CLI designed for both humans and AI agents.</p>
+
+    <div class="badges">
+      <a href="https://github.com/kyungw00k/upbit/releases"><img src="https://img.shields.io/github/v/release/kyungw00k/upbit" alt="Release"></a>
+      <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go" alt="Go">
+      <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+      <img src="https://img.shields.io/badge/API-47%2F47_(100%25)-brightgreen" alt="API Coverage">
+    </div>
+
+    <div class="demo">
+      <img src="demo.gif" alt="upbit CLI demo">
+    </div>
+
+    <div class="section">
+      <h2>Install</h2>
+      <pre><code>brew install kyungw00k/cli/upbit</code></pre>
+      <pre><code>curl -sSL https://github.com/kyungw00k/upbit/releases/latest/download/upbit_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz && mv upbit ~/.local/bin/</code></pre>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Market Data</h3>
+        <p><code>ticker</code> <code>candle</code> <code>orderbook</code> <code>trades</code> <code>market</code> <code>tick-size</code></p>
+      </div>
+      <div class="card">
+        <h3>Trading</h3>
+        <p><code>buy</code> <code>sell</code> <code>balance</code> <code>order list/show/cancel</code></p>
+      </div>
+      <div class="card">
+        <h3>Real-time TUI</h3>
+        <p><code>watch ticker</code> <code>watch orderbook</code> <code>watch candle</code> — Bubble Tea powered</p>
+      </div>
+      <div class="card">
+        <h3>AI Integration</h3>
+        <p><code>tool-schema</code> for LLM/MCP. Non-TTY auto-JSON. Response field descriptions.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>AI Agent Skills</h2>
+
+      <h3 style="margin-top:1rem; font-size:0.95rem;">Claude Code</h3>
+      <pre><code>claude skill add --url https://kyungw00k.github.io/upbit/skill.md</code></pre>
+
+      <h3 style="margin-top:1rem; font-size:0.95rem;">agentskills.io compatible</h3>
+      <pre><code>cp -r .agents/skills/upbit ~/.agents/skills/</code></pre>
+
+      <h3 style="margin-top:1rem; font-size:0.95rem;">LLM Tool Schema</h3>
+      <pre><code>upbit tool-schema        # All 35 commands as JSON Schema
+upbit tool-schema buy    # With response field descriptions</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Features</h2>
+      <ul style="list-style: none; padding: 0;">
+        <li>&#x1f4ca; ASCII candlestick chart with volume pane</li>
+        <li>&#x1f4b1; Tick-size auto-correction (KRW/BTC/USDT)</li>
+        <li>&#x1f4be; SQLite candle cache with auto-pagination</li>
+        <li>&#x1f30d; i18n — Korean / English (POSIX locale)</li>
+        <li>&#x1f504; Self-update via <code>upbit update</code></li>
+        <li>&#x1f4e6; Single static binary, zero dependencies</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <a href="https://github.com/kyungw00k/upbit">GitHub</a> &middot;
+      <a href="https://github.com/kyungw00k/upbit/releases">Releases</a> &middot;
+      <a href="https://github.com/sponsors/kyungw00k">Sponsor</a> &middot;
+      <a href="skill.md">Skill Definition</a>
+      <p style="margin-top: 0.5rem;">MIT License &copy; 2026 kyungw00k</p>
+    </div>
+  </div>
+</body>
+</html>

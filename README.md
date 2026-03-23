@@ -123,10 +123,37 @@ upbit ticker KRW-BTC | jq '.trade_price'
 upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
 ```
 
-## Claude Code Integration
+## AI Agent Integration
+
+### Claude Code
 
 ```bash
+# Project-level (auto-discovered from repo)
+# Just clone this repo — .claude/skills/upbit-cli/ is included
+
+# Or install from URL
 claude skill add --url https://kyungw00k.github.io/upbit/skill.md
+```
+
+### Other AI Agents ([agentskills.io](https://agentskills.io) compatible)
+
+Copy `.agents/skills/upbit/` to your project or `~/.agents/skills/`:
+
+```bash
+# Project-level
+mkdir -p .agents/skills
+cp -r <upbit-repo>/.agents/skills/upbit .agents/skills/
+
+# User-level (all projects)
+mkdir -p ~/.agents/skills
+cp -r <upbit-repo>/.agents/skills/upbit ~/.agents/skills/
+```
+
+### Tool Schema for LLM Function Calling
+
+```bash
+upbit tool-schema          # All commands as JSON Schema
+upbit tool-schema buy      # Specific command with response schema
 ```
 
 ## Self-Update

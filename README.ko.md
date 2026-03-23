@@ -110,23 +110,37 @@ upbit cache                               # 캐시 정보
 upbit cache --clear                       # 캐시 삭제
 ```
 
-## AI 연동
+## AI 에이전트 연동
+
+### Claude Code
 
 ```bash
-# 전체 명령어 스키마를 LLM 함수 호출용으로 내보내기
-upbit tool-schema
+# 프로젝트 레벨 (리포 클론 시 자동 인식)
+# .claude/skills/upbit-cli/ 포함됨
 
-# AI 에이전트는 자동으로 JSON 출력 (Non-TTY)
-upbit ticker KRW-BTC | jq '.trade_price'
-
-# 특정 필드만 선택
-upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
+# 또는 URL로 설치
+claude skill add --url https://kyungw00k.github.io/upbit/skill.md
 ```
 
-## Claude Code 연동
+### 기타 AI 에이전트 ([agentskills.io](https://agentskills.io) 호환)
+
+`.agents/skills/upbit/` 디렉토리를 프로젝트 또는 `~/.agents/skills/`에 복사:
 
 ```bash
-claude skill add --url https://kyungw00k.github.io/upbit/skill.md
+# 프로젝트 레벨
+mkdir -p .agents/skills
+cp -r <upbit-repo>/.agents/skills/upbit .agents/skills/
+
+# 사용자 레벨 (모든 프로젝트)
+mkdir -p ~/.agents/skills
+cp -r <upbit-repo>/.agents/skills/upbit ~/.agents/skills/
+```
+
+### LLM 도구 호출용 스키마
+
+```bash
+upbit tool-schema          # 전체 명령 JSON Schema
+upbit tool-schema buy      # 특정 명령 (응답 스키마 포함)
 ```
 
 ## 자체 업데이트
