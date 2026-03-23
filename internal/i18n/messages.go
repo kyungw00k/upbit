@@ -425,7 +425,7 @@ const (
 var ko = map[Key]string{
 	// Root
 	MsgRootShort: "Upbit 거래소 CLI",
-	MsgRootLong:  "Upbit 거래소 CLI — 시세 조회, 거래, 입출금, 실시간 구독을 지원합니다.",
+	MsgRootLong:  "Upbit 거래소 CLI — 시세 조회, 거래, 입출금, 실시간 구독을 지원합니다.\n\n  https://github.com/kyungw00k/upbit\n  Sponsor: https://github.com/sponsors/kyungw00k",
 
 	// Groups
 	GroupQuotation: "시세 명령어:",
@@ -815,7 +815,7 @@ var ko = map[Key]string{
 var en = map[Key]string{
 	// Root
 	MsgRootShort: "Upbit Exchange CLI",
-	MsgRootLong:  "Upbit Exchange CLI — market data, trading, deposits/withdrawals, and real-time streaming.",
+	MsgRootLong:  "Upbit Exchange CLI — market data, trading, deposits/withdrawals, and real-time streaming.\n\n  https://github.com/kyungw00k/upbit\n  Sponsor: https://github.com/sponsors/kyungw00k",
 
 	// Groups
 	GroupQuotation: "Quotation commands:",
