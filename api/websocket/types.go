@@ -1,6 +1,6 @@
 package websocket
 
-// TickerStream WebSocket 현재가 스트림 메시지
+// TickerStream is a WebSocket ticker (current price) stream message.
 type TickerStream struct {
 	Type              string  `json:"type"`
 	Code              string  `json:"code"`
@@ -34,7 +34,7 @@ type TickerStream struct {
 	StreamType        string  `json:"stream_type"`
 }
 
-// TradeStream WebSocket 체결 스트림 메시지
+// TradeStream is a WebSocket trade (executed order) stream message.
 type TradeStream struct {
 	Type             string  `json:"type"`
 	Code             string  `json:"code"`
@@ -56,7 +56,7 @@ type TradeStream struct {
 	StreamType       string  `json:"stream_type"`
 }
 
-// OrderbookStream WebSocket 호가 스트림 메시지
+// OrderbookStream is a WebSocket orderbook stream message.
 type OrderbookStream struct {
 	Type           string              `json:"type"`
 	Code           string              `json:"code"`
@@ -68,7 +68,7 @@ type OrderbookStream struct {
 	StreamType     string              `json:"stream_type"`
 }
 
-// OrderbookUnitItem 호가 단위
+// OrderbookUnitItem represents a single orderbook price level.
 type OrderbookUnitItem struct {
 	AskPrice float64 `json:"ask_price"`
 	BidPrice float64 `json:"bid_price"`
@@ -76,7 +76,7 @@ type OrderbookUnitItem struct {
 	BidSize  float64 `json:"bid_size"`
 }
 
-// CandleStream WebSocket 캔들 스트림 메시지
+// CandleStream is a WebSocket candle stream message.
 type CandleStream struct {
 	Type                string  `json:"type"`
 	Code                string  `json:"code"`
@@ -92,7 +92,7 @@ type CandleStream struct {
 	StreamType          string  `json:"stream_type"`
 }
 
-// MyOrderStream WebSocket 내 주문 스트림 메시지
+// MyOrderStream is a WebSocket my-order stream message.
 type MyOrderStream struct {
 	Type            string   `json:"type"`
 	Code            string   `json:"code"`
@@ -125,7 +125,7 @@ type MyOrderStream struct {
 	StreamType      string   `json:"stream_type"`
 }
 
-// MyAssetStream WebSocket 내 자산 스트림 메시지
+// MyAssetStream is a WebSocket my-asset stream message.
 type MyAssetStream struct {
 	Type           string           `json:"type"`
 	AssetUUID      string           `json:"asset_uuid"`
@@ -135,14 +135,14 @@ type MyAssetStream struct {
 	StreamType     string           `json:"stream_type"`
 }
 
-// MyAssetItem 자산 항목
+// MyAssetItem represents a single asset entry in a MyAssetStream.
 type MyAssetItem struct {
 	Currency string  `json:"currency"`
 	Balance  float64 `json:"balance"`
 	Locked   float64 `json:"locked"`
 }
 
-// StreamMessage 타입 판별용 공통 메시지
+// StreamMessage is a minimal message used to identify the stream type.
 type StreamMessage struct {
 	Type string `json:"type"`
 }

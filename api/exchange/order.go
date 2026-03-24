@@ -8,20 +8,21 @@ import (
 	"github.com/kyungw00k/upbit/types"
 )
 
-// OrderRequest 주문 생성 요청 파라미터
+// OrderRequest holds the parameters for placing an order.
 type OrderRequest struct {
 	Market      string `json:"market"`
 	Side        string `json:"side"`                    // bid, ask
 	OrdType     string `json:"ord_type"`                // limit, price, market, best
-	Volume      string `json:"volume,omitempty"`         // 주문 수량
-	Price       string `json:"price,omitempty"`          // 주문 단가 또는 총액
+	Volume      string `json:"volume,omitempty"`         // order volume
+	Price       string `json:"price,omitempty"`          // order price or total amount
 	TimeInForce string `json:"time_in_force,omitempty"` // ioc, fok, post_only
 	SMPType     string `json:"smp_type,omitempty"`      // cancel_maker, cancel_taker, reduce
-	Identifier  string `json:"identifier,omitempty"`    // 클라이언트 지정 주문 식별자
+	Identifier  string `json:"identifier,omitempty"`    // client-assigned order identifier
 }
 
-// CreateOrder 주문 생성
+// CreateOrder places a new order.
 // API: POST /orders
+// See https://docs.upbit.com/reference/%EC%A3%BC%EB%AC%B8%ED%95%98%EA%B8%B0
 func (c *ExchangeClient) CreateOrder(ctx context.Context, req *OrderRequest) (*types.Order, error) {
 	var order types.Order
 	err := c.client.POST(ctx, "/orders", req, &order)
@@ -31,8 +32,9 @@ func (c *ExchangeClient) CreateOrder(ctx context.Context, req *OrderRequest) (*t
 	return &order, nil
 }
 
-// TestOrder 테스트 주문 (실제 체결 안됨)
+// TestOrder places a test order (not executed against the market).
 // API: POST /orders/test
+// See https://docs.upbit.com/reference/%EC%A3%BC%EB%AC%B8%ED%95%98%EA%B8%B0
 func (c *ExchangeClient) TestOrder(ctx context.Context, req *OrderRequest) (*types.Order, error) {
 	var order types.Order
 	err := c.client.POST(ctx, "/orders/test", req, &order)
@@ -42,8 +44,9 @@ func (c *ExchangeClient) TestOrder(ctx context.Context, req *OrderRequest) (*typ
 	return &order, nil
 }
 
-// GetOrder UUID로 개별 주문 조회
+// GetOrder retrieves a single order by UUID.
 // API: GET /order?uuid=xxx
+// See https://docs.upbit.com/reference/%EA%B0%9C%EB%B3%84-%EC%A3%BC%EB%AC%B8-%EC%A1%B0%ED%9A%8C
 func (c *ExchangeClient) GetOrder(ctx context.Context, uuid string) (*types.Order, error) {
 	var order types.Order
 	query := map[string]string{
@@ -56,8 +59,9 @@ func (c *ExchangeClient) GetOrder(ctx context.Context, uuid string) (*types.Orde
 	return &order, nil
 }
 
-// GetOrderByIdentifier Identifier로 개별 주문 조회
+// GetOrderByIdentifier retrieves a single order by client-assigned identifier.
 // API: GET /order?identifier=xxx
+// See https://docs.upbit.com/reference/%EA%B0%9C%EB%B3%84-%EC%A3%BC%EB%AC%B8-%EC%A1%B0%ED%9A%8C
 func (c *ExchangeClient) GetOrderByIdentifier(ctx context.Context, identifier string) (*types.Order, error) {
 	var order types.Order
 	query := map[string]string{
@@ -70,8 +74,9 @@ func (c *ExchangeClient) GetOrderByIdentifier(ctx context.Context, identifier st
 	return &order, nil
 }
 
-// ListOpenOrders 체결 대기 주문 목록 조회
+// ListOpenOrders returns the list of open (waiting) orders.
 // API: GET /orders/open
+// See https://docs.upbit.com/reference/%EB%8C%80%EA%B8%B0-%EC%A3%BC%EB%AC%B8-%EC%A1%B0%ED%9A%8C
 func (c *ExchangeClient) ListOpenOrders(ctx context.Context, market string, limit int, page int) ([]types.Order, error) {
 	var orders []types.Order
 	query := map[string]string{}
@@ -93,8 +98,9 @@ func (c *ExchangeClient) ListOpenOrders(ctx context.Context, market string, limi
 	return orders, nil
 }
 
-// ListClosedOrders 종료 주문 목록 조회
+// ListClosedOrders returns the list of closed (completed or cancelled) orders.
 // API: GET /orders/closed
+// See https://docs.upbit.com/reference/%EC%A2%85%EB%A3%8C-%EC%A3%BC%EB%AC%B8-%EC%A1%B0%ED%9A%8C
 func (c *ExchangeClient) ListClosedOrders(ctx context.Context, market string, limit int, page int) ([]types.Order, error) {
 	var orders []types.Order
 	query := map[string]string{}
@@ -116,12 +122,13 @@ func (c *ExchangeClient) ListClosedOrders(ctx context.Context, market string, li
 	return orders, nil
 }
 
-// GetOrdersByUUIDs UUID 목록으로 복수 주문 조회 (최대 100개)
+// GetOrdersByUUIDs retrieves multiple orders by UUID list (max 100).
 // API: GET /orders/uuids?uuids[]=xxx&uuids[]=yyy
+// See https://docs.upbit.com/reference/id%EB%A1%9C-%EC%A3%BC%EB%AC%B8%EC%A1%B0%ED%9A%8C
 func (c *ExchangeClient) GetOrdersByUUIDs(ctx context.Context, uuids []string) ([]types.Order, error) {
 	var orders []types.Order
 
-	// 배열 쿼리 문자열 생성: uuids[]=uuid1&uuids[]=uuid2
+	// build array query string: uuids[]=uuid1&uuids[]=uuid2
 	parts := make([]string, len(uuids))
 	for i, id := range uuids {
 		parts[i] = "uuids[]=" + id

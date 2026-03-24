@@ -1,3 +1,5 @@
+// Package websocket provides a WebSocket client for Upbit's real-time streaming API.
+// See https://docs.upbit.com/reference/websocket for API documentation.
 package websocket
 
 import (
@@ -14,23 +16,23 @@ import (
 )
 
 const (
-	// PublicURL 시세(Quotation) WebSocket 엔드포인트
+	// PublicURL is the WebSocket endpoint for market data (Quotation).
 	PublicURL = "wss://api.upbit.com/websocket/v1"
-	// PrivateURL 자산 및 주문(Exchange) WebSocket 엔드포인트
+	// PrivateURL is the WebSocket endpoint for account and order data (Exchange).
 	PrivateURL = "wss://api.upbit.com/websocket/v1/private"
 
 	defaultPingInterval = 30 * time.Second
 	defaultPongWait     = 10 * time.Second
 	defaultMaxRetries   = 5
 
-	// Upbit WebSocket 120초 idle timeout 대비 여유분 포함
+	// readWait accounts for Upbit's 120-second idle timeout with headroom.
 	readWait = 120 * time.Second
 )
 
-// Option WSClient 옵션 함수
+// Option is a functional option for WSClient.
 type Option func(*WSClient)
 
-// WithAuth 인증 정보 설정 (Private 채널용)
+// WithAuth sets authentication credentials for private channel access.
 func WithAuth(accessKey, secretKey string) Option {
 	return func(c *WSClient) {
 		c.accessKey = accessKey
@@ -38,21 +40,21 @@ func WithAuth(accessKey, secretKey string) Option {
 	}
 }
 
-// WithPingInterval ping 전송 주기 설정
+// WithPingInterval sets the interval between ping messages.
 func WithPingInterval(d time.Duration) Option {
 	return func(c *WSClient) {
 		c.pingInterval = d
 	}
 }
 
-// WithMaxRetries 최대 재연결 시도 횟수 설정
+// WithMaxRetries sets the maximum number of reconnection attempts.
 func WithMaxRetries(n int) Option {
 	return func(c *WSClient) {
 		c.maxRetries = n
 	}
 }
 
-// WSClient WebSocket 클라이언트
+// WSClient is a WebSocket client for Upbit streaming.
 type WSClient struct {
 	url          string
 	accessKey    string
@@ -68,11 +70,11 @@ type WSClient struct {
 	pingDone  chan struct{}
 	pingWg    sync.WaitGroup
 
-	// 자동 재연결용: 마지막 구독 메시지 보관
+	// lastSubMsg stores the last subscription message for auto-reconnect resubscription.
 	lastSubMsg []byte
 }
 
-// NewWSClient WSClient 생성
+// NewWSClient creates a new WSClient with the given URL and options.
 func NewWSClient(url string, opts ...Option) *WSClient {
 	c := &WSClient{
 		url:          url,
@@ -86,12 +88,12 @@ func NewWSClient(url string, opts ...Option) *WSClient {
 	return c
 }
 
-// Connect WebSocket 연결
+// Connect establishes a WebSocket connection.
 func (c *WSClient) Connect(ctx context.Context) error {
 	return c.connectWithRetry(ctx)
 }
 
-// connectWithRetry exponential backoff 재연결
+// connectWithRetry reconnects with exponential backoff.
 func (c *WSClient) connectWithRetry(ctx context.Context) error {
 	var lastErr error
 	for i := 0; i <= c.maxRetries; i++ {
@@ -111,19 +113,19 @@ func (c *WSClient) connectWithRetry(ctx context.Context) error {
 		}
 		lastErr = err
 	}
-	return fmt.Errorf("WebSocket 연결 실패 (%d회 시도): %w", c.maxRetries+1, lastErr)
+	return fmt.Errorf("WebSocket connection failed after %d attempts: %w", c.maxRetries+1, lastErr)
 }
 
-// dial 실제 WebSocket 연결 수립
+// dial establishes the underlying WebSocket connection.
 func (c *WSClient) dial(ctx context.Context) error {
 	dialer := websocket.DefaultDialer
 	header := http.Header{}
 
-	// Private 채널 인증 헤더 추가
+	// Add authorization header for private channel access.
 	if c.accessKey != "" && c.secretKey != "" {
 		token, err := api.GenerateToken(c.accessKey, c.secretKey, nil)
 		if err != nil {
-			return fmt.Errorf("JWT 토큰 생성 실패: %w", err)
+			return fmt.Errorf("failed to generate JWT token: %w", err)
 		}
 		header.Set("Authorization", "Bearer "+token)
 	}
@@ -135,30 +137,31 @@ func (c *WSClient) dial(ctx context.Context) error {
 
 	c.mu.Lock()
 	c.conn = conn
-	// S-1: 재연결 시 closeCh, closeOnce, closed 플래그를 리셋하여 ping 중단/double close panic 방지
+	// S-1: Reset closeCh, closeOnce, and closed flag on reconnect to prevent ping
+	// interruption and double-close panics.
 	c.closeCh = make(chan struct{})
 	c.closeOnce = sync.Once{}
 	c.closed = false
-	// C-1: 재연결 시 pingDone 채널을 매번 새로 생성하여 close panic 방지
+	// C-1: Recreate pingDone channel on each reconnect to prevent close panics.
 	c.pingDone = make(chan struct{})
 	c.mu.Unlock()
 
-	// C-3: 초기 ReadDeadline 설정 — 120초 idle timeout 감지
+	// C-3: Set initial ReadDeadline to detect the 120-second idle timeout.
 	_ = conn.SetReadDeadline(time.Now().Add(readWait))
 
-	// pong 핸들러: pong 수신 시 ReadDeadline 갱신
+	// Pong handler: renew ReadDeadline on each pong received.
 	conn.SetPongHandler(func(appData string) error {
 		return conn.SetReadDeadline(time.Now().Add(readWait))
 	})
 
-	// W-3: WaitGroup으로 pingLoop goroutine 추적
+	// W-3: Track pingLoop goroutine with WaitGroup.
 	c.pingWg.Add(1)
 	go c.pingLoop()
 
 	return nil
 }
 
-// pingLoop 주기적 ping 전송
+// pingLoop sends periodic ping messages to keep the connection alive.
 func (c *WSClient) pingLoop() {
 	defer c.pingWg.Done()
 
@@ -194,38 +197,39 @@ func (c *WSClient) pingLoop() {
 	}
 }
 
-// Subscribe 구독 메시지 전송
+// Subscribe sends a subscription message and stores it for reconnect resubscription.
 func (c *WSClient) Subscribe(msg []byte) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
 	if c.conn == nil {
-		return fmt.Errorf("WebSocket이 연결되지 않았습니다")
+		return fmt.Errorf("WebSocket is not connected")
 	}
 
-	// 재연결 시 재구독을 위해 메시지 보관
+	// Store the message for resubscription on reconnect.
 	c.lastSubMsg = make([]byte, len(msg))
 	copy(c.lastSubMsg, msg)
 
 	return c.conn.WriteMessage(websocket.TextMessage, msg)
 }
 
-// ReadMessage 메시지 수신 (자동 재연결 포함)
-// C-2: 에러 발생 시 재연결을 시도하고, 재연결 성공 시 재구독 후 계속 수신
+// ReadMessage receives a message from the WebSocket connection.
+// C-2: On error, attempts reconnection and resubscription before resuming reads.
 func (c *WSClient) ReadMessage() (messageType int, data []byte, err error) {
-	// W-4: conn을 mutex로 보호하여 읽기
+	// W-4: Read conn under mutex protection.
 	c.mu.Lock()
 	conn := c.conn
 	c.mu.Unlock()
 
 	if conn == nil {
-		return 0, nil, fmt.Errorf("WebSocket이 연결되지 않았습니다")
+		return 0, nil, fmt.Errorf("WebSocket is not connected")
 	}
 	return conn.ReadMessage()
 }
 
-// ReadMessageWithReconnect 자동 재연결이 포함된 메시지 수신
-// ctx가 취소되면 즉시 반환. 연결 에러 시 재연결 후 재구독하고 계속 수신 시도.
+// ReadMessageWithReconnect receives messages with automatic reconnection.
+// Returns immediately if ctx is cancelled. On connection error, reconnects and
+// resubscribes before continuing to receive messages.
 func (c *WSClient) ReadMessageWithReconnect(ctx context.Context) (int, []byte, error) {
 	for {
 		if ctx.Err() != nil {
@@ -237,7 +241,7 @@ func (c *WSClient) ReadMessageWithReconnect(ctx context.Context) (int, []byte, e
 		c.mu.Unlock()
 
 		if conn == nil {
-			return 0, nil, fmt.Errorf("WebSocket이 연결되지 않았습니다")
+			return 0, nil, fmt.Errorf("WebSocket is not connected")
 		}
 
 		mt, data, err := conn.ReadMessage()
@@ -245,17 +249,17 @@ func (c *WSClient) ReadMessageWithReconnect(ctx context.Context) (int, []byte, e
 			return mt, data, nil
 		}
 
-		// 사용자가 종료를 요청한 경우
+		// Context cancelled by the caller.
 		if ctx.Err() != nil {
 			return 0, nil, ctx.Err()
 		}
 
-		// 정상 종료 메시지인 경우 재연결하지 않음
+		// Do not reconnect on normal closure.
 		if websocket.IsCloseError(err, websocket.CloseNormalClosure) {
 			return 0, nil, err
 		}
 
-		// 사용자가 명시적으로 Close()를 호출한 경우
+		// Do not reconnect if Close() was explicitly called.
 		c.mu.Lock()
 		if c.closed {
 			c.mu.Unlock()
@@ -263,27 +267,27 @@ func (c *WSClient) ReadMessageWithReconnect(ctx context.Context) (int, []byte, e
 		}
 		c.mu.Unlock()
 
-		// 재연결 시도
+		// Attempt reconnection.
 		reconnErr := c.reconnect(ctx)
 		if reconnErr != nil {
-			return 0, nil, fmt.Errorf("재연결 실패: %w (원본 에러: %v)", reconnErr, err)
+			return 0, nil, fmt.Errorf("reconnect failed: %w (original error: %v)", reconnErr, err)
 		}
 
-		// 재연결 성공 — 루프 상단으로 돌아가 다시 ReadMessage
+		// Reconnect succeeded — loop back to read again.
 	}
 }
 
-// reconnect 기존 연결을 정리하고 새로 연결 + 재구독
+// reconnect closes the current connection and establishes a new one with resubscription.
 func (c *WSClient) reconnect(ctx context.Context) error {
-	// 기존 연결 정리
+	// Clean up the existing connection.
 	c.cleanupConn()
 
-	// 재연결
+	// Reconnect.
 	if err := c.connectWithRetry(ctx); err != nil {
 		return err
 	}
 
-	// 재구독
+	// Resubscribe.
 	c.mu.Lock()
 	subMsg := c.lastSubMsg
 	c.mu.Unlock()
@@ -294,7 +298,7 @@ func (c *WSClient) reconnect(ctx context.Context) error {
 		c.mu.Unlock()
 		if conn != nil {
 			if err := conn.WriteMessage(websocket.TextMessage, subMsg); err != nil {
-				return fmt.Errorf("재구독 실패: %w", err)
+				return fmt.Errorf("resubscribe failed: %w", err)
 			}
 		}
 	}
@@ -302,7 +306,8 @@ func (c *WSClient) reconnect(ctx context.Context) error {
 	return nil
 }
 
-// cleanupConn 기존 연결과 pingLoop를 정리 (Close와 달리 closed 플래그를 세팅하지 않음)
+// cleanupConn closes the current connection and waits for pingLoop to exit,
+// without setting the closed flag (unlike Close).
 func (c *WSClient) cleanupConn() {
 	c.mu.Lock()
 	conn := c.conn
@@ -313,11 +318,11 @@ func (c *WSClient) cleanupConn() {
 		_ = conn.Close()
 	}
 
-	// W-3: pingLoop goroutine 종료 대기
+	// W-3: Wait for pingLoop goroutine to exit.
 	c.pingWg.Wait()
 }
 
-// Close 연결 종료
+// Close gracefully shuts down the WebSocket connection.
 func (c *WSClient) Close() error {
 	var closeErr error
 
@@ -329,11 +334,11 @@ func (c *WSClient) Close() error {
 		c.conn = nil
 		c.mu.Unlock()
 
-		// W-3: pingLoop goroutine 종료 대기
+		// W-3: Wait for pingLoop goroutine to exit.
 		c.pingWg.Wait()
 
 		if conn != nil {
-			// graceful close: CloseMessage 전송 후 연결 닫기
+			// Graceful close: send CloseMessage before closing the connection.
 			_ = conn.WriteMessage(
 				websocket.CloseMessage,
 				websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),

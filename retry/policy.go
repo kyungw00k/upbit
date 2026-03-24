@@ -1,3 +1,4 @@
+// Package retry provides configurable retry policies with exponential backoff.
 package retry
 
 import (
@@ -8,13 +9,13 @@ import (
 	"time"
 )
 
-// RetryableError 재시도 가능 여부를 판단하기 위한 인터페이스
+// RetryableError is an interface for determining whether an error is retryable.
 type RetryableError interface {
 	error
 	HTTPStatus() int
 }
 
-// Policy 재시도 정책
+// Policy defines a retry policy.
 type Policy struct {
 	MaxAttempts int
 	InitialWait time.Duration
@@ -22,8 +23,8 @@ type Policy struct {
 	Multiplier  float64
 }
 
-// Default 기본 재시도 정책 반환
-// 초기 1초, 최대 3회, 최대 대기 10초, 지수 백오프
+// Default returns the default retry policy.
+// Initial wait 1s, max 3 attempts, max wait 10s, exponential backoff.
 func Default() *Policy {
 	return &Policy{
 		MaxAttempts: 3,
@@ -33,24 +34,24 @@ func Default() *Policy {
 	}
 }
 
-// ShouldRetry 에러 및 HTTP 상태코드에 따라 재시도 여부 결정
+// ShouldRetry determines whether to retry based on the error and HTTP status code.
 func (p *Policy) ShouldRetry(err error, statusCode int) bool {
-	// 418: IP 차단 — 즉시 실패
+	// 418: IP banned — fail immediately
 	if statusCode == 418 {
 		return false
 	}
 
-	// 429: Rate limit — 재시도
+	// 429: Rate limit exceeded — retry
 	if statusCode == 429 {
 		return true
 	}
 
-	// 5xx: 서버 오류 — 재시도
+	// 5xx: Server error — retry
 	if statusCode >= 500 && statusCode <= 504 {
 		return true
 	}
 
-	// 네트워크 오류 — 재시도
+	// Network error — retry
 	if err != nil {
 		var netErr net.Error
 		if errors.As(err, &netErr) {
@@ -61,7 +62,7 @@ func (p *Policy) ShouldRetry(err error, statusCode int) bool {
 	return false
 }
 
-// Wait 재시도 전 대기 (지수 백오프 + jitter)
+// Wait waits before a retry using exponential backoff with jitter.
 func (p *Policy) Wait(ctx context.Context, attempt int) error {
 	wait := p.InitialWait
 	for i := 1; i < attempt; i++ {
@@ -71,7 +72,7 @@ func (p *Policy) Wait(ctx context.Context, attempt int) error {
 		wait = p.MaxWait
 	}
 
-	// 10% jitter 추가 (thundering herd 방지)
+	// Add 10% jitter to prevent thundering herd
 	jitter := time.Duration(rand.Float64() * float64(wait) * 0.1)
 	wait += jitter
 
@@ -83,13 +84,13 @@ func (p *Policy) Wait(ctx context.Context, attempt int) error {
 	}
 }
 
-// Retry 재시도 로직 실행
-// fn: 실행할 함수 — RetryableError를 구현하는 에러를 반환하면 재시도 판단
+// Retry executes fn with the default retry policy.
+// If fn returns an error implementing RetryableError, the retry decision is based on it.
 func Retry(ctx context.Context, fn func() error) error {
 	return RetryWithPolicy(ctx, Default(), fn)
 }
 
-// RetryWithPolicy 커스텀 정책으로 재시도 실행
+// RetryWithPolicy executes fn with a custom retry policy.
 func RetryWithPolicy(ctx context.Context, policy *Policy, fn func() error) error {
 	var lastErr error
 
@@ -101,7 +102,7 @@ func RetryWithPolicy(ctx context.Context, policy *Policy, fn func() error) error
 
 		lastErr = err
 
-		// HTTP 상태코드 추출 (RetryableError 구현 여부 확인)
+		// Extract HTTP status code (check if error implements RetryableError)
 		statusCode := 0
 		var retryable RetryableError
 		if errors.As(err, &retryable) {
@@ -112,7 +113,7 @@ func RetryWithPolicy(ctx context.Context, policy *Policy, fn func() error) error
 			return err
 		}
 
-		// 마지막 시도이면 대기 없이 반환
+		// Last attempt — return without waiting
 		if attempt == policy.MaxAttempts {
 			break
 		}

@@ -11,8 +11,9 @@ import (
 	"github.com/google/uuid"
 )
 
-// GenerateToken JWT HS512 인증 토큰 생성
-// query: GET/DELETE 쿼리 파라미터 또는 POST 본문에서 추출된 key=value 맵
+// GenerateToken generates a JWT HS512 authentication token.
+// query: key=value map extracted from GET/DELETE query parameters or POST body.
+// See https://docs.upbit.com/reference/%EC%9D%B8%EC%A6%9D for authentication docs.
 func GenerateToken(accessKey, secretKey string, query map[string]string) (string, error) {
 	claims := jwt.MapClaims{
 		"access_key": accessKey,
@@ -20,7 +21,7 @@ func GenerateToken(accessKey, secretKey string, query map[string]string) (string
 	}
 
 	if len(query) > 0 {
-		// Upbit 인증 문서: URL 인코딩 되지 않은 쿼리 문자열을 기준으로 Hash 생성
+		// Per Upbit auth docs: hash is computed from the unencoded query string.
 		queryString := buildQueryHashString(query)
 		hash := sha512.Sum512([]byte(queryString))
 		claims["query_hash"] = hex.EncodeToString(hash[:])
@@ -31,14 +32,14 @@ func GenerateToken(accessKey, secretKey string, query map[string]string) (string
 	return token.SignedString([]byte(secretKey))
 }
 
-// GenerateTokenFromBody POST 본문(JSON 구조체의 필드)으로부터 토큰 생성
-// Upbit POST 요청 시 body 파라미터를 query string 형태로 해시해야 함
+// GenerateTokenFromBody generates a token from POST body fields (JSON struct fields).
+// Upbit POST requests require the body parameters to be hashed as a query string.
 func GenerateTokenFromBody(accessKey, secretKey string, bodyParams map[string]string) (string, error) {
 	return GenerateToken(accessKey, secretKey, bodyParams)
 }
 
-// GenerateTokenFromRawQuery 배열 쿼리 등 raw 쿼리 문자열로부터 토큰 생성
-// map[string]string으로 표현할 수 없는 배열 파라미터 (uuids[]=a&uuids[]=b) 지원
+// GenerateTokenFromRawQuery generates a token from a raw query string.
+// Supports array parameters (e.g. uuids[]=a&uuids[]=b) that cannot be expressed as map[string]string.
 func GenerateTokenFromRawQuery(accessKey, secretKey string, rawQuery string) (string, error) {
 	claims := jwt.MapClaims{
 		"access_key": accessKey,
@@ -55,9 +56,9 @@ func GenerateTokenFromRawQuery(accessKey, secretKey string, rawQuery string) (st
 	return token.SignedString([]byte(secretKey))
 }
 
-// buildQueryHashString 해시 생성용 비인코딩 쿼리 문자열 생성
-// Upbit 인증 문서: "URL 인코딩 되지 않은 쿼리 문자열을 기준으로 Hash 값을 생성해야 합니다."
-// 결정적 동작을 위해 키를 정렬함 (map은 순서가 없으므로)
+// buildQueryHashString builds an unencoded query string for hash generation.
+// Per Upbit auth docs: "Hash must be computed from the URL-unencoded query string."
+// Keys are sorted for deterministic output (map iteration order is undefined).
 func buildQueryHashString(params map[string]string) string {
 	if len(params) == 0 {
 		return ""
@@ -71,14 +72,14 @@ func buildQueryHashString(params map[string]string) string {
 
 	pairs := make([]string, 0, len(params))
 	for _, k := range keys {
-		// URL 인코딩 없이 그대로 연결 (해시용)
+		// Concatenate without URL encoding (for hashing).
 		pairs = append(pairs, k+"="+params[k])
 	}
 	return strings.Join(pairs, "&")
 }
 
-// BuildQueryString 쿼리 맵을 URL 인코딩된 쿼리 문자열로 변환
-// HTTP 요청 URL 구성 시 사용 (URL 인코딩 적용)
+// BuildQueryString converts a parameter map to a URL-encoded query string.
+// Used when constructing HTTP request URLs (applies URL encoding).
 func BuildQueryString(params map[string]string) string {
 	if len(params) == 0 {
 		return ""

@@ -7,8 +7,9 @@ import (
 	"github.com/kyungw00k/upbit/types"
 )
 
-// ListDeposits 입금 목록 조회
+// ListDeposits returns a list of deposits.
 // API: GET /deposits
+// See https://docs.upbit.com/reference/%EC%9E%85%EA%B8%88-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%A1%B0%ED%9A%8C
 func (c *WalletClient) ListDeposits(ctx context.Context, currency string, state string, limit int, page int) ([]types.Deposit, error) {
 	var deposits []types.Deposit
 	query := map[string]string{}
@@ -33,8 +34,9 @@ func (c *WalletClient) ListDeposits(ctx context.Context, currency string, state 
 	return deposits, nil
 }
 
-// GetDeposit 개별 입금 조회
+// GetDeposit returns a single deposit by UUID.
 // API: GET /deposit
+// See https://docs.upbit.com/reference/%EC%9E%85%EA%B8%88-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%A1%B0%ED%9A%8C
 func (c *WalletClient) GetDeposit(ctx context.Context, uuid string) (*types.Deposit, error) {
 	var deposit types.Deposit
 	query := map[string]string{}
@@ -50,8 +52,9 @@ func (c *WalletClient) GetDeposit(ctx context.Context, uuid string) (*types.Depo
 	return &deposit, nil
 }
 
-// ListDepositAddresses 입금 주소 목록 조회
+// ListDepositAddresses returns a list of deposit addresses.
 // API: GET /deposits/coin_addresses
+// See https://docs.upbit.com/reference/%EC%9E%85%EA%B8%88-%EC%A3%BC%EC%86%8C-%EC%83%9D%EC%84%B1-%EC%9A%94%EC%B2%AD
 func (c *WalletClient) ListDepositAddresses(ctx context.Context) ([]types.DepositAddress, error) {
 	var addresses []types.DepositAddress
 	err := c.client.GET(ctx, "/deposits/coin_addresses", nil, &addresses)
@@ -61,8 +64,9 @@ func (c *WalletClient) ListDepositAddresses(ctx context.Context) ([]types.Deposi
 	return addresses, nil
 }
 
-// GetDepositAddress 개별 입금 주소 조회
+// GetDepositAddress returns a deposit address for a given currency and network type.
 // API: GET /deposits/coin_address
+// See https://docs.upbit.com/reference/%EC%9E%85%EA%B8%88-%EC%A3%BC%EC%86%8C-%EC%83%9D%EC%84%B1-%EC%9A%94%EC%B2%AD
 func (c *WalletClient) GetDepositAddress(ctx context.Context, currency string, netType string) (*types.DepositAddress, error) {
 	var address types.DepositAddress
 	query := map[string]string{
@@ -77,8 +81,9 @@ func (c *WalletClient) GetDepositAddress(ctx context.Context, currency string, n
 	return &address, nil
 }
 
-// CreateDepositAddress 입금 주소 생성 요청
+// CreateDepositAddress requests generation of a deposit address for a given currency and network type.
 // API: POST /deposits/generate_coin_address
+// See https://docs.upbit.com/reference/%EC%9E%85%EA%B8%88-%EC%A3%BC%EC%86%8C-%EC%83%9D%EC%84%B1-%EC%9A%94%EC%B2%AD
 func (c *WalletClient) CreateDepositAddress(ctx context.Context, currency string, netType string) (*types.CreateDepositAddressResult, error) {
 	var result types.CreateDepositAddressResult
 	body := map[string]string{
@@ -93,7 +98,7 @@ func (c *WalletClient) CreateDepositAddress(ctx context.Context, currency string
 	return &result, nil
 }
 
-// DepositKRW 원화 입금
+// DepositKRW requests a KRW deposit.
 // API: POST /deposits/krw
 func (c *WalletClient) DepositKRW(ctx context.Context, amount string, twoFactorType string) (*types.Deposit, error) {
 	var deposit types.Deposit
@@ -109,7 +114,7 @@ func (c *WalletClient) DepositKRW(ctx context.Context, amount string, twoFactorT
 	return &deposit, nil
 }
 
-// GetAvailableDeposit 디지털 자산 입금 가능 정보 조회
+// GetAvailableDeposit returns deposit availability information for a digital asset.
 // API: GET /deposits/chance/coin
 func (c *WalletClient) GetAvailableDeposit(ctx context.Context, currency string, netType string) (*types.AvailableDeposit, error) {
 	var info types.AvailableDeposit

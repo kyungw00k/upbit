@@ -1,6 +1,8 @@
+// Package types defines data models for the Upbit API.
+// See https://docs.upbit.com/reference/ for API documentation.
 package types
 
-// Market 마켓(거래쌍) 정보
+// Market represents a trading pair (market).
 type Market struct {
 	Market      string       `json:"market"`
 	KoreanName  string       `json:"korean_name"`
@@ -8,13 +10,13 @@ type Market struct {
 	MarketEvent *MarketEvent `json:"market_event,omitempty"`
 }
 
-// MarketEvent 마켓 경보 정보
+// MarketEvent contains market warning information.
 type MarketEvent struct {
 	Warning bool          `json:"warning"`
 	Caution *CautionFlags `json:"caution,omitempty"`
 }
 
-// CautionFlags 주의 종목 경보 유형
+// CautionFlags indicates active caution alert types for a market.
 type CautionFlags struct {
 	PriceFluctuations        bool `json:"PRICE_FLUCTUATIONS"`
 	TradingVolumeSoaring     bool `json:"TRADING_VOLUME_SOARING"`
@@ -23,7 +25,7 @@ type CautionFlags struct {
 	ConcentrationSmallAccounts bool `json:"CONCENTRATION_OF_SMALL_ACCOUNTS"`
 }
 
-// Ticker 현재가 정보
+// Ticker holds current price information for a market.
 type Ticker struct {
 	Market             string  `json:"market"`
 	TradeDate          string  `json:"trade_date"`
@@ -53,7 +55,7 @@ type Ticker struct {
 	Timestamp          int64   `json:"timestamp"`
 }
 
-// OrderbookUnit 호가 단위
+// OrderbookUnit represents a single price level in an orderbook.
 type OrderbookUnit struct {
 	AskPrice float64 `json:"ask_price"`
 	BidPrice float64 `json:"bid_price"`
@@ -61,7 +63,7 @@ type OrderbookUnit struct {
 	BidSize  float64 `json:"bid_size"`
 }
 
-// Orderbook 호가 정보
+// Orderbook holds orderbook (order depth) data for a market.
 type Orderbook struct {
 	Market         string          `json:"market"`
 	Timestamp      int64           `json:"timestamp"`
@@ -71,7 +73,7 @@ type Orderbook struct {
 	Level          float64         `json:"level"`
 }
 
-// Trade 체결 내역
+// Trade represents a single executed trade.
 type Trade struct {
 	Market           string  `json:"market"`
 	TradeDateUtc     string  `json:"trade_date_utc"`
@@ -85,7 +87,7 @@ type Trade struct {
 	SequentialID     int64   `json:"sequential_id"`
 }
 
-// Candle 캔들 (OHLCV) 데이터
+// Candle holds OHLCV candle data.
 type Candle struct {
 	Market               string  `json:"market"`
 	CandleDateTimeUtc    string  `json:"candle_date_time_utc"`
@@ -97,18 +99,18 @@ type Candle struct {
 	Timestamp            int64   `json:"timestamp"`
 	CandleAccTradePrice  float64 `json:"candle_acc_trade_price"`
 	CandleAccTradeVolume float64 `json:"candle_acc_trade_volume"`
-	// 분 캔들 전용
+	// Unit is only present for minute candles.
 	Unit int `json:"unit,omitempty"`
-	// 일/주/월/년 캔들 전용
+	// Fields below are only present for daily/weekly/monthly/yearly candles.
 	PrevClosingPrice     float64 `json:"prev_closing_price,omitempty"`
 	ChangePrice          float64 `json:"change_price,omitempty"`
 	ChangeRate           float64 `json:"change_rate,omitempty"`
 	ConvertedTradePrice  float64 `json:"converted_trade_price,omitempty"`
-	// 주/월/년 캔들 전용
+	// FirstDayOfPeriod is only present for weekly/monthly/yearly candles.
 	FirstDayOfPeriod string `json:"first_day_of_period,omitempty"`
 }
 
-// Account 계정 잔고
+// Account holds account balance information.
 type Account struct {
 	Currency            string  `json:"currency"`
 	Balance             Float64 `json:"balance"`
@@ -118,7 +120,7 @@ type Account struct {
 	UnitCurrency        string  `json:"unit_currency"`
 }
 
-// OrderTrade 주문 내 체결 정보
+// OrderTrade holds trade execution details within an order.
 type OrderTrade struct {
 	Market    string  `json:"market"`
 	UUID      string  `json:"uuid"`
@@ -130,7 +132,7 @@ type OrderTrade struct {
 	CreatedAt string  `json:"created_at"`
 }
 
-// Order 주문 정보
+// Order holds order information.
 type Order struct {
 	Market           string       `json:"market"`
 	UUID             string       `json:"uuid"`
@@ -156,7 +158,7 @@ type Order struct {
 	Trades           []OrderTrade `json:"trades"`
 }
 
-// Deposit 입금 정보
+// Deposit holds deposit transaction information.
 type Deposit struct {
 	Type            string  `json:"type"`
 	UUID            string  `json:"uuid"`
@@ -171,7 +173,7 @@ type Deposit struct {
 	DoneAt          string  `json:"done_at,omitempty"`
 }
 
-// DepositAddress 입금 주소 정보
+// DepositAddress holds deposit address information.
 type DepositAddress struct {
 	Currency         string `json:"currency"`
 	NetType          string `json:"net_type"`
@@ -179,7 +181,7 @@ type DepositAddress struct {
 	SecondaryAddress string `json:"secondary_address,omitempty"`
 }
 
-// Withdrawal 출금 정보
+// Withdrawal holds withdrawal transaction information.
 type Withdrawal struct {
 	Type            string  `json:"type"`
 	UUID            string  `json:"uuid"`
@@ -195,7 +197,7 @@ type Withdrawal struct {
 	IsCancelable    bool    `json:"is_cancelable"`
 }
 
-// ServiceStatus 입출금 서비스 상태
+// ServiceStatus holds deposit/withdrawal service status for a currency.
 type ServiceStatus struct {
 	Currency            string `json:"currency"`
 	WalletState         string `json:"wallet_state"`
@@ -207,7 +209,7 @@ type ServiceStatus struct {
 	NetworkName         string `json:"network_name"`
 }
 
-// AvailableDeposit 입금 가능 정보
+// AvailableDeposit holds deposit availability information for a currency.
 type AvailableDeposit struct {
 	Currency                     string `json:"currency"`
 	NetType                      string `json:"net_type"`
@@ -218,7 +220,7 @@ type AvailableDeposit struct {
 	DecimalPrecision             int    `json:"decimal_precision"`
 }
 
-// CreateDepositAddressResult 입금 주소 생성 결과 (비동기)
+// CreateDepositAddressResult holds the result of a deposit address creation request (async).
 type CreateDepositAddressResult struct {
 	Success          *bool  `json:"success,omitempty"`
 	Message          string `json:"message,omitempty"`
@@ -228,7 +230,7 @@ type CreateDepositAddressResult struct {
 	SecondaryAddress string `json:"secondary_address,omitempty"`
 }
 
-// WithdrawalAddress 출금 허용 주소
+// WithdrawalAddress holds an allowlisted withdrawal address.
 type WithdrawalAddress struct {
 	Currency              string `json:"currency"`
 	NetType               string `json:"net_type"`
@@ -242,7 +244,7 @@ type WithdrawalAddress struct {
 	WalletType            string `json:"wallet_type,omitempty"`
 }
 
-// WithdrawalChance 출금 가능 정보
+// WithdrawalChance holds withdrawal availability information.
 type WithdrawalChance struct {
 	MemberLevel   WithdrawalChanceMemberLevel   `json:"member_level"`
 	Currency      WithdrawalChanceCurrency      `json:"currency"`
@@ -250,7 +252,7 @@ type WithdrawalChance struct {
 	WithdrawLimit WithdrawalChanceWithdrawLimit `json:"withdraw_limit"`
 }
 
-// WithdrawalChanceMemberLevel 사용자 보안 등급 정보
+// WithdrawalChanceMemberLevel holds user security level information.
 type WithdrawalChanceMemberLevel struct {
 	SecurityLevel           int  `json:"security_level"`
 	FeeLevel                int  `json:"fee_level"`
@@ -262,7 +264,7 @@ type WithdrawalChanceMemberLevel struct {
 	WalletLocked            bool `json:"wallet_locked"`
 }
 
-// WithdrawalChanceCurrency 통화 정보
+// WithdrawalChanceCurrency holds currency information for a withdrawal chance query.
 type WithdrawalChanceCurrency struct {
 	Code          string   `json:"code"`
 	WithdrawFee   string   `json:"withdraw_fee"`
@@ -271,7 +273,7 @@ type WithdrawalChanceCurrency struct {
 	WalletSupport []string `json:"wallet_support"`
 }
 
-// WithdrawalChanceAccount 자산 잔고 정보
+// WithdrawalChanceAccount holds asset balance information for a withdrawal chance query.
 type WithdrawalChanceAccount struct {
 	Currency            string  `json:"currency"`
 	Balance             Float64 `json:"balance"`
@@ -281,7 +283,7 @@ type WithdrawalChanceAccount struct {
 	UnitCurrency        string  `json:"unit_currency"`
 }
 
-// WithdrawalChanceWithdrawLimit 출금 제약 조건
+// WithdrawalChanceWithdrawLimit holds withdrawal constraint information.
 type WithdrawalChanceWithdrawLimit struct {
 	Currency              string  `json:"currency"`
 	Onetime               string  `json:"onetime"`
@@ -296,13 +298,13 @@ type WithdrawalChanceWithdrawLimit struct {
 	RemainingDailyKRW     string  `json:"remaining_daily_krw"`
 }
 
-// APIKey API 키 정보
+// APIKey holds API key information.
 type APIKey struct {
 	AccessKey  string `json:"access_key"`
 	ExpireAt   string `json:"expire_at"`
 }
 
-// OrderChance 주문 가능 정보
+// OrderChance holds order availability information for a market.
 type OrderChance struct {
 	BidFee      Float64            `json:"bid_fee"`
 	AskFee      Float64            `json:"ask_fee"`
@@ -313,7 +315,7 @@ type OrderChance struct {
 	AskAccount  OrderChanceAccount `json:"ask_account"`
 }
 
-// OrderChanceMarket 주문 가능 마켓 정보
+// OrderChanceMarket holds market information within an order chance response.
 type OrderChanceMarket struct {
 	ID         string            `json:"id"`
 	Name       string            `json:"name"`
@@ -327,14 +329,14 @@ type OrderChanceMarket struct {
 	State      string            `json:"state"`
 }
 
-// OrderChanceBidAsk 매수/매도 제약 정보
+// OrderChanceBidAsk holds bid/ask constraints within an order chance response.
 type OrderChanceBidAsk struct {
 	Currency  string  `json:"currency"`
 	PriceUnit Float64 `json:"price_unit"`
 	MinTotal  Float64 `json:"min_total"`
 }
 
-// OrderChanceAccount 주문 가능 계좌 정보
+// OrderChanceAccount holds account balance information within an order chance response.
 type OrderChanceAccount struct {
 	Currency            string  `json:"currency"`
 	Balance             Float64 `json:"balance"`
@@ -344,7 +346,7 @@ type OrderChanceAccount struct {
 	UnitCurrency        string  `json:"unit_currency"`
 }
 
-// VASP 트래블룰 지원 거래소 정보
+// VASP holds Travel Rule-compliant exchange (VASP) information.
 type VASP struct {
 	VaspName     string `json:"vasp_name"`
 	VaspEnName   string `json:"en_name,omitempty"`
@@ -353,37 +355,37 @@ type VASP struct {
 	Withdrawable bool   `json:"withdrawable"`
 }
 
-// TravelRuleVerification 트래블룰 검증 결과
+// TravelRuleVerification holds the result of a Travel Rule verification.
 type TravelRuleVerification struct {
 	DepositUUID        string `json:"deposit_uuid"`
 	VerificationResult string `json:"verification_result"`
 	DepositState       string `json:"deposit_state"`
 }
 
-// BatchCancelOrderInfo 일괄 취소 결과 내 개별 주문 정보
+// BatchCancelOrderInfo holds individual order information within a batch cancel result.
 type BatchCancelOrderInfo struct {
 	UUID       string `json:"uuid"`
 	Market     string `json:"market"`
 	Identifier string `json:"identifier,omitempty"`
 }
 
-// BatchCancelGroup 일괄 취소 성공/실패 그룹
+// BatchCancelGroup holds the success or failure group within a batch cancel result.
 type BatchCancelGroup struct {
 	Count  int                    `json:"count"`
 	Orders []BatchCancelOrderInfo `json:"orders"`
 }
 
-// BatchCancelResult 일괄 취소 결과 (CancelOrdersByIDs, BatchCancelOrders 공용)
+// BatchCancelResult holds the result of a batch order cancellation (CancelOrdersByIDs, BatchCancelOrders).
 type BatchCancelResult struct {
 	Success BatchCancelGroup `json:"success"`
 	Failed  BatchCancelGroup `json:"failed"`
 }
 
-// CancelAndNewOrderResult 취소 후 재주문 결과
-// 취소된 주문 정보 + 신규 주문 UUID
+// CancelAndNewOrderResult holds the result of a cancel-and-replace order operation.
+// Contains the cancelled order details and the UUID of the newly created order.
 type CancelAndNewOrderResult struct {
 	Market          string  `json:"market"`
-	UUID            string  `json:"uuid"`     // 취소된 주문 UUID
+	UUID            string  `json:"uuid"`     // UUID of the cancelled order
 	Identifier      string  `json:"identifier,omitempty"`
 	Side            string  `json:"side"`     // ask, bid
 	OrdType         string  `json:"ord_type"` // limit, price, market, best
@@ -401,5 +403,5 @@ type CancelAndNewOrderResult struct {
 	PreventedLocked Float64 `json:"prevented_locked"`
 	SmpType         string  `json:"smp_type,omitempty"`
 	TradesCount     int     `json:"trades_count"`
-	NewOrderUUID    string  `json:"new_order_uuid"` // 신규 생성된 주문 UUID
+	NewOrderUUID    string  `json:"new_order_uuid"` // UUID of the newly created order
 }

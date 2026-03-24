@@ -7,8 +7,9 @@ import (
 	"github.com/kyungw00k/upbit/types"
 )
 
-// ListWithdrawals 출금 목록 조회
+// ListWithdrawals returns a list of withdrawals.
 // API: GET /withdraws
+// See https://docs.upbit.com/reference/%EC%B6%9C%EA%B8%88-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%A1%B0%ED%9A%8C
 func (c *WalletClient) ListWithdrawals(ctx context.Context, currency string, state string, limit int, page int) ([]types.Withdrawal, error) {
 	var withdrawals []types.Withdrawal
 	query := map[string]string{}
@@ -33,8 +34,9 @@ func (c *WalletClient) ListWithdrawals(ctx context.Context, currency string, sta
 	return withdrawals, nil
 }
 
-// GetWithdrawal 개별 출금 조회
+// GetWithdrawal returns a single withdrawal by UUID.
 // API: GET /withdraw
+// See https://docs.upbit.com/reference/%EC%B6%9C%EA%B8%88-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%A1%B0%ED%9A%8C
 func (c *WalletClient) GetWithdrawal(ctx context.Context, uuid string) (*types.Withdrawal, error) {
 	var withdrawal types.Withdrawal
 	query := map[string]string{}
@@ -50,7 +52,7 @@ func (c *WalletClient) GetWithdrawal(ctx context.Context, uuid string) (*types.W
 	return &withdrawal, nil
 }
 
-// WithdrawCoinRequest 디지털 자산 출금 요청 파라미터
+// WithdrawCoinRequest holds parameters for a digital asset withdrawal request.
 type WithdrawCoinRequest struct {
 	Currency         string `json:"currency"`
 	NetType          string `json:"net_type"`
@@ -60,8 +62,9 @@ type WithdrawCoinRequest struct {
 	TransactionType  string `json:"transaction_type,omitempty"`
 }
 
-// WithdrawCoin 디지털 자산 출금 요청
+// WithdrawCoin submits a digital asset withdrawal request.
 // API: POST /withdraws/coin
+// See https://docs.upbit.com/reference/%EC%B6%9C%EA%B8%88%ED%95%98%EA%B8%B0
 func (c *WalletClient) WithdrawCoin(ctx context.Context, req *WithdrawCoinRequest) (*types.Withdrawal, error) {
 	var withdrawal types.Withdrawal
 	err := c.client.POST(ctx, "/withdraws/coin", req, &withdrawal)
@@ -71,8 +74,9 @@ func (c *WalletClient) WithdrawCoin(ctx context.Context, req *WithdrawCoinReques
 	return &withdrawal, nil
 }
 
-// WithdrawKRW 원화 출금 요청
+// WithdrawKRW submits a KRW withdrawal request.
 // API: POST /withdraws/krw
+// See https://docs.upbit.com/reference/%EC%B6%9C%EA%B8%88%ED%95%98%EA%B8%B0
 func (c *WalletClient) WithdrawKRW(ctx context.Context, amount string, twoFactorType string) (*types.Withdrawal, error) {
 	var withdrawal types.Withdrawal
 	body := map[string]string{
@@ -87,8 +91,9 @@ func (c *WalletClient) WithdrawKRW(ctx context.Context, amount string, twoFactor
 	return &withdrawal, nil
 }
 
-// CancelWithdrawal 디지털 자산 출금 취소 요청
+// CancelWithdrawal cancels a digital asset withdrawal by UUID.
 // API: DELETE /withdraws/coin?uuid=xxx
+// See https://docs.upbit.com/reference/%EC%B6%9C%EA%B8%88-%EC%B7%A8%EC%86%8C
 func (c *WalletClient) CancelWithdrawal(ctx context.Context, uuid string) (*types.Withdrawal, error) {
 	var withdrawal types.Withdrawal
 	query := map[string]string{
@@ -102,7 +107,7 @@ func (c *WalletClient) CancelWithdrawal(ctx context.Context, uuid string) (*type
 	return &withdrawal, nil
 }
 
-// GetAvailableWithdrawal 출금 가능 정보 조회
+// GetAvailableWithdrawal returns withdrawal availability information for a given currency.
 // API: GET /withdraws/chance
 func (c *WalletClient) GetAvailableWithdrawal(ctx context.Context, currency string, netType string) (*types.WithdrawalChance, error) {
 	var chance types.WithdrawalChance
@@ -120,7 +125,7 @@ func (c *WalletClient) GetAvailableWithdrawal(ctx context.Context, currency stri
 	return &chance, nil
 }
 
-// ListWithdrawalAddresses 출금 허용 주소 목록 조회
+// ListWithdrawalAddresses returns the list of allowed withdrawal addresses.
 // API: GET /withdraws/coin_addresses
 func (c *WalletClient) ListWithdrawalAddresses(ctx context.Context) ([]types.WithdrawalAddress, error) {
 	var addresses []types.WithdrawalAddress

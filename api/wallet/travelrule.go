@@ -6,7 +6,7 @@ import (
 	"github.com/kyungw00k/upbit/types"
 )
 
-// TravelRuleVerifyByTxIDRequest TxID 기반 트래블룰 검증 요청 파라미터
+// TravelRuleVerifyByTxIDRequest holds parameters for a Travel Rule verification request by transaction ID.
 type TravelRuleVerifyByTxIDRequest struct {
 	TxID     string `json:"txid"`
 	VaspUUID string `json:"vasp_uuid"`
@@ -14,14 +14,15 @@ type TravelRuleVerifyByTxIDRequest struct {
 	NetType  string `json:"net_type"`
 }
 
-// TravelRuleVerifyByUUIDRequest UUID 기반 트래블룰 검증 요청 파라미터
+// TravelRuleVerifyByUUIDRequest holds parameters for a Travel Rule verification request by deposit UUID.
 type TravelRuleVerifyByUUIDRequest struct {
 	DepositUUID string `json:"deposit_uuid"`
 	VaspUUID    string `json:"vasp_uuid"`
 }
 
-// GetTravelRuleVASPs 트래블룰 지원 거래소 목록 조회
+// GetTravelRuleVASPs returns a list of VASPs that support Travel Rule.
 // API: GET /travel_rule/vasps
+// See https://docs.upbit.com/reference/%ED%8A%B8%EB%9E%98%EB%B8%94%EB%A3%B0
 func (c *WalletClient) GetTravelRuleVASPs(ctx context.Context) ([]types.VASP, error) {
 	var vasps []types.VASP
 	err := c.client.GET(ctx, "/travel_rule/vasps", nil, &vasps)
@@ -31,8 +32,9 @@ func (c *WalletClient) GetTravelRuleVASPs(ctx context.Context) ([]types.VASP, er
 	return vasps, nil
 }
 
-// VerifyTravelRuleByTxID TxID 기반 트래블룰 검증 요청
+// VerifyTravelRuleByTxID submits a Travel Rule verification request using a transaction ID.
 // API: POST /travel_rule/deposit/txid
+// See https://docs.upbit.com/reference/%ED%8A%B8%EB%9E%98%EB%B8%94%EB%A3%B0
 func (c *WalletClient) VerifyTravelRuleByTxID(ctx context.Context, req *TravelRuleVerifyByTxIDRequest) (*types.TravelRuleVerification, error) {
 	var result types.TravelRuleVerification
 	err := c.client.POST(ctx, "/travel_rule/deposit/txid", req, &result)
@@ -42,8 +44,9 @@ func (c *WalletClient) VerifyTravelRuleByTxID(ctx context.Context, req *TravelRu
 	return &result, nil
 }
 
-// VerifyTravelRuleByUUID UUID 기반 트래블룰 검증 요청
+// VerifyTravelRuleByUUID submits a Travel Rule verification request using a deposit UUID.
 // API: POST /travel_rule/deposit/uuid
+// See https://docs.upbit.com/reference/%ED%8A%B8%EB%9E%98%EB%B8%94%EB%A3%B0
 func (c *WalletClient) VerifyTravelRuleByUUID(ctx context.Context, req *TravelRuleVerifyByUUIDRequest) (*types.TravelRuleVerification, error) {
 	var result types.TravelRuleVerification
 	err := c.client.POST(ctx, "/travel_rule/deposit/uuid", req, &result)

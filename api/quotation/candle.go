@@ -8,7 +8,7 @@ import (
 	"github.com/kyungw00k/upbit/types"
 )
 
-// intervalToPath interval 문자열을 Upbit API 캔들 경로로 매핑
+// intervalToPath maps an interval string to the corresponding Upbit API candle path.
 // "1s"  → /candles/seconds
 // "1m"  → /candles/minutes/1
 // "3m"  → /candles/minutes/3
@@ -55,9 +55,10 @@ func intervalToPath(interval string) (string, error) {
 	}
 }
 
-// GetCandles 캔들(OHLCV) 조회
+// GetCandles retrieves OHLCV candles for the specified market and interval.
 // interval: "1s", "1m", "3m", "5m", "10m", "15m", "30m", "60m", "240m", "1d", "1w", "1M", "1y"
 // API: GET /candles/{type}?market=KRW-BTC&count=200
+// See https://docs.upbit.com/reference/%EB%B6%84minute-%EC%BA%94%EB%93%A4-1
 func (c *QuotationClient) GetCandles(ctx context.Context, market string, interval string, count int) ([]types.Candle, error) {
 	path, err := intervalToPath(interval)
 	if err != nil {
@@ -76,8 +77,8 @@ func (c *QuotationClient) GetCandles(ctx context.Context, market string, interva
 	return candles, nil
 }
 
-// GetCandlesWithTo to 시각 이전 캔들 조회 (API 1회 호출)
-// to가 비어있으면 파라미터 생략 (현재 시각 기준)
+// GetCandlesWithTo retrieves candles before the specified time (single API call).
+// If to is empty, the parameter is omitted and the current time is used as the reference.
 func (c *QuotationClient) GetCandlesWithTo(ctx context.Context, market, interval string, count int, to string) ([]types.Candle, error) {
 	path, err := intervalToPath(interval)
 	if err != nil {
@@ -99,17 +100,17 @@ func (c *QuotationClient) GetCandlesWithTo(ctx context.Context, market, interval
 	return candles, nil
 }
 
-// GetCandlesAll 자동 페이지네이션으로 대량 캔들 조회
-// from: 시작 시각 (빈 문자열이면 count만큼만)
-// count: 0이면 from부터 현재까지 전부, >0이면 해당 개수만
-// 결과는 시간순(asc) 정렬하여 반환
+// GetCandlesAll retrieves a large number of candles using automatic pagination.
+// from: start time (if empty, only count candles are fetched)
+// count: if 0, fetches all candles from 'from' to now; if >0, fetches that many candles
+// Results are returned sorted in ascending chronological order.
 func (c *QuotationClient) GetCandlesAll(ctx context.Context, market, interval string, from string, count int) ([]types.Candle, error) {
 	const pageSize = 200
 	var all []types.Candle
-	to := "" // 첫 호출: 현재 시각 기준
+	to := "" // first call: use current time as reference
 
 	for {
-		// 남은 개수 계산
+		// calculate remaining count
 		fetchCount := pageSize
 		if count > 0 {
 			remaining := count - len(all)
@@ -130,8 +131,8 @@ func (c *QuotationClient) GetCandlesAll(ctx context.Context, market, interval st
 			break
 		}
 
-		// API는 최신→오래된 순으로 반환
-		// from이 지정된 경우: from 이전 캔들은 필터링
+		// API returns candles in descending order (newest first)
+		// if from is specified, filter out candles older than from
 		if from != "" {
 			filtered := make([]types.Candle, 0, len(batch))
 			reachedFrom := false
@@ -151,28 +152,28 @@ func (c *QuotationClient) GetCandlesAll(ctx context.Context, market, interval st
 
 		all = append(all, batch...)
 
-		// count 지정 시 도달 확인
+		// check if requested count has been reached
 		if count > 0 && len(all) >= count {
 			all = all[:count]
 			break
 		}
 
-		// 다음 페이지를 위한 to 설정: 마지막(가장 오래된) 캔들의 UTC 시각
+		// set to for the next page: UTC time of the last (oldest) candle in the batch
 		lastCandle := batch[len(batch)-1]
 		nextTo := lastCandle.CandleDateTimeUtc
 		if nextTo == to {
-			// 무한 루프 방지
+			// prevent infinite loop
 			break
 		}
 		to = nextTo
 
-		// 반환 개수가 요청보다 적으면 더 이상 데이터 없음
+		// if fewer candles than requested were returned, no more data is available
 		if len(batch) < fetchCount {
 			break
 		}
 	}
 
-	// 시간순(asc) 정렬 — API는 역순으로 반환하므로
+	// sort in ascending chronological order — API returns in descending order
 	sort.Slice(all, func(i, j int) bool {
 		return all[i].CandleDateTimeKst < all[j].CandleDateTimeKst
 	})

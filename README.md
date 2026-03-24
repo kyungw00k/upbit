@@ -5,6 +5,7 @@
 > The only Upbit CLI designed for both humans and AI agents.
 
 [![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kyungw00k/upbit.svg)](https://pkg.go.dev/github.com/kyungw00k/upbit)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/kyungw00k/upbit)](https://github.com/kyungw00k/upbit/releases)
 
