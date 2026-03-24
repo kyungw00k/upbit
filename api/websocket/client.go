@@ -10,7 +10,7 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"github.com/kyungw00k/upbit/internal/api"
+	"github.com/kyungw00k/upbit/api"
 )
 
 const (

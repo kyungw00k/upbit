@@ -1,7 +1,7 @@
 package exchange
 
 import (
-	"github.com/kyungw00k/upbit/internal/api"
+	"github.com/kyungw00k/upbit/api"
 )
 
 // ExchangeClient Exchange API (거래) 클라이언트

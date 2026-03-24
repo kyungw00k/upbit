@@ -9,7 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-runewidth"
 
-	ws "github.com/kyungw00k/upbit/internal/api/websocket"
+	ws "github.com/kyungw00k/upbit/api/websocket"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )

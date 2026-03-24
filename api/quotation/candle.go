@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // intervalToPath interval 문자열을 Upbit API 캔들 경로로 매핑

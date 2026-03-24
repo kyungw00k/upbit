@@ -3,7 +3,7 @@ package wallet
 import (
 	"context"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetServiceStatus 입출금 서비스 상태 조회

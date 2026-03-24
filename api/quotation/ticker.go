@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetTickers 현재가 조회

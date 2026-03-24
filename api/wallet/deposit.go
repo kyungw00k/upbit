@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // ListDeposits 입금 목록 조회

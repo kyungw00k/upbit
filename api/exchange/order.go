@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // OrderRequest 주문 생성 요청 파라미터

@@ -8,9 +8,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	ws "github.com/kyungw00k/upbit/internal/api/websocket"
+	ws "github.com/kyungw00k/upbit/api/websocket"
 	"github.com/kyungw00k/upbit/internal/i18n"
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // TradeModel watch trade TUI 모델

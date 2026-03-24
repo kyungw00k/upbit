@@ -3,7 +3,7 @@ package exchange
 import (
 	"context"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetAPIKeys API 키 목록 조회

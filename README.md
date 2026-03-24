@@ -19,6 +19,58 @@ curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # Quick install
 brew install kyungw00k/cli/upbit                          # Homebrew
 ```
 
+## Go Module
+
+Use the Upbit API client directly in your Go project:
+
+```bash
+go get github.com/kyungw00k/upbit
+```
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/kyungw00k/upbit/api"
+	"github.com/kyungw00k/upbit/api/quotation"
+	"github.com/kyungw00k/upbit/api/exchange"
+)
+
+func main() {
+	// Public API (no auth required)
+	client := api.NewClient("", "")
+	q := quotation.NewQuotationClient(client)
+
+	tickers, _ := q.GetTickers(context.Background(), []string{"KRW-BTC", "KRW-ETH"})
+	for _, t := range tickers {
+		fmt.Printf("%s: %v\n", t.Market, t.TradePrice)
+	}
+
+	// Authenticated API
+	authClient := api.NewClient("your-access-key", "your-secret-key")
+	e := exchange.NewExchangeClient(authClient)
+
+	accounts, _ := e.GetAccounts(context.Background())
+	for _, a := range accounts {
+		fmt.Printf("%s: %s\n", a.Currency, a.Balance)
+	}
+}
+```
+
+### Packages
+
+| Package | Import Path | Description |
+|---------|-------------|-------------|
+| API Client | `github.com/kyungw00k/upbit/api` | HTTP client with JWT auth, rate limiting, auto-retry |
+| Quotation | `github.com/kyungw00k/upbit/api/quotation` | Market data (ticker, candle, orderbook, trades) |
+| Exchange | `github.com/kyungw00k/upbit/api/exchange` | Trading (accounts, orders) |
+| Wallet | `github.com/kyungw00k/upbit/api/wallet` | Deposits and withdrawals |
+| WebSocket | `github.com/kyungw00k/upbit/api/websocket` | Real-time streaming with auto-reconnect |
+| Types | `github.com/kyungw00k/upbit/types` | Data models (Ticker, Candle, Order, etc.) |
+
 ## Quick Start
 
 ```bash

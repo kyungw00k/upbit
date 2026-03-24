@@ -1,7 +1,7 @@
 package quotation
 
 import (
-	"github.com/kyungw00k/upbit/internal/api"
+	"github.com/kyungw00k/upbit/api"
 )
 
 // QuotationClient Quotation API (시세 조회) 클라이언트

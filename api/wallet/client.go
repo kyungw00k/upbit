@@ -1,7 +1,7 @@
 package wallet
 
 import (
-	"github.com/kyungw00k/upbit/internal/api"
+	"github.com/kyungw00k/upbit/api"
 )
 
 // WalletClient Wallet API (입출금) 클라이언트

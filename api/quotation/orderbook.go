@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetOrderbooks 호가 조회

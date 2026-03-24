@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kyungw00k/upbit/internal/ratelimit"
-	"github.com/kyungw00k/upbit/internal/retry"
+	"github.com/kyungw00k/upbit/ratelimit"
+	"github.com/kyungw00k/upbit/retry"
 )
 
 const (

@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/api/exchange"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 var apiKeysColumns = []output.TableColumn{

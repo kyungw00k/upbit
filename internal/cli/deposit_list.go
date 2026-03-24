@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/kyungw00k/upbit/internal/api/wallet"
+	"github.com/kyungw00k/upbit/api/wallet"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )

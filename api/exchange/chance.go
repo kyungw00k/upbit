@@ -3,7 +3,7 @@ package exchange
 import (
 	"context"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetOrderChance 페어별 주문 가능 정보 조회

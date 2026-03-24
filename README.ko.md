@@ -19,6 +19,58 @@ curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # 빠른 설치
 brew install kyungw00k/cli/upbit                          # Homebrew
 ```
 
+## Go 모듈
+
+Go 프로젝트에서 Upbit API 클라이언트를 직접 사용할 수 있습니다:
+
+```bash
+go get github.com/kyungw00k/upbit
+```
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/kyungw00k/upbit/api"
+	"github.com/kyungw00k/upbit/api/quotation"
+	"github.com/kyungw00k/upbit/api/exchange"
+)
+
+func main() {
+	// 공개 API (인증 불필요)
+	client := api.NewClient("", "")
+	q := quotation.NewQuotationClient(client)
+
+	tickers, _ := q.GetTickers(context.Background(), []string{"KRW-BTC", "KRW-ETH"})
+	for _, t := range tickers {
+		fmt.Printf("%s: %v\n", t.Market, t.TradePrice)
+	}
+
+	// 인증 API
+	authClient := api.NewClient("your-access-key", "your-secret-key")
+	e := exchange.NewExchangeClient(authClient)
+
+	accounts, _ := e.GetAccounts(context.Background())
+	for _, a := range accounts {
+		fmt.Printf("%s: %s\n", a.Currency, a.Balance)
+	}
+}
+```
+
+### 패키지
+
+| 패키지 | Import 경로 | 설명 |
+|--------|-------------|------|
+| API 클라이언트 | `github.com/kyungw00k/upbit/api` | JWT 인증, Rate Limit, 자동 재시도 HTTP 클라이언트 |
+| 시세 조회 | `github.com/kyungw00k/upbit/api/quotation` | 시세 데이터 (현재가, 캔들, 호가, 체결) |
+| 거래 | `github.com/kyungw00k/upbit/api/exchange` | 거래 (잔고, 주문) |
+| 입출금 | `github.com/kyungw00k/upbit/api/wallet` | 입금 및 출금 |
+| WebSocket | `github.com/kyungw00k/upbit/api/websocket` | 자동 재연결 실시간 스트리밍 |
+| 타입 | `github.com/kyungw00k/upbit/types` | 데이터 모델 (Ticker, Candle, Order 등) |
+
 ## 빠른 시작
 
 ```bash

@@ -13,14 +13,14 @@ import (
 	gorillaWS "github.com/gorilla/websocket"
 	"github.com/spf13/cobra"
 
-	"github.com/kyungw00k/upbit/internal/api/quotation"
-	ws "github.com/kyungw00k/upbit/internal/api/websocket"
+	"github.com/kyungw00k/upbit/api/quotation"
+	ws "github.com/kyungw00k/upbit/api/websocket"
 	"github.com/kyungw00k/upbit/internal/cache"
 	"github.com/kyungw00k/upbit/internal/config"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 	"github.com/kyungw00k/upbit/internal/tui"
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // --- watch ticker ---

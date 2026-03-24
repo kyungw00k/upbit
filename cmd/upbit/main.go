@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kyungw00k/upbit/internal/api"
+	"github.com/kyungw00k/upbit/api"
 	"github.com/kyungw00k/upbit/internal/cli"
 )
 

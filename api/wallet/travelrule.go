@@ -3,7 +3,7 @@ package wallet
 import (
 	"context"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // TravelRuleVerifyByTxIDRequest TxID 기반 트래블룰 검증 요청 파라미터

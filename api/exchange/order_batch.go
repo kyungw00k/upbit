@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // CancelAndNewOrderRequest 취소 후 재주문 요청 파라미터

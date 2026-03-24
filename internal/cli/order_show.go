@@ -3,7 +3,7 @@ package cli
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/kyungw00k/upbit/internal/api/exchange"
+	"github.com/kyungw00k/upbit/api/exchange"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )

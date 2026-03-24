@@ -8,7 +8,7 @@ import (
 	"github.com/mattn/go-runewidth"
 	"github.com/spf13/cobra"
 
-	"github.com/kyungw00k/upbit/internal/api/quotation"
+	"github.com/kyungw00k/upbit/api/quotation"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
 )

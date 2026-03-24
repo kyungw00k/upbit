@@ -3,7 +3,7 @@ package quotation
 import (
 	"context"
 
-	"github.com/kyungw00k/upbit/internal/types"
+	"github.com/kyungw00k/upbit/types"
 )
 
 // GetMarkets 마켓(거래쌍) 목록 조회
