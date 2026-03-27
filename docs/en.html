@@ -21,9 +21,10 @@
     code { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--green); }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
     @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; }
     .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
-    .card p { color: var(--dim); font-size: 0.9rem; }
+    .card p { color: var(--dim); font-size: 0.9rem; flex: 1; }
+    .card pre { margin-bottom: 0; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .badges { margin-bottom: 1.5rem; }
@@ -58,25 +59,25 @@
       <div class="card">
         <h3>&#x1f4ca; Market Data</h3>
         <p>Real-time prices, historical candles with SQLite cache, orderbook depth, and trade streams across all KRW/BTC/USDT pairs.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit ticker KRW-BTC
+        <pre><code>upbit ticker KRW-BTC
 upbit candle KRW-BTC -i 1d --from 2025-01-01</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f4b0; Trading</h3>
         <p>Limit &amp; market orders with tick-size auto-correction, percentage sizing (<code>-V 50%</code>), price keywords (<code>-p now</code>), and reserved orders (<code>--watch</code>).</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit buy KRW-BTC -p now -V 50%
+        <pre><code>upbit buy KRW-BTC -p now -V 50%
 upbit sell KRW-BTC -V 100%</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f5a5;&#xfe0f; Real-time TUI</h3>
         <p>Full-screen Bubble Tea terminal UI — live ticker, orderbook depth chart, trade stream, and ASCII candlestick chart with volume pane. Multi-market Tab switching.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit watch candle KRW-BTC -i 1m
+        <pre><code>upbit watch candle KRW-BTC -i 1m
 upbit watch orderbook KRW-BTC</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f916; AI Integration</h3>
         <p>JSON Schema export for LLM/MCP tool calling. Non-TTY auto-JSON output. AI agent skill installer for Claude Code &amp; <a href="https://agentskills.io">agentskills.io</a>.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit tool-schema buy
+        <pre><code>upbit tool-schema buy
 upbit ticker KRW-BTC | jq '.trade_price'</code></pre>
       </div>
     </div>

@@ -21,9 +21,10 @@
     code { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--green); }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
     @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; }
     .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
-    .card p { color: var(--dim); font-size: 0.9rem; }
+    .card p { color: var(--dim); font-size: 0.9rem; flex: 1; }
+    .card pre { margin-bottom: 0; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .badges { margin-bottom: 1.5rem; }
@@ -58,25 +59,25 @@
       <div class="card">
         <h3>&#x1f4ca; 시세 조회</h3>
         <p>실시간 현재가, SQLite 캐시 기반 과거 캔들 조회, 호가창 깊이, 체결 스트림. KRW/BTC/USDT 전 마켓 지원.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit ticker KRW-BTC
+        <pre><code>upbit ticker KRW-BTC
 upbit candle KRW-BTC -i 1d --from 2025-01-01</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f4b0; 거래</h3>
         <p>지정가/시장가 주문, 호가 단위 자동 보정, 퍼센트 주문(<code>-V 50%</code>), 가격 키워드(<code>-p now</code>), 예약 주문(<code>--watch</code>).</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit buy KRW-BTC -p now -V 50%
+        <pre><code>upbit buy KRW-BTC -p now -V 50%
 upbit sell KRW-BTC -V 100%</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f5a5;&#xfe0f; 실시간 TUI</h3>
         <p>Bubble Tea 기반 전체 화면 터미널 UI — 실시간 시세, 호가 깊이 차트, 체결 스트림, ASCII 캔들스틱 차트 + 거래량. Tab으로 마켓 전환.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit watch candle KRW-BTC -i 1m
+        <pre><code>upbit watch candle KRW-BTC -i 1m
 upbit watch orderbook KRW-BTC</code></pre>
       </div>
       <div class="card">
         <h3>&#x1f916; AI 연동</h3>
         <p>LLM/MCP 도구 호출용 JSON Schema 내보내기. Non-TTY 자동 JSON 출력. Claude Code &amp; <a href="https://agentskills.io">agentskills.io</a> 스킬 설치.</p>
-        <pre style="margin-top:0.5rem;margin-bottom:0"><code>upbit tool-schema buy
+        <pre><code>upbit tool-schema buy
 upbit ticker KRW-BTC | jq '.trade_price'</code></pre>
       </div>
     </div>
