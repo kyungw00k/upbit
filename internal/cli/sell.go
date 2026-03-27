@@ -23,6 +23,7 @@ var sellCmd = &cobra.Command{
   upbit sell KRW-BTC -p 55000000 -V 50%    # 보유량의 50% 지정가 매도
   upbit sell KRW-BTC -V 0.001 --best       # 최유리 지정가 매도
   upbit sell KRW-BTC -V 0.001 --best --tif fok  # 최유리 지정가 FOK 매도
+  upbit sell KRW-BTC --watch 55000000 -p 54500000 -V 0.001  # 예약-지정가 매도
   upbit sell KRW-BTC -p 50000000 -V 0.001 --test  # 테스트 주문
   upbit sell KRW-BTC -V 0.001 --force       # 확인 프롬프트 스킵`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -41,6 +42,7 @@ var sellCmd = &cobra.Command{
 		identifier, _ := cmd.Flags().GetString("id")
 		test, _ := cmd.Flags().GetBool("test")
 		best, _ := cmd.Flags().GetBool("best")
+		watchPrice, _ := cmd.Flags().GetString("watch")
 
 		// 퍼센트 해석: -V 50% → 보유 코인 기준 실제 수량으로 변환
 		if isPercent(volume) {
@@ -56,6 +58,11 @@ var sellCmd = &cobra.Command{
 		// 주문 유형 자동 판별
 		var ordType, orderPrice, orderVolume string
 		switch {
+		case watchPrice != "" && price != "" && volume != "":
+			// 예약-지정가 매도: --watch + --price + --volume
+			ordType = "limit"
+			orderPrice = price
+			orderVolume = volume
 		case best && volume != "":
 			// 최유리 지정가 매도: --best + --volume
 			ordType = "best"
@@ -85,6 +92,13 @@ var sellCmd = &cobra.Command{
 				wasAdjusted = adjusted
 				orderPrice = adjustedPrice
 			}
+			// 예약 주문의 감시가도 호가 보정
+			if watchPrice != "" {
+				adjWatch, _, adjErr := adjustPrice(cmd.Context(), client, market, watchPrice, "ask")
+				if adjErr == nil {
+					watchPrice = adjWatch
+				}
+			}
 		}
 
 		req := &exchange.OrderRequest{
@@ -93,6 +107,7 @@ var sellCmd = &cobra.Command{
 			OrdType:     ordType,
 			Price:       orderPrice,
 			Volume:      orderVolume,
+			WatchPrice:  watchPrice,
 			TimeInForce: tif,
 			SMPType:     smp,
 			Identifier:  identifier,
@@ -103,7 +118,7 @@ var sellCmd = &cobra.Command{
 		if wasAdjusted {
 			msg = i18n.Tf(i18n.MsgSellOrderAdjusted, market, orderPrice, originalPrice, orderPrice, orderVolume, ordType)
 		} else {
-			msg = i18n.Tf(i18n.MsgSellOrderNormal, market, describeSellOrder(ordType, orderPrice, orderVolume), ordType)
+			msg = i18n.Tf(i18n.MsgSellOrderNormal, market, describeSellOrder(ordType, orderPrice, orderVolume, watchPrice), ordType)
 		}
 
 		// --force여도 보정 사실은 stderr에 출력
@@ -136,7 +151,10 @@ var sellCmd = &cobra.Command{
 	},
 }
 
-func describeSellOrder(ordType, price, volume string) string {
+func describeSellOrder(ordType, price, volume, watchPrice string) string {
+	if watchPrice != "" {
+		return i18n.Tf(i18n.MsgDescReservedOrder, watchPrice, price, volume)
+	}
 	switch ordType {
 	case "limit":
 		return i18n.Tf(i18n.MsgDescLimitOrder, price, volume)
@@ -154,6 +172,7 @@ func init() {
 	f.StringP("price", "p", "", i18n.T(i18n.FlagPriceUsage))
 	f.StringP("volume", "V", "", i18n.T(i18n.FlagVolumeUsage))
 	f.Bool("best", false, i18n.T(i18n.FlagBestUsage))
+	f.String("watch", "", i18n.T(i18n.FlagWatchPriceUsage))
 	f.String("tif", "", "Time in Force (ioc, fok, post_only)")
 	f.String("smp", "", i18n.T(i18n.FlagSMPUsage))
 	f.String("id", "", i18n.T(i18n.FlagIdentifierUsage))

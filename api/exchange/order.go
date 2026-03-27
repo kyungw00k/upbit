@@ -15,6 +15,7 @@ type OrderRequest struct {
 	OrdType     string `json:"ord_type"`                // limit, price, market, best
 	Volume      string `json:"volume,omitempty"`         // order volume
 	Price       string `json:"price,omitempty"`          // order price or total amount
+	WatchPrice  string `json:"watch_price,omitempty"`   // trigger price for reserved orders
 	TimeInForce string `json:"time_in_force,omitempty"` // ioc, fok, post_only
 	SMPType     string `json:"smp_type,omitempty"`      // cancel_maker, cancel_taker, reduce
 	Identifier  string `json:"identifier,omitempty"`    // client-assigned order identifier

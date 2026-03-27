@@ -56,7 +56,9 @@ const (
 	FlagIdentifierUsage     Key = "FlagIdentifierUsage"
 	FlagTestUsage           Key = "FlagTestUsage"
 	FlagBestUsage           Key = "FlagBestUsage"
+	FlagWatchPriceUsage     Key = "FlagWatchPriceUsage"
 	MsgDescBestOrder        Key = "MsgDescBestOrder"
+	MsgDescReservedOrder    Key = "MsgDescReservedOrder"
 
 	// ── Percent ──
 
@@ -485,7 +487,9 @@ var ko = map[Key]string{
 	FlagIdentifierUsage:  "클라이언트 지정 주문 식별자",
 	FlagTestUsage:        "테스트 주문 (실제 체결 안됨)",
 	FlagBestUsage:        "최유리 지정가 주문",
+	FlagWatchPriceUsage:  "예약 주문 감시가 (해당 가격 도달 시 주문 발동)",
 	MsgDescBestOrder:     "최유리, 수량=%s",
+	MsgDescReservedOrder: "예약, 감시가=%s, 주문가=%s, 수량=%s",
 
 	// Percent
 	ErrPercentParse:        "퍼센트 값을 파싱할 수 없습니다",
@@ -884,7 +888,9 @@ var en = map[Key]string{
 	FlagIdentifierUsage:  "Client-specified order identifier",
 	FlagTestUsage:        "Test order (no actual execution)",
 	FlagBestUsage:        "Best price limit order",
+	FlagWatchPriceUsage:  "Reserved order watch price (triggers when reached)",
 	MsgDescBestOrder:     "best price, volume=%s",
+	MsgDescReservedOrder: "reserved, watch=%s, price=%s, volume=%s",
 
 	// Percent
 	ErrPercentParse:        "Cannot parse percent value",
