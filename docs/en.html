@@ -19,9 +19,9 @@
     .section h2 { font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--accent); }
     pre { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.9rem; margin-bottom: 0.75rem; }
     code { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--green); }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; margin-bottom: 2rem; }
     @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; min-width: 0; }
     .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
     .card p { color: var(--dim); font-size: 0.9rem; flex: 1; }
     .card pre { margin-bottom: 0; }
