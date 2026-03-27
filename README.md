@@ -1,28 +1,28 @@
-# upbit — AI-native CLI for Upbit Exchange
+# upbit — AI 친화적 Upbit 거래소 CLI
 
-[한국어](README.ko.md)
+[English](README.en.md)
 
-> The only Upbit CLI designed for both humans and AI agents.
+> 사람과 AI 에이전트 모두를 위해 설계된 유일한 Upbit CLI.
 
 [![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev)
 [![Go Reference](https://pkg.go.dev/badge/github.com/kyungw00k/upbit.svg)](https://pkg.go.dev/github.com/kyungw00k/upbit)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/kyungw00k/upbit)](https://github.com/kyungw00k/upbit/releases)
 
-## Demo
+## 데모
 
-![demo](docs/demo.gif)
+![demo](docs/demo.ko.gif)
 
-## Installation
+## 설치
 
 ```bash
-curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # Quick install
+curl -sSL https://kyungw00k.dev/upbit/install.sh | sh    # 빠른 설치
 brew install kyungw00k/cli/upbit                          # Homebrew
 ```
 
-## Go Module
+## Go 모듈
 
-Use the Upbit API client directly in your Go project:
+Go 프로젝트에서 Upbit API 클라이언트를 직접 사용할 수 있습니다:
 
 ```bash
 go get github.com/kyungw00k/upbit
@@ -41,7 +41,7 @@ import (
 )
 
 func main() {
-	// Public API (no auth required)
+	// 공개 API (인증 불필요)
 	client := api.NewClient("", "")
 	q := quotation.NewQuotationClient(client)
 
@@ -50,7 +50,7 @@ func main() {
 		fmt.Printf("%s: %v\n", t.Market, t.TradePrice)
 	}
 
-	// Authenticated API
+	// 인증 API
 	authClient := api.NewClient("your-access-key", "your-secret-key")
 	e := exchange.NewExchangeClient(authClient)
 
@@ -61,91 +61,93 @@ func main() {
 }
 ```
 
-### Packages
+### 패키지
 
-| Package | Import Path | Description |
-|---------|-------------|-------------|
-| API Client | `github.com/kyungw00k/upbit/api` | HTTP client with JWT auth, rate limiting, auto-retry |
-| Quotation | `github.com/kyungw00k/upbit/api/quotation` | Market data (ticker, candle, orderbook, trades) |
-| Exchange | `github.com/kyungw00k/upbit/api/exchange` | Trading (accounts, orders) |
-| Wallet | `github.com/kyungw00k/upbit/api/wallet` | Deposits and withdrawals |
-| WebSocket | `github.com/kyungw00k/upbit/api/websocket` | Real-time streaming with auto-reconnect |
-| Types | `github.com/kyungw00k/upbit/types` | Data models (Ticker, Candle, Order, etc.) |
+| 패키지 | Import 경로 | 설명 |
+|--------|-------------|------|
+| API 클라이언트 | `github.com/kyungw00k/upbit/api` | JWT 인증, Rate Limit, 자동 재시도 HTTP 클라이언트 |
+| 시세 조회 | `github.com/kyungw00k/upbit/api/quotation` | 시세 데이터 (현재가, 캔들, 호가, 체결) |
+| 거래 | `github.com/kyungw00k/upbit/api/exchange` | 거래 (잔고, 주문) |
+| 입출금 | `github.com/kyungw00k/upbit/api/wallet` | 입금 및 출금 |
+| WebSocket | `github.com/kyungw00k/upbit/api/websocket` | 자동 재연결 실시간 스트리밍 |
+| 타입 | `github.com/kyungw00k/upbit/types` | 데이터 모델 (Ticker, Candle, Order 등) |
 
-## Quick Start
+## 빠른 시작
 
 ```bash
-upbit ticker KRW-BTC                           # Current price
-upbit candle KRW-BTC -i 1d --from 2025-01-01   # Historical candles (cached)
-upbit watch candle KRW-BTC -i 1m               # Live candlestick chart (TUI)
+upbit ticker KRW-BTC                           # 현재가 조회
+upbit candle KRW-BTC -i 1d --from 2025-01-01   # 과거 캔들 (캐시 지원)
+upbit watch candle KRW-BTC -i 1m               # 실시간 캔들스틱 차트 (TUI)
 
 export UPBIT_ACCESS_KEY=... UPBIT_SECRET_KEY=...
-upbit buy KRW-BTC -p 100000000 -V 0.001        # Limit buy
-upbit balance                                   # Portfolio with KRW evaluation
+upbit buy KRW-BTC -p 100000000 -V 0.001        # 지정가 매수
+upbit buy KRW-BTC -p now -V 50%                # 현재가로 잔고 50% 매수
+upbit sell KRW-BTC -V 100%                     # 전량 시장가 매도
+upbit balance                                   # 포트폴리오 (KRW 평가액)
 ```
 
-## Features
+## 주요 기능
 
-**AI-First** — `upbit tool-schema` exports JSON Schema for LLM/MCP tool calling. Non-TTY auto-outputs JSON for seamless AI agent pipelines.
+**AI 퍼스트** — `upbit tool-schema`로 LLM/MCP 도구 호출용 JSON Schema 내보내기. Non-TTY 환경에서 자동 JSON 출력으로 AI 에이전트 파이프라인에 최적.
 
-**Real-time TUI** — `watch ticker/orderbook/trade/candle` powered by Bubble Tea. Multi-market Tab switching. ASCII candlestick chart with volume pane.
+**실시간 TUI** — `watch ticker/orderbook/trade/candle`을 Bubble Tea 기반으로 제공. Tab 키로 복수 마켓 전환. ASCII 캔들스틱 차트와 거래량 패널.
 
-**Smart Trading** — Tick-size auto-correction prevents order failures across KRW/BTC/USDT markets. Confirmation prompts (`--force` to skip). Test orders (`--test`).
+**스마트 트레이딩** — 호가 단위 자동 보정, 퍼센트 주문(`-V 50%`, `-t 100%`), 가격 키워드(`-p now/open/low/high`), 최유리 지정가(`--best`), 예약 주문(`--watch`). [매수/매도 상세 가이드](docs/trading.ko.md)
 
-**Candle Cache** — SQLite cache with `--from` auto-pagination fetches full history. `upbit cache` to inspect or `--clear`.
+**캔들 캐시** — SQLite 캐시와 `--from` 자동 페이지네이션으로 전체 이력 조회. `upbit cache`로 확인, `--clear`로 삭제.
 
-**i18n** — `LANG=ko_KR` → Korean, default → English. POSIX locale standard (LC_ALL > LC_MESSAGES > LANG).
+**다국어** — `LANG=ko_KR` → 한국어, 기본값 → 영어. POSIX 로케일 표준 (LC_ALL > LC_MESSAGES > LANG).
 
-**Self-Update** — `upbit update` downloads latest from GitHub Releases with SHA256 verification. `--check` to preview.
+**자체 업데이트** — `upbit update`로 GitHub Releases에서 최신 버전 다운로드 (SHA256 검증). `--check`로 미리보기.
 
-## Commands
+## 명령어
 
-Run `upbit --help` for full list. Key commands:
+전체 목록은 `upbit --help`를 참고하세요. 주요 명령어:
 
-| Category | Commands |
-|----------|----------|
-| Market Data | `ticker`, `candle`, `orderbook`, `trades`, `market`, `tick-size` |
-| Trading | `buy`, `sell`, `balance`, `order list/show/cancel/replace` |
-| Wallet | `wallet`, `deposit list/show/address`, `withdraw list/show/request` |
-| Real-time | `watch ticker/orderbook/trade/candle/my-order/my-asset` |
-| Utilities | `tool-schema`, `api-keys`, `cache`, `update` |
+| 카테고리 | 명령어 |
+|---------|--------|
+| 시세 | `ticker`, `candle`, `orderbook`, `trades`, `market`, `tick-size` |
+| 거래 | `buy`, `sell`, `balance`, `order list/show/cancel/replace` |
+| 입출금 | `wallet`, `deposit list/show/address`, `withdraw list/show/request` |
+| 실시간 | `watch ticker/orderbook/trade/candle/my-order/my-asset` |
+| 유틸리티 | `tool-schema`, `api-keys`, `cache`, `update` |
 
-## Output
+## 출력
 
 ```bash
-upbit ticker KRW-BTC              # Table (terminal)
-upbit ticker KRW-BTC | jq .       # JSON (pipe, auto)
+upbit ticker KRW-BTC              # 테이블 (터미널)
+upbit ticker KRW-BTC | jq .       # JSON (파이프, 자동)
 upbit ticker KRW-BTC -o csv       # CSV
-upbit ticker KRW-BTC --json price # Field selection
+upbit ticker KRW-BTC --json price # 필드 선택
 ```
 
-| Context | Default | Override |
-|---------|---------|---------|
-| Terminal (TTY) | Aligned table | `-o json`, `-o csv` |
-| Pipe (non-TTY) | Compact JSON | `-o table`, `-o jsonl` |
+| 컨텍스트 | 기본값 | 변경 |
+|---------|--------|------|
+| 터미널 (TTY) | 정렬된 테이블 | `-o json`, `-o csv` |
+| 파이프 (Non-TTY) | 압축 JSON | `-o table`, `-o jsonl` |
 
-## Authentication
+## 인증
 
-API keys are read **only from environment variables** — never stored on disk.
+API 키는 **환경변수에서만** 읽으며, 디스크에 저장하지 않습니다.
 
 ```bash
 export UPBIT_ACCESS_KEY=your_access_key
 export UPBIT_SECRET_KEY=your_secret_key
 ```
 
-Market data commands work without authentication.
-Trading, deposits/withdrawals, and personal WebSocket streams (`watch my-order`, `watch my-asset`) require authentication.
+시세 조회 명령어는 인증 없이 사용할 수 있습니다.
+거래, 입출금, 실시간 개인 스트림(`watch my-order`, `watch my-asset`)은 인증이 필요합니다.
 
-## Real-time TUI
+## 실시간 TUI
 
-Watch commands feature full-screen terminal UI powered by [Bubble Tea](https://github.com/charmbracelet/bubbletea):
+Watch 명령은 [Bubble Tea](https://github.com/charmbracelet/bubbletea) 기반 전체 화면 터미널 UI를 제공합니다:
 
-- **watch ticker** — Real-time price table with color (rise=green, fall=red)
-- **watch orderbook** — Bid/ask depth chart centered on spread
-- **watch trade** — Scrolling trade stream with color coding
-- **watch candle** — ASCII candlestick chart with volume pane
+- **watch ticker** — 실시간 가격 테이블 (상승=초록, 하락=빨강)
+- **watch orderbook** — 스프레드 중심 매수/매도 호가 차트
+- **watch trade** — 체결 스트림 스크롤
+- **watch candle** — ASCII 캔들스틱 차트 + 거래량 바
 
-Multi-market support: use Tab or ←/→ to switch between markets.
+복수 마켓: Tab 또는 ←/→로 전환
 
 ```bash
 upbit watch ticker KRW-BTC KRW-ETH KRW-XRP
@@ -153,58 +155,45 @@ upbit watch orderbook KRW-BTC
 upbit watch candle KRW-BTC -i 1m
 ```
 
-## Candle Cache
+## 캔들 캐시
 
 ```bash
-upbit candle KRW-BTC --from 2025-01-01   # Auto-paginate (SQLite cached)
+upbit candle KRW-BTC --from 2025-01-01   # 자동 페이지네이션 (SQLite 캐시)
 upbit candle KRW-BTC --from 2025-01-01 --no-cache
-upbit cache                               # Cache info
-upbit cache --clear                       # Clear cache
+upbit cache                               # 캐시 정보
+upbit cache --clear                       # 캐시 삭제
 ```
 
-## AI Integration
+## AI 에이전트 연동
 
-```bash
-# Export all command schemas for LLM function calling
-upbit tool-schema
-
-# AI agents get JSON automatically (non-TTY)
-upbit ticker KRW-BTC | jq '.trade_price'
-
-# Select specific fields
-upbit ticker KRW-BTC --json market,trade_price,signed_change_rate
-```
-
-## AI Agent Integration
-
-Install the upbit skill for your AI agent:
+AI 에이전트용 upbit 스킬 설치:
 
 ```bash
 curl -sSL https://kyungw00k.dev/upbit/install-skill.sh | sh
 ```
 
-This installs to both `~/.agents/skills/upbit/` ([agentskills.io](https://agentskills.io)) and `.claude/skills/upbit/` (Claude Code).
+`~/.agents/skills/upbit/` ([agentskills.io](https://agentskills.io))과 `.claude/skills/upbit/` (Claude Code) 양쪽에 설치됩니다.
 
-### Tool Schema for LLM Function Calling
-
-```bash
-upbit tool-schema          # All commands as JSON Schema
-upbit tool-schema buy      # Specific command with response schema
-```
-
-## Self-Update
+### LLM 도구 호출용 스키마
 
 ```bash
-upbit update          # Download and install latest version
-upbit update --check  # Check only, don't download
+upbit tool-schema          # 전체 명령 JSON Schema
+upbit tool-schema buy      # 특정 명령 (응답 스키마 포함)
 ```
 
-Single static binary, zero runtime dependencies. Cross-platform: Linux, macOS, Windows (amd64, arm64).
+## 자체 업데이트
 
-## Acknowledgements
+```bash
+upbit update          # 최신 버전 다운로드 및 설치
+upbit update --check  # 확인만 하고 다운로드하지 않음
+```
 
-- Candlestick chart inspired by [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)
+단일 정적 바이너리, 런타임 의존성 없음. 크로스 플랫폼: Linux, macOS, Windows (amd64, arm64).
 
-## License
+## 감사의 글
+
+- 캔들스틱 차트는 [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)에서 영감을 받았습니다
+
+## 라이선스
 
 MIT
