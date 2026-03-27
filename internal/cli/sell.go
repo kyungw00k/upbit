@@ -20,6 +20,7 @@ var sellCmd = &cobra.Command{
 	Example: `  upbit sell KRW-BTC -p 50000000 -V 0.001   # 지정가 매도
   upbit sell KRW-BTC -V 0.001               # 시장가 매도 (수량 지정)
   upbit sell KRW-BTC -V 100%                # 전량 시장가 매도
+  upbit sell KRW-BTC -p high -V 100%       # 금일 고가로 전량 지정가 매도
   upbit sell KRW-BTC -p 55000000 -V 50%    # 보유량의 50% 지정가 매도
   upbit sell KRW-BTC -V 0.001 --best       # 최유리 지정가 매도
   upbit sell KRW-BTC -V 0.001 --best --tif fok  # 최유리 지정가 FOK 매도
@@ -43,6 +44,16 @@ var sellCmd = &cobra.Command{
 		test, _ := cmd.Flags().GetBool("test")
 		best, _ := cmd.Flags().GetBool("best")
 		watchPrice, _ := cmd.Flags().GetString("watch")
+
+		// 가격 키워드 해석: -p now/open/low/high → 실제 가격으로 변환
+		if isPriceKeyword(price) {
+			origKeyword := price
+			price, err = resolvePriceKeyword(cmd.Context(), client, market, price)
+			if err != nil {
+				return err
+			}
+			fmt.Fprint(os.Stderr, i18n.Tf(i18n.MsgPriceKeywordResolved, origKeyword, price))
+		}
 
 		// 퍼센트 해석: -V 50% → 보유 코인 기준 실제 수량으로 변환
 		if isPercent(volume) {

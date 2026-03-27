@@ -19,6 +19,8 @@ var buyCmd = &cobra.Command{
 	Args:    RequireArgs(1, i18n.T(i18n.ErrBuyArgsRequired)),
 	Example: `  upbit buy KRW-BTC -p 50000000 -V 0.001   # 지정가 매수
   upbit buy KRW-BTC -t 100000              # 시장가 매수 (총액 지정)
+  upbit buy KRW-BTC -p now -V 50%          # 현재가로 잔고 50% 지정가 매수
+  upbit buy KRW-BTC -p low -V 0.001       # 금일 저가로 지정가 매수
   upbit buy KRW-BTC -p 50000000 -V 50%    # KRW 잔고의 50%로 지정가 매수
   upbit buy KRW-BTC -t 100%               # KRW 잔고 전액 시장가 매수
   upbit buy KRW-BTC -V 0.001 --best       # 최유리 지정가 매수
@@ -44,6 +46,16 @@ var buyCmd = &cobra.Command{
 		test, _ := cmd.Flags().GetBool("test")
 		best, _ := cmd.Flags().GetBool("best")
 		watchPrice, _ := cmd.Flags().GetString("watch")
+
+		// 가격 키워드 해석: -p now/open/low/high → 실제 가격으로 변환
+		if isPriceKeyword(price) {
+			origKeyword := price
+			price, err = resolvePriceKeyword(cmd.Context(), client, market, price)
+			if err != nil {
+				return err
+			}
+			fmt.Fprint(os.Stderr, i18n.Tf(i18n.MsgPriceKeywordResolved, origKeyword, price))
+		}
 
 		// 퍼센트 해석: -V 50%, -t 50% → 잔고 기준 실제 금액/수량으로 변환
 		if isPercent(volume) || isPercent(total) {

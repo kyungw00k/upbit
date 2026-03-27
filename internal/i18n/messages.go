@@ -62,6 +62,10 @@ const (
 
 	// ── Percent ──
 
+	ErrTickerFetch         Key = "ErrTickerFetch"
+	ErrTickerEmpty         Key = "ErrTickerEmpty"
+	MsgPriceKeywordResolved Key = "MsgPriceKeywordResolved"
+
 	ErrPercentParse        Key = "ErrPercentParse"
 	ErrPercentRange        Key = "ErrPercentRange"
 	ErrPercentBuyNeedsPrice Key = "ErrPercentBuyNeedsPrice"
@@ -491,6 +495,11 @@ var ko = map[Key]string{
 	MsgDescBestOrder:     "최유리, 수량=%s",
 	MsgDescReservedOrder: "예약, 감시가=%s, 주문가=%s, 수량=%s",
 
+	// Price keyword
+	ErrTickerFetch:          "현재가 조회 실패",
+	ErrTickerEmpty:          "%s 현재가 정보가 없습니다",
+	MsgPriceKeywordResolved: "가격 키워드 %s → %s\n",
+
 	// Percent
 	ErrPercentParse:        "퍼센트 값을 파싱할 수 없습니다",
 	ErrPercentRange:        "퍼센트는 0 초과 100 이하여야 합니다",
@@ -891,6 +900,11 @@ var en = map[Key]string{
 	FlagWatchPriceUsage:  "Reserved order watch price (triggers when reached)",
 	MsgDescBestOrder:     "best price, volume=%s",
 	MsgDescReservedOrder: "reserved, watch=%s, price=%s, volume=%s",
+
+	// Price keyword
+	ErrTickerFetch:          "Failed to fetch ticker",
+	ErrTickerEmpty:          "No ticker data for %s",
+	MsgPriceKeywordResolved: "Price keyword %s → %s\n",
 
 	// Percent
 	ErrPercentParse:        "Cannot parse percent value",
