@@ -21,6 +21,8 @@ var buyCmd = &cobra.Command{
   upbit buy KRW-BTC -t 100000              # 시장가 매수 (총액 지정)
   upbit buy KRW-BTC -p 50000000 -V 50%    # KRW 잔고의 50%로 지정가 매수
   upbit buy KRW-BTC -t 100%               # KRW 잔고 전액 시장가 매수
+  upbit buy KRW-BTC -V 0.001 --best       # 최유리 지정가 매수
+  upbit buy KRW-BTC -V 0.001 --best --tif ioc  # 최유리 지정가 IOC 매수
   upbit buy KRW-BTC -p 50000000 -V 0.001 --test  # 테스트 주문
   upbit buy KRW-BTC -t 100000 --force      # 확인 프롬프트 스킵`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -39,6 +41,7 @@ var buyCmd = &cobra.Command{
 		smp, _ := cmd.Flags().GetString("smp")
 		identifier, _ := cmd.Flags().GetString("id")
 		test, _ := cmd.Flags().GetBool("test")
+		best, _ := cmd.Flags().GetBool("best")
 
 		// 퍼센트 해석: -V 50%, -t 50% → 잔고 기준 실제 금액/수량으로 변환
 		if isPercent(volume) || isPercent(total) {
@@ -60,6 +63,10 @@ var buyCmd = &cobra.Command{
 		// 주문 유형 자동 판별
 		var ordType, orderPrice, orderVolume string
 		switch {
+		case best && volume != "":
+			// 최유리 지정가 매수: --best + --volume
+			ordType = "best"
+			orderVolume = volume
 		case price != "" && volume != "":
 			// 지정가 매수: --price + --volume
 			ordType = "limit"
@@ -142,6 +149,8 @@ func describeBuyOrder(ordType, price, volume string) string {
 		return i18n.Tf(i18n.MsgDescLimitOrder, price, volume)
 	case "price":
 		return i18n.Tf(i18n.MsgDescPriceOrder, price)
+	case "best":
+		return i18n.Tf(i18n.MsgDescBestOrder, volume)
 	default:
 		return ""
 	}
@@ -152,6 +161,7 @@ func init() {
 	f.StringP("price", "p", "", i18n.T(i18n.FlagPriceUsage))
 	f.StringP("volume", "V", "", i18n.T(i18n.FlagVolumeUsage))
 	f.StringP("total", "t", "", i18n.T(i18n.FlagTotalUsage))
+	f.Bool("best", false, i18n.T(i18n.FlagBestUsage))
 	f.String("tif", "", "Time in Force (ioc, fok, post_only)")
 	f.String("smp", "", i18n.T(i18n.FlagSMPUsage))
 	f.String("id", "", i18n.T(i18n.FlagIdentifierUsage))
