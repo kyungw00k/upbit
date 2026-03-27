@@ -92,20 +92,62 @@ View orderbook level units
 
 ### Trading (auth required)
 
+#### Order Types & Fees
+
+| Flags | Order Type | Fee |
+|-------|-----------|-----|
+| `-p` + `-V` | Limit order | 0.05% |
+| `-t` | Market buy (total amount) | 0.05% |
+| `-V` (sell only) | Market sell | 0.05% |
+| `--best` + `-V` | Best price limit order | 0.05% |
+| `--watch` + `-p` + `-V` | Reserved limit order (triggers at watch price) | 0.139% |
+
+#### Percentage Orders
+
+Volume (`-V`) and total (`-t`) accept percentages (e.g. `50%`, `100%`).
+- **Buy**: fee is auto-deducted. Formula: `available × ratio ÷ (1 + fee_rate)`
+- **Sell**: uses holding balance directly. Formula: `holding × ratio`
+
+#### Price Keywords
+
+`--price` (`-p`) accepts keywords resolved via Ticker API:
+
+| Keyword | Resolves to |
+|---------|-------------|
+| `now` | Current trade price |
+| `open` | Today's opening price |
+| `low` | Today's low price |
+| `high` | Today's high price |
+
+Keywords and percentages can be combined: `-p now -V 50%`
+
+#### Time in Force (`--tif`)
+
+| TIF | Description |
+|-----|-------------|
+| *(default)* | GTC — remains until filled or cancelled |
+| `ioc` | Immediate or Cancel — fills available, cancels rest |
+| `fok` | Fill or Kill — fills entirely or cancels entirely |
+| `post_only` | Maker only — cancels if would take immediately |
+
+TIF works with limit and best orders. Market and reserved orders use GTC only.
+
 #### `upbit buy`
 Place buy order
 
 | Param | Type | Description |
 |-------|------|-------------|
-| `force` | boolean | Skip confirmation prompt |
-| `id` | string | Client-specified order identifier |
 | `market` | string | Market code to buy (e.g. KRW-BTC) **(req)** |
-| `price` | string | Order price |
-| `smp` | string | Self-trade prevention (cancel_maker, cancel_taker, reduce) |
-| `test` | boolean | Test order (no actual execution) |
+| `price` | string | Order price (number or keyword: now/open/low/high) |
+| `volume` | string | Order volume (supports percentage like 50%) |
+| `total` | string | Order total for market buy (supports percentage like 50%) |
+| `best` | boolean | Best price limit order |
+| `watch` | string | Reserved order watch price (triggers when reached) |
 | `tif` | string | Time in Force (ioc, fok, post_only) |
-| `total` | string | Order total (market buy) |
-| `volume` | string | Order volume |
+| `smp` | string | Self-trade prevention (cancel_maker, cancel_taker, reduce) |
+| `id` | string | Client-specified order identifier |
+| `test` | boolean | Test order (no actual execution) |
+| `force` | boolean | Skip confirmation prompt |
 
 Response: `created_at`, `executed_volume`, `market`, `ord_type`, `price`, `remaining_volume`...
 
@@ -114,14 +156,16 @@ Place sell order
 
 | Param | Type | Description |
 |-------|------|-------------|
-| `force` | boolean | Skip confirmation prompt |
-| `id` | string | Client-specified order identifier |
 | `market` | string | Market code to sell (e.g. KRW-BTC) **(req)** |
-| `price` | string | Order price |
-| `smp` | string | Self-trade prevention (cancel_maker, cancel_taker, reduce) |
-| `test` | boolean | Test order (no actual execution) |
+| `price` | string | Order price (number or keyword: now/open/low/high) |
+| `volume` | string | Order volume (supports percentage like 50%) |
+| `best` | boolean | Best price limit order |
+| `watch` | string | Reserved order watch price (triggers when reached) |
 | `tif` | string | Time in Force (ioc, fok, post_only) |
-| `volume` | string | Order volume |
+| `smp` | string | Self-trade prevention (cancel_maker, cancel_taker, reduce) |
+| `id` | string | Client-specified order identifier |
+| `test` | boolean | Test order (no actual execution) |
+| `force` | boolean | Skip confirmation prompt |
 
 Response: `created_at`, `executed_volume`, `market`, `ord_type`, `price`, `remaining_volume`...
 
@@ -327,9 +371,25 @@ Check and install latest version
 ## Examples
 
 ```bash
+# Market data
 upbit ticker KRW-BTC -o json              # BTC price
 upbit candle KRW-BTC -i 1d --from 2025-01-01 -o csv  # historical candles
+
+# Trading — basic
 upbit buy KRW-BTC -p 100000000 -V 0.001 --force      # limit buy
+upbit sell KRW-BTC -V 0.001                           # market sell
+
+# Trading — percentage & keywords
+upbit buy KRW-BTC -p now -V 50%           # limit buy at current price, 50% of balance
+upbit buy KRW-BTC -t 100%                 # market buy with full KRW balance
+upbit sell KRW-BTC -V 100%                # market sell entire holding
+upbit sell KRW-BTC -p high -V 50%         # limit sell 50% at today's high
+
+# Trading — best price & reserved
+upbit buy KRW-BTC -V 0.001 --best --tif ioc           # best price IOC buy
+upbit sell KRW-BTC --watch 55000000 -p 54500000 -V 0.001  # reserved sell
+
+# Portfolio
 upbit balance -o json                      # portfolio with KRW eval
 upbit order list -o json                   # open orders
 ```
