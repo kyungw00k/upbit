@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -18,6 +19,8 @@ var sellCmd = &cobra.Command{
 	Args:    RequireArgs(1, i18n.T(i18n.ErrSellArgsRequired)),
 	Example: `  upbit sell KRW-BTC -p 50000000 -V 0.001   # 지정가 매도
   upbit sell KRW-BTC -V 0.001               # 시장가 매도 (수량 지정)
+  upbit sell KRW-BTC -V 100%                # 전량 시장가 매도
+  upbit sell KRW-BTC -p 55000000 -V 50%    # 보유량의 50% 지정가 매도
   upbit sell KRW-BTC -p 50000000 -V 0.001 --test  # 테스트 주문
   upbit sell KRW-BTC -V 0.001 --force       # 확인 프롬프트 스킵`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -35,6 +38,17 @@ var sellCmd = &cobra.Command{
 		smp, _ := cmd.Flags().GetString("smp")
 		identifier, _ := cmd.Flags().GetString("id")
 		test, _ := cmd.Flags().GetBool("test")
+
+		// 퍼센트 해석: -V 50% → 보유 코인 기준 실제 수량으로 변환
+		if isPercent(volume) {
+			origVolume := volume
+			_, volume, _, err = resolvePercentOrder(cmd.Context(), client, market, "ask", price, volume, "")
+			if err != nil {
+				return err
+			}
+			pct := strings.TrimSuffix(origVolume, "%")
+			fmt.Fprint(os.Stderr, i18n.Tf(i18n.MsgPercentResolved, i18n.T(i18n.FlagVolumeUsage), pct, volume))
+		}
 
 		// 주문 유형 자동 판별
 		var ordType, orderPrice, orderVolume string

@@ -56,6 +56,14 @@ const (
 	FlagIdentifierUsage     Key = "FlagIdentifierUsage"
 	FlagTestUsage           Key = "FlagTestUsage"
 
+	// ── Percent ──
+
+	ErrPercentParse        Key = "ErrPercentParse"
+	ErrPercentRange        Key = "ErrPercentRange"
+	ErrPercentBuyNeedsPrice Key = "ErrPercentBuyNeedsPrice"
+	ErrChanceFetch         Key = "ErrChanceFetch"
+	MsgPercentResolved     Key = "MsgPercentResolved"
+
 	// ── Sell ──
 
 	MsgSellShort          Key = "MsgSellShort"
@@ -469,11 +477,18 @@ var ko = map[Key]string{
 	MsgDescLimitOrder:    "단가=%s, 수량=%s",
 	MsgDescPriceOrder:    "총액=%s",
 	FlagPriceUsage:       "주문 단가",
-	FlagVolumeUsage:      "주문 수량",
-	FlagTotalUsage:       "주문 총액 (시장가 매수)",
+	FlagVolumeUsage:      "주문 수량 (50%와 같이 퍼센트 지정 가능)",
+	FlagTotalUsage:       "주문 총액 (시장가 매수, 50%와 같이 퍼센트 지정 가능)",
 	FlagSMPUsage:         "자기 거래 방지 (cancel_maker, cancel_taker, reduce)",
 	FlagIdentifierUsage:  "클라이언트 지정 주문 식별자",
 	FlagTestUsage:        "테스트 주문 (실제 체결 안됨)",
+
+	// Percent
+	ErrPercentParse:        "퍼센트 값을 파싱할 수 없습니다",
+	ErrPercentRange:        "퍼센트는 0 초과 100 이하여야 합니다",
+	ErrPercentBuyNeedsPrice: "퍼센트 수량 매수 시 --price가 필요합니다",
+	ErrChanceFetch:         "주문 가능 정보 조회 실패",
+	MsgPercentResolved:     "%s의 %s%% → %s\n",
 
 	// Sell
 	MsgSellShort:          "매도 주문",
@@ -859,11 +874,18 @@ var en = map[Key]string{
 	MsgDescLimitOrder:    "price=%s, volume=%s",
 	MsgDescPriceOrder:    "total=%s",
 	FlagPriceUsage:       "Order price",
-	FlagVolumeUsage:      "Order volume",
-	FlagTotalUsage:       "Order total (market buy)",
+	FlagVolumeUsage:      "Order volume (supports percentage like 50%)",
+	FlagTotalUsage:       "Order total for market buy (supports percentage like 50%)",
 	FlagSMPUsage:         "Self-trade prevention (cancel_maker, cancel_taker, reduce)",
 	FlagIdentifierUsage:  "Client-specified order identifier",
 	FlagTestUsage:        "Test order (no actual execution)",
+
+	// Percent
+	ErrPercentParse:        "Cannot parse percent value",
+	ErrPercentRange:        "Percent must be between 0 (exclusive) and 100 (inclusive)",
+	ErrPercentBuyNeedsPrice: "--price is required for percent volume buy",
+	ErrChanceFetch:         "Failed to fetch order chance",
+	MsgPercentResolved:     "%s %s%% → %s\n",
 
 	// Sell
 	MsgSellShort:          "Place sell order",
