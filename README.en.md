@@ -203,6 +203,15 @@ upbit update --check  # Check only, don't download
 
 Single static binary, zero runtime dependencies. Cross-platform: Linux, macOS, Windows (amd64, arm64).
 
+## Claude Code Skill
+
+A Claude Code skill is available for AI agents to use upbit automatically.
+
+```
+/plugin marketplace add kyungw00k/skills
+/plugin install cli-tools@kyungw00k-skills
+```
+
 ## Acknowledgements
 
 - Candlestick chart inspired by [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)
