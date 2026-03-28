@@ -190,6 +190,15 @@ upbit update --check  # 확인만 하고 다운로드하지 않음
 
 단일 정적 바이너리, 런타임 의존성 없음. 크로스 플랫폼: Linux, macOS, Windows (amd64, arm64).
 
+## Claude Code Skill
+
+AI 에이전트가 upbit를 자동으로 활용할 수 있는 Claude Code 스킬이 제공됩니다.
+
+```
+/plugin marketplace add kyungw00k/skills
+/plugin install cli-tools@kyungw00k-skills
+```
+
 ## 감사의 글
 
 - 캔들스틱 차트는 [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)에서 영감을 받았습니다
