@@ -118,13 +118,13 @@ Anthropic Go SDK를 사용하여 Upbit 거래소에서 완전 자율적으로 �
 
 ## 4. Project Structure
 
-별도 Go 프로젝트로 생성. 기존 `upbit/` 프로젝트와 Go workspace로 연동.
+별도 Go 프로젝트로 생성. 기존 `upbit/` 프로젝트를 Go 모듈 의존성으로 사용.
 
 ```
 Sandbox/
-├── upbit/                     # 기존 Upbit CLI 프로젝트
-├── upbit-trader/              # [신규] 자율 거래 데몬
-│   ├── go.mod
+├── upbit/                     # 기존 Upbit CLI 프로젝트 (github.com/kyungw00k/upbit)
+├── upbit-trader/              # [신규] 자율 거래 데몬 (github.com/kyungw00k/upbit-trader)
+│   ├── go.mod                 # module github.com/kyungw00k/upbit-trader
 │   ├── cmd/
 │   │   └── trader/
 │   │       └── main.go       # 엔트리포인트
@@ -158,8 +158,6 @@ Sandbox/
 │   │
 │   └── configs/
 │       └── config.yaml       # 사용자 설정 파일
-│
-└── go.work                   # Go workspace (로컬 개발용)
 ```
 
 ### 핵심 의존성
@@ -171,14 +169,14 @@ Sandbox/
 
 ### 기존 Upbit API 활용
 
-`upbit/` 프로젝트의 `api/` 패키지를 Go workspace를 통해 임포트:
-- `api/quotation` — 시장 데이터 (티커, 캔들, 호가창, 체결)
-- `api/exchange` — 주문 (매수, 매도, 취소)
-- `api/wallet` — 계좌 잔고
-- `api/websocket` — 실시간 스트리밍
-- `ratelimit` — API 호출 제한
-- `retry` — 재시도 로직
-- `types` — 데이터 타입
+`go get github.com/kyungw00k/upbit`으로 모듈 의존성 추가 후 임포트:
+- `github.com/kyungw00k/upbit/api/quotation` — 시장 데이터 (티커, 캔들, 호가창, 체결)
+- `github.com/kyungw00k/upbit/api/exchange` — 주문 (매수, 매도, 취소)
+- `github.com/kyungw00k/upbit/api/wallet` — 계좌 잔고
+- `github.com/kyungw00k/upbit/api/websocket` — 실시간 스트리밍
+- `github.com/kyungw00k/upbit/ratelimit` — API 호출 제한
+- `github.com/kyungw00k/upbit/retry` — 재시도 로직
+- `github.com/kyungw00k/upbit/types` — 데이터 타입
 
 ---
 
