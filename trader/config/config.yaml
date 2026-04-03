@@ -1,0 +1,15 @@
+# Default configuration template for upbit-trader
+# Copy to configs/config.yaml and customize.
+# Environment variables override file values (see config.go for list).
+
+api:
+  anthropic_api_key: ""
+  upbit_access_key: ""
+  upbit_secret_key: ""
+  model_analyst: claude-3-5-haiku-20241022
+
+daemon:
+  decision_interval: "4h"
+
+log:
+  level: "info"
