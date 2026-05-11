@@ -1,11 +1,39 @@
+# Upbit Trading Daemon Configuration
+# Environment variables override file values (see config.go for list).
+
 api:
-  anthropic_api_key: ""
+  glm_api_key: ""
+  glm_base_url: "https://api.z.ai/v1"
+  glm_model: "glm-4.7"
   upbit_access_key: ""
   upbit_secret_key: ""
-  model_analyst: claude-3-5-haiku-20241022
 
 daemon:
   decision_interval: "4h"
+  indicator_interval: "15m"
+  sentiment_interval: "1h"
+
+trading:
+  markets:
+    - "KRW-BTC"
+    - "KRW-ETH"
+  mode: "paper"
+  initial_balance: 10000000
+  timeframes:
+    - "1h"
+    - "4h"
+    - "1d"
+    - "1w"
+
+risk:
+  max_position_pct: 0.10
+  max_daily_loss_pct: 0.03
+  stop_loss_pct: 0.05
+  max_positions: 5
+
+sentiment:
+  fear_greed_api_url: "https://api.alternative.me/fng/"
+  fear_greed_limit: 30
 
 log:
   level: "info"

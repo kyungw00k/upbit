@@ -293,13 +293,128 @@ TUI:  Ctrl+E 단축키
 - 긴급 상황 알림 (비상 정지, 손실 한도 근접)
 - Self-Review 요약 (주간)
 
-### 웹 대시보드 (HTTP API + 정적 페이지)
+### 웹 대시보드 (HTTP API + SPA)
 
-- `/api/status` — 데몬 상태, 현재 포지션
-- `/api/trades` — 거래 내역 (페이지네이션)
-- `/api/performance` — 성과 지표 (수익률, 샤프비율, 최대 낙폭)
-- `/api/agents` — 에이전트별 활동/분석 로그
+에이전트가 왜 그 결정을 내렸는지 투명하게 추적할 수 있는 대시보드. 각 의사결정 주기마다 전체 파이프라인의 사고 과정을 시각화한다.
+
+**API 엔드포인트:**
+
+| 엔드포인트 | 설명 |
+|---------|------|
+| `/api/status` | 데몬 상태, 현재 포지션, 최근 결정 주기 요약 |
+| `/api/trades` | 거래 내역 (페이지네이션, 필터링) |
+| `/api/performance` | 성과 지표 (수익률, 샤프비율, 최대 낙폭, 일별 PnL) |
+| `/api/agents` | 에이전트 목록, 각 에이전트별 최근 활동 요약 |
+| `/api/agents/{id}/reports` | 특정 에이전트의 전체 분석 리포트 히스토리 |
+| `/api/decision-cycles` | 의사결정 주기 목록 (페이지네이션) |
+| `/api/decision-cycles/{id}` | 특정 주기의 전체 파이프라인 상세 |
+| `/api/decision-cycles/{id}/flow` | 주기별 데이터 흐름 시각화용 JSON |
+
+**의사결정 주기 상세 (`/api/decision-cycles/{id}`):**
+```json
+{
+  "id": "dc-20260404-080000",
+  "started_at": "2026-04-04T08:00:00Z",
+  "duration_ms": 12500,
+  "phase": "completed",
+  "agents": [
+    {
+      "id": "technical-analyst",
+      "model": "claude-3-5-haiku-20241022",
+      "latency_ms": 3200,
+      "input_summary": "148 KRW markets, top 20 candle data",
+      "output": {
+        "signal": "BUY",
+        "summary": "BTC RSI 과매도 반등, MACD 골든크로스 확",
+        "coins": [
+          {
+            "symbol": "KRW-BTC",
+            "signal": "STRONG_BUY",
+            "confidence": 0.85,
+            "reasoning": "RSI 35 과매도 구간, MACD 라인이 시그널 라인을 상향 돌파, 거래량 전일 대비 180% 증가"
+          }
+        ]
+      }
+    },
+    {
+      "id": "market-analyst",
+      "model": "claude-sonnet-4-20250514",
+      "latency_ms": 4500,
+      "input_summary": "BTC 주도성 강화, 알트코인 연동 상승",
+      "output": { ... }
+    },
+    {
+      "id": "ceo",
+      "model": "claude-sonnet-4-20250514",
+      "latency_ms": 2800,
+      "input_summary": "3개 분석가 리포트 종합",
+      "output": {
+        "decision": "BUY KRW-BTC",
+        "reasoning": "Technical: RSI 과매도 반등 시그널 강함. Market: BTC 주도성 확인. News: 특별 이벤트 없음. Risk: 500KRW 소액 진입으로 리스크 한도 내.",
+        "considered_alternatives": "ETH는 신호 약함(홀드), SOL은 변동성 과다"
+      }
+    },
+    {
+      "id": "risk-manager",
+      "model": "claude-sonnet-4-20250514",
+      "latency_ms": 800,
+      "output": {
+        "approved": true,
+        "position_size": 500000,
+        "stop_loss": 72000000,
+        "take_profit": 82000000,
+        "risk_ratio": "0.8%",
+        "reasoning": "포지션 10% 미만, 일일 손실 한도 여유 충분"
+      }
+    },
+    {
+      "id": "execution-trader",
+      "model": "claude-sonnet-4-20250514",
+      "latency_ms": 500,
+      "output": {
+        "action": "BUY",
+        "order_type": "limit",
+        "price": 75000000,
+        "filled": true,
+        "execution_report": { ... }
+      }
+    }
+  ],
+  "final_outcome": "KRW-BTC 매수 주문 체결 완료"
+}
+```
+
+**대시보드 UI 주요 화면:**
+- **Overview**: 현재 포지션, 일별 PnL, 최근 결정 요약
+- **Decision Timeline**: 주기별 시각 타임라인, 각 주기의 최종 결정과 결과
+- **Agent Detail**: 선택한 에이전트의 입력 데이터 요약 → 추론(reasoning) → 출력 시각화
+- **Trade History**: 체결 내역, 예상 vs 실제 성과 비교 (self-review 포함)
+
+**기술 스택:** Go `net/http` API 서버 + 정적 HTML/CSS/JS (Vanilla 또는 가벤은 프론트엔드 프레임워크). 프론트엠드 빌드 없이 서빙 가능하도록 임베디드.
+
 - 포트: 기본 8080 (설정 변경 가능)
+
+---
+
+## 8. Decision Audit Trail
+
+각 의사결정 주기의 전체 데이터를 SQLite에 영구 저장하여 추후 분석 가능.
+
+### 저장 데이터
+
+| 테이블 | 내용 |
+|-------|------|
+| `decision_cycles` | 주기 ID, 시작/종료 시간, 최종 결과, 에러 |
+| `agent_reports` | 주기 ID, 에이전트 ID, 모델, 입력 요약, 전체 출력 JSON, 지연시간 |
+| `trades` | 주기 ID, 마켓, 사이드, 가격, 수량, 수수료, 상태 |
+| `self_reviews` | 거래 ID, 예상 vs 실제, 교훈, 프롬프트 업데이트 내용 |
+
+### 활용
+
+- 에이전트 성과 비교 (동일 조건에서 어떤 에이전트가 더 나은 예측을 했는지)
+- 잘못된 결정의 원인 분석 (어떤 에이전트의 분석이 오류였는지)
+- Self-Review가 프롬프트 개선에 어떤 영향을 주었는지 측정
+- 백테스팅을 위한 과거 의사결정 데이터 재생
 
 ---
 

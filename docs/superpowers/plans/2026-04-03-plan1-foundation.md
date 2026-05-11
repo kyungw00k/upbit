@@ -2944,6 +2944,9 @@ git commit -m "chore: Plan 1 Foundation complete — analysis-only daemon"
 **What Plan 4 will add (Learning & Monitoring):**
 - Self-Reviewer agent (거래 후 자가 리뷰)
 - 메모리/학습 시스템 (SQLite)
+- Decision Audit Trail (의사결정 주기별 전체 데이터 영구 저장)
+- 웹 대시보드 (HTTP API + SPA)
+  - 의사결정 투명성: 각 에이전트의 입력 데이터 요약 → reasoning → 출력 시각화
+  - Decision Timeline, Agent Detail, Trade History 화면
 - TUI 대시보드 (Bubble Tea)
-- 웹 대시보드 (HTTP API)
 - Telegram/Slack 알림

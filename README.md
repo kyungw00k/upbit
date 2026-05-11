@@ -199,6 +199,115 @@ AI 에이전트가 upbit를 자동으로 활용할 수 있는 Claude Code 스킬
 /plugin install cli-tools@kyungw00k-skills
 ```
 
+---
+
+## 자율매매 데몬 (Trading Daemon)
+
+Rule-based + LLM 하이브리드 자율매매 시스템. PocketBase 기반 Web Dashboard 제공.
+
+### 아키텍처
+
+```
+캔들 완성 시점마다 (1h/4h):
+┌─────────────┐
+│  Collector   │ 500개 캔들 수집 → 보조지표 계산
+└──────┬──────┘
+       ▼
+┌─────────────────┐     ┌──────────────────┐
+│ KeltnerAgent    │     │ StrategyAgent    │
+│ (Rule, 항상 실행) │     │ (LLM, 매 주기)   │
+│ 30% pos, 3.0×ATR│     │ 동적 전략 생성    │
+└────────┬────────┘     └────────┬─────────┘
+         │    40%        60%      │
+         └──────────┬─────────────┘
+                    ▼
+             ┌─────────────┐
+             │  RiskGate   │ 포지션 제한, 일일 손실
+             └──────┬──────┘
+                    ▼
+             ┌─────────────┐
+             │  Executor   │ Paper / Real
+             └──────┬──────┘
+                    ▼
+             ┌─────────────┐
+             │  PocketBase │ Dashboard + 데이터 저장
+             └─────────────┘
+```
+
+### 백테스트 검증 성과
+
+Keltner Breakout 전략 (EMA20 + 2×ATR 채널 돌파):
+
+| 기간 | 수익률 | MDD | Sharpe | 승률 |
+|------|--------|-----|--------|------|
+| 2024 | +25.95% | 5.70% | 4.20 | 58% |
+| 2025 | -5.17% | 6.04% | -1.19 | 33% |
+| **2026 (YTD, OOS)** | **+2.03%** | **2.02%** | — | 64% |
+| **3년 누적** | **+22.20%** | 6.04% | **3.34** | 48% |
+
+### 실행
+
+```bash
+# 키 없이 Rule-only 모드 (Keltner 자동 실행)
+./bin/trader serve
+
+# LLM 하이브리드 모드
+export GLM_API_KEY=your-key
+./bin/trader serve
+
+# 환경 변수로 설정 변경
+export TRADER_DECISION_INTERVAL="1h"    # 주기 (기본 4h)
+export STRATEGY_ENABLED=false            # Rule-only 모드
+```
+
+Dashboard: `http://localhost:8090/_/` (PocketBase Admin UI)
+
+### API 엔드포인트
+
+| 엔드포인트 | 설명 |
+|---|---|
+| `GET /api/trader/status` | 포지션 현황, 에이전트 리포트 (LLM 의사결정 근거 포함) |
+| `GET /api/trader/trades` | 최근 50건 거래 히스토리 |
+| `GET /api/trader/summary` | 최근 30일 일별 수익 통계 |
+
+### 백테스트 도구
+
+```bash
+# 25개 전략 카테고리 비교
+go run ./cmd/strategytest/
+
+# 포트폴리오 결합 (RSI-2 + Keltner)
+go run ./cmd/portfoliotest/
+
+# 실행 파라미터 최적화 (4×4 격자 탐색)
+go run ./cmd/executiontest/
+
+# 2026 Out-of-Sample 검증
+go run ./cmd/executiontest/   # config에서 2026 기간 선택
+```
+
+### 설정
+
+`trader/config/config.yaml`:
+
+```yaml
+api:
+  glm_api_key: ""
+  glm_base_url: "https://api.z.ai/v1"
+  glm_model: "glm-4.7"
+
+daemon:
+  decision_interval: "1h"    # 1h 또는 4h
+
+strategy:
+  enabled: true               # LLM 전략 에이전트 활성화
+  timeout: "15s"
+
+risk:
+  max_position_pct: 0.30
+  stop_loss_pct: 0.05
+```
+
 ## 감사의 글
 
 - 캔들스틱 차트는 [cli-candlestick-chart](https://github.com/Julien-R44/cli-candlestick-chart)에서 영감을 받았습니다
