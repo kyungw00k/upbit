@@ -9,3 +9,9 @@ dist/
 .claude/agent-memory/
 .claude/memory/
 docs/upbit-api/
+candlestore
+portfoliotest
+rsi2backtest
+strategytest
+code_review_results.txt
+review_result.json
