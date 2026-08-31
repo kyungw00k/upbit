@@ -1,0 +1,226 @@
+---
+updatedAt: 2026-08-31T12:32:22.000Z
+---
+
+Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
+
+# 현재가 (Ticker)
+
+현재가(Ticker) 데이터를 WebSocket으로 수신하기 위한 요청 및 구독 데이터 예시를 제공합니다.
+
+## **&#x20;WebSocket Endpoint**
+
+| 구분     | Endpoint                           |
+| ------ | ---------------------------------- |
+| Public | `wss://api.upbit.com/websocket/v1` |
+
+<br />
+
+## Request 메세지 형식
+
+현재가 (Ticker) 데이터 수신을 요청하기 위해서는 WebSocket 연결 이후 아래 구조의 JSON Object를 생성한 뒤 요청 메세지의 Data Type Object로 포함하여 전송해야 합니다. Ticket, Format 필드를 포함한 전체 WebSocket 데이터 요청 메세지 명세는 <Anchor target="_blank" href="ref:websocket-guide">WebSocket 사용 안내</Anchor> 문서를 참고해주세요.
+
+| 필드명                | 타입          | 내용                                                                                                                                                        | 필수 여부    | 기본 값    |
+| ------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| type               | String      | 수신할 데이터 타입.<br />현재가 데이터를 요청하는 경우 `ticker`로 지정합니다.                                                                                                        | Required |         |
+| code               | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Required |         |
+| is\_only\_snapshot | Boolean     | `true`로 설정하면 요청 시점의 현재가 스냅샷 데이터만 1회 수신합니다.                                                                                                                | Optional | `false` |
+| is\_only\_realtime | Boolean     | `true`로 설정하면 현재가 스냅샷 없이 실시간 스트림 데이터만 수신합니다.                                                                                                               | Optional | `false` |
+| format             | String      | 수신하고자 하는 데이터 포맷입니다. <br />`DEFAULT` : 기본 포맷.<br />`SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />`JSON_LIST` : 리스트 포맷.<br />`SIMPLE_LIST` : 축약어 형태의 리스트 포맷. | Required |         |
+
+<br />
+
+## 구독 데이터 명세
+
+현재가 스냅샷 또는 실시간 스트림 데이터는 아래와 같이 반환됩니다.
+
+| **필드명**                  | **축약형** | **내용**                                                                                                                         | **타입**  | **값**                                                                           |
+| ------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------------------------------------------------------------------------- |
+| type                     | ty      | 데이터 타입                                                                                                                         | String  | `ticker`                                                                        |
+| code                     | cd      | 페어 코드<br />(예시: `KRW-BTC`)                                                                                                     | String  |                                                                                 |
+| opening\_price           | op      | 시가                                                                                                                             | Double  |                                                                                 |
+| high\_price              | hp      | 고가                                                                                                                             | Double  |                                                                                 |
+| low\_price               | lp      | 저가                                                                                                                             | Double  |                                                                                 |
+| trade\_price             | tp      | 현재가                                                                                                                            | Double  |                                                                                 |
+| prev\_closing\_price     | pcp     | 전일 종가                                                                                                                          | Double  |                                                                                 |
+| change                   | c       | 전일 종가 대비<br />가격 변동 방향                                                                                                         | String  | `RISE`<br />: 상승<br />`EVEN`<br />: 보합<br />`FALL`<br />: 하락                    |
+| change\_price            | cp      | 전일 대비 가격 변동의 절대값                                                                                                               | Double  |                                                                                 |
+| signed\_change\_price    | scp     | 전일 대비 가격 변동 값                                                                                                                  | Double  |                                                                                 |
+| change\_rate             | cr      | 전일 대비 등락율의 절대값                                                                                                                 | Double  |                                                                                 |
+| signed\_change\_rate     | scr     | 전일 대비 등락율                                                                                                                      | Double  |                                                                                 |
+| trade\_volume            | tv      | 가장 최근 거래량                                                                                                                      | Double  |                                                                                 |
+| acc\_trade\_volume       | atv     | 누적 거래량(UTC 0시 기준)                                                                                                              | Double  |                                                                                 |
+| acc\_trade\_volume\_24h  | atv24h  | 24시간 누적 거래량                                                                                                                    | Double  |                                                                                 |
+| acc\_trade\_price        | atp     | 누적 거래대금(UTC 0시 기준)                                                                                                             | Double  |                                                                                 |
+| acc\_trade\_price\_24h   | atp24h  | 24시간 누적 거래대금                                                                                                                   | Double  |                                                                                 |
+| trade\_date              | tdt     | 최근 거래 일자(UTC)                                                                                                                  | String  | `yyyyMMdd`                                                                      |
+| trade\_time              | ttm     | 최근 거래 시각(UTC)                                                                                                                  | String  | `HHmmss`                                                                        |
+| trade\_timestamp         | ttms    | 체결 타임스탬프(ms)                                                                                                                   | Long    |                                                                                 |
+| ask\_bid                 | ab      | 매수/매도 구분                                                                                                                       | String  | `ASK`<br />: 매도<br />`BID`<br />: 매수                                            |
+| acc\_ask\_volume         | aav     | 누적 매도량                                                                                                                         | Double  |                                                                                 |
+| acc\_bid\_volume         | abv     | 누적 매수량                                                                                                                         | Double  |                                                                                 |
+| highest\_52\_week\_price | h52wp   | 52주 최고가                                                                                                                        | Double  |                                                                                 |
+| highest\_52\_week\_date  | h52wdt  | 52주 최고가 달성일                                                                                                                    | String  | `yyyy-MM-dd`                                                                    |
+| lowest\_52\_week\_price  | l52wp   | 52주 최저가                                                                                                                        | Double  |                                                                                 |
+| lowest\_52\_week\_date   | l52wdt  | 52주 최저가 달성일                                                                                                                    | String  | `yyyy-MM-dd`                                                                    |
+| market\_state            | ms      | 거래상태                                                                                                                           | String  | `PREVIEW`<br />: 입금지원<br />`ACTIVE`<br />: 거래지원가능<br />`DELISTED`<br />: 거래지원종료 |
+| is\_trading\_suspended   | its     | 거래 정지 여부.<br /><span style="color:#D92D20;"><strong>Deprecated</strong> — 더 이상 사용되지 않는 필드입니다. 응답 처리 시 참조하지 않는 것을 권장합니다.</span> | Boolean |                                                                                 |
+| delisting\_date          | dd      | 거래지원 종료일                                                                                                                       | Date    |                                                                                 |
+| market\_warning          | mw      | 유의 종목 여부.<br /><span style="color:#D92D20;"><strong>Deprecated</strong> — 더 이상 사용되지 않는 필드입니다. 응답 처리 시 참조하지 않는 것을 권장합니다.</span> | String  | `NONE`<br />: 해당없음<br />`CAUTION`<br />: 투자유의                                   |
+| timestamp                | tms     | 타임스탬프 (ms)                                                                                                                     | Long    |                                                                                 |
+| stream\_type             | st      | 스트림 타입                                                                                                                         | String  | `SNAPSHOT`<br />: 스냅샷<br />`REALTIME`<br />: 실시간                                |
+
+<br />
+
+## 예시
+
+#### KRW-BTC, KRW-ETH 현재가 조회
+
+> KRW-BTC와 KRW-ETH의 현재가를 실시간으로 수신하여 여러 페어의 가격과 등락 정보를 한 번에 확인하는 예시입니다. ticket은 요청을 식별하기 위한 값으로 원하는 문자열을 직접 지정할 수 있습니다.
+
+##### 구독 요청 예제
+
+```json
+[
+  {
+    "ticket": "ticker-monitor"
+  },
+  {
+    "type": "ticker",
+    "codes": ["KRW-BTC", "KRW-ETH"]
+  },
+  {
+    "format": "DEFAULT"
+  }
+]
+```
+
+##### 수신 메시지 예제
+
+```json
+{
+  "type": "ticker",
+  "code": "KRW-BTC",
+  "opening_price": 109165000.0,
+  "high_price": 110117000.0,
+  "low_price": 108958000.0,
+  "trade_price": 109868000.0,
+  "prev_closing_price": 109165000.0,
+  "acc_trade_price": 59726546304.62442,
+  "change": "RISE",
+  "change_price": 703000.0,
+  "signed_change_price": 703000.0,
+  "change_rate": 0.006439793,
+  "signed_change_rate": 0.006439793,
+  "ask_bid": "BID",
+  "trade_volume": 9.101e-05,
+  "acc_trade_volume": 544.24861805,
+  "trade_date": "20260826",
+  "trade_time": "072400",
+  "trade_timestamp": 1787729040682,
+  "acc_ask_volume": 271.9810004,
+  "acc_bid_volume": 272.26761765,
+  "highest_52_week_price": 179869000.0,
+  "highest_52_week_date": "2025-10-09",
+  "lowest_52_week_price": 88342000.0,
+  "lowest_52_week_date": "2026-08-14",
+  "market_state": "ACTIVE",
+  "is_trading_suspended": false,
+  "delisting_date": null,
+  "market_warning": "NONE",
+  "timestamp": 1787729042606,
+  "acc_trade_price_24h": 198189163442.74924,
+  "acc_trade_volume_24h": 1807.38027625,
+  "stream_type": "SNAPSHOT"
+}
+{
+  "type": "ticker",
+  "code": "KRW-ETH",
+  "opening_price": 3394000.0,
+  "high_price": 3436000.0,
+  "low_price": 3387000.0,
+  "trade_price": 3428000.0,
+  "prev_closing_price": 3394000.0,
+  "acc_trade_price": 29414391716.64815,
+  "change": "RISE",
+  "change_price": 34000.0,
+  "signed_change_price": 34000.0,
+  "change_rate": 0.0100176783,
+  "signed_change_rate": 0.0100176783,
+  "ask_bid": "ASK",
+  "trade_volume": 0.00496157,
+  "acc_trade_volume": 8599.75508773,
+  "trade_date": "20260826",
+  "trade_time": "072402",
+  "trade_timestamp": 1787729042970,
+  "acc_ask_volume": 4252.0770788,
+  "acc_bid_volume": 4347.67800893,
+  "highest_52_week_price": 6793000.0,
+  "highest_52_week_date": "2025-10-07",
+  "lowest_52_week_price": 2300000.0,
+  "lowest_52_week_date": "2026-06-06",
+  "market_state": "ACTIVE",
+  "is_trading_suspended": false,
+  "delisting_date": null,
+  "market_warning": "NONE",
+  "timestamp": 1787729043011,
+  "acc_trade_price_24h": 93243246770.60411,
+  "acc_trade_volume_24h": 27285.16598231,
+  "stream_type": "SNAPSHOT"
+}
+```
+
+<br />
+
+## 에러 안내&#x20;
+
+WebSocket 연결 후 요청에 대한 에러 발생 시, 응답은 다음과 같은 JSON 형식으로 반환됩니다.
+
+```json Error Response
+{
+  "error": {
+    "name": "ERRPR_CODE",
+    "message": "ERROR_MESSAGE"
+  }
+}
+```
+
+반환될 수 있는 주요 에러 코드 목록은 아래와 같습니다.
+
+| error.name        | 발생 이유                                    | 권장 조치                                                                                               |
+| ----------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| INVALID\_AUTH     | 인증 정보 누락 또는 인증 토큰 검증 실패                  | Private WebSocket을 사용하는 경우 올바른 Endpoint에 연결했는지 확인하고, Authorization 헤더에 유효한 인증 토큰이 포함되어 있는지 확인해 주세요. |
+| WRONG\_FORMAT     | 요청 메시지 형식 오류                             | 요청 메시지가 WebSocket 요청 형식에 맞게 작성되었는지 확인해 주세요. Object 구성과 각 필드의 타입 및 값을 함께 확인해 주세요.                    |
+| NO\_TICKET        | ticket 필드 누락                             | 요청 메시지에 Ticket Object와 ticket 필드가 포함되어 있는지 확인해 주세요.                                                 |
+| NO\_TYPE          | type 필드 누락                               | Data Type Object에 type 필드가 포함되어 있는지 확인하고, 구독할 데이터 타입을 지정해 주세요.                                      |
+| NO\_CODES         | codes 필드 누락                              | 구독하려는 데이터 타입에서 codes 필드가 필요한지 확인하고, 수신할 페어 코드 목록을 지정해 주세요.                                          |
+| INVALID\_PARAM    | 필수 요청 필드 누락 또는 지원하지 않는 값 요청              | 요청 메시지에 필요한 필드가 포함되어 있는지, 각 필드에 지원하는 값이 지정되었는지 확인해 주세요.                                             |
+| Too Many Requests | 요청 한도 초과                                 | 다음 요청이 가능한 시점까지 대기한 후 다시 요청해 주세요. 요청 한도와 잔여 요청 수 확인 방법은 아래 잔여 요청 수 확인 방법을 참고해 주세요.                  |
+| I'm a teapot      | Too Many Requests가 반복되어 일정 시간 요청이 제한된 상태 | 응답에 포함된 제한 시간을 확인하고, 안내된 시간이 지난 후 다시 요청해 주세요.                                                       |
+
+<br />
+
+## 요청 수 제한
+
+API는 Rate Limit 그룹으로 묶입니다. 같은 그룹의 API는 초당 한도를 함께 차감합니다. Rate Limit 그룹별 초당 최대 허용 요청 수는 서비스 정책에 따라 공지 후 변경되거나, 서비스 상황에 따라 추가 제한이 발생할 수 있습니다. 자세한 설명은 <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits">요청 수 제한(Rate Limits)</Anchor>를 참고해주세요
+
+| Rate Limit 그룹       | 정책                | 적용 단위 |
+| ------------------- | ----------------- | ----- |
+| `websocket-connect` | 초당 최대 5회          | IP    |
+| `websocket-message` | 초당 최대 5회, 분당 100회 | 커넥션   |
+
+<Callout icon="fad fa-gauge" theme="warn">
+  ### **WebSocket 요청 수 제한 관리**
+
+  WebSocket은 REST API와 달리 잔여 요청 수를 별도로 제공하지 않습니다. 클라이언트에서 WebSocket 연결 및 데이터 요청 메시지의 전송 횟수를 관리하여 요청 수 제한을 준수해 주세요.<br />요청 수 제한에 도달한 경우 일정 시간 대기한 후 다시 요청해 주세요.
+</Callout>
+
+# Sibling pages
+
+* [체결 (Trade)](https://docs.upbit.com/kr/reference/websocket-trade.md)
+* [호가 (Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook.md)
+* [캔들 (Candle)](https://docs.upbit.com/kr/reference/websocket-candle.md)
+* [공지사항(Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement.md)
+* [내 주문 및 체결 (MyOrder)](https://docs.upbit.com/kr/reference/websocket-myorder.md)
+* [내 자산 (MyAsset)](https://docs.upbit.com/kr/reference/websocket-myasset.md)
+* [구독 중인 스트림 목록 조회(Subscriptions)](https://docs.upbit.com/kr/reference/list-subscriptions.md)
