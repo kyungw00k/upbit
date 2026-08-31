@@ -17,6 +17,7 @@ jobs:
 
       - name: Download latest llms.txt
         run: |
+          mkdir -p docs/upbit-api
           curl -sf https://docs.upbit.com/kr/llms.txt -o docs/upbit-api/llms.txt.new
 
       - name: Check for changes
