@@ -5,6 +5,7 @@ package ratelimit
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"sync"
@@ -27,16 +28,19 @@ const (
 )
 
 // Requests per second per group.
+// See https://docs.upbit.com/reference/rate-limits and changelog/order-rate-limit-update.
 const (
-	rateMarket         = 10.0
-	rateCandle         = 10.0
-	rateTicker         = 10.0
-	rateOrderbook      = 10.0
-	rateTrade          = 10.0
-	rateDefault        = 30.0
-	rateOrder          = 8.0
+	rateMarket    = 10.0
+	rateCandle    = 10.0
+	rateTicker    = 10.0
+	rateOrderbook = 10.0
+	rateTrade     = 10.0
+	rateDefault   = 30.0
+	// rateOrder: 주문 생성 그룹. 2026-08-21에 8 → 12로 상향
+	// (changelog/order-rate-limit-update.md). 포켓 단위로 측정.
+	rateOrder          = 12.0
 	rateOrderTest      = 8.0
-	rateOrderCancelAll = 0.5
+	rateOrderCancelAll = 0.5 // 주문 일괄 취소 그룹: 2초당 1회
 )
 
 // bucket is a token bucket implementation.
@@ -184,9 +188,16 @@ func parseRemainingReq(header string) (int, int) {
 	return remaining, perSec
 }
 
-// GroupFromPath infers the rate limit group from an HTTP request path.
-// Based on actual Upbit API endpoint paths.
-func GroupFromPath(path string) Group {
+// GroupFromMethodPath infers the rate limit group from an HTTP method and request path.
+// Method matters: /orders/open is a default-group read via GET but a
+// cancel-all (2s-period) via DELETE. Group memberships follow
+// https://docs.upbit.com/reference/rate-limits:
+//   - 주문 생성 그룹(12/s): POST /orders, POST /orders/cancel_and_new
+//   - 주문 테스트 그룹(8/s): POST /orders/test
+//   - 주문 일괄 취소 그룹(1 per 2s): DELETE /orders/open
+//   - Exchange 기본 그룹(30/s): all other exchange endpoints,
+//     including order reads and individual/batch-by-id cancels
+func GroupFromMethodPath(method, path string) Group {
 	switch {
 	case strings.HasPrefix(path, "/trading_pairs"):
 		return GroupMarket
@@ -198,11 +209,11 @@ func GroupFromPath(path string) Group {
 		return GroupOrderbook
 	case strings.HasPrefix(path, "/trades/"):
 		return GroupTrade
-	case strings.HasPrefix(path, "/orders/test"):
+	case path == "/orders/test":
 		return GroupOrderTest
-	case strings.HasPrefix(path, "/orders/batch"):
+	case path == "/orders/open" && method == http.MethodDelete:
 		return GroupOrderCancelAll
-	case strings.HasPrefix(path, "/orders"):
+	case (path == "/orders" || path == "/orders/cancel_and_new") && method == http.MethodPost:
 		return GroupOrder
 	default:
 		return GroupDefault

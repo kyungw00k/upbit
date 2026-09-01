@@ -2,6 +2,7 @@ package ratelimit
 
 import (
 	"context"
+	"net/http"
 	"testing"
 	"time"
 )
@@ -62,34 +63,52 @@ func TestWait_UnknownGroup_FallsBackToDefault(t *testing.T) {
 	}
 }
 
-func TestGroupFromPath(t *testing.T) {
+func TestGroupFromMethodPath(t *testing.T) {
 	tests := []struct {
+		method   string
 		path     string
 		expected Group
 	}{
-		{"/candles/minutes/1", GroupCandle},
-		{"/candles/days", GroupCandle},
-		{"/orders", GroupOrder},
-		{"/orders/chance", GroupOrder},
-		{"/orders/test", GroupOrderTest},
-		{"/orders/batch", GroupOrderCancelAll},
-		{"/tickers", GroupTicker},
-		{"/ticker", GroupTicker},
-		{"/orderbooks", GroupOrderbook},
-		{"/trades/ticks", GroupTrade},
-		{"/trading_pairs", GroupMarket},
-		{"/accounts", GroupDefault},
-		{"/deposits", GroupDefault},
-		{"/withdraws", GroupDefault},
+		{http.MethodGet, "/candles/minutes/1", GroupCandle},
+		{http.MethodGet, "/candles/days", GroupCandle},
+		{http.MethodPost, "/orders", GroupOrder},
+		{http.MethodGet, "/orders", GroupDefault},
+		{http.MethodGet, "/orders/chance", GroupDefault},
+		{http.MethodPost, "/orders/test", GroupOrderTest},
+		{http.MethodPost, "/orders/cancel_and_new", GroupOrder},
+		{http.MethodDelete, "/orders/open", GroupOrderCancelAll},
+		{http.MethodGet, "/orders/open", GroupDefault},
+		{http.MethodDelete, "/orders/uuids", GroupDefault},
+		{http.MethodGet, "/orders/uuids", GroupDefault},
+		{http.MethodGet, "/tickers", GroupTicker},
+		{http.MethodGet, "/ticker", GroupTicker},
+		{http.MethodGet, "/orderbooks", GroupOrderbook},
+		{http.MethodGet, "/trades/ticks", GroupTrade},
+		{http.MethodGet, "/trading_pairs", GroupMarket},
+		{http.MethodGet, "/accounts", GroupDefault},
+		{http.MethodGet, "/deposits", GroupDefault},
+		{http.MethodGet, "/withdraws", GroupDefault},
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.path, func(t *testing.T) {
-			got := GroupFromPath(tt.path)
+		t.Run(tt.method+" "+tt.path, func(t *testing.T) {
+			got := GroupFromMethodPath(tt.method, tt.path)
 			if got != tt.expected {
-				t.Errorf("GroupFromPath(%q) = %s, 기대: %s", tt.path, got, tt.expected)
+				t.Errorf("GroupFromMethodPath(%s, %q) = %s, 기대: %s", tt.method, tt.path, got, tt.expected)
 			}
 		})
+	}
+}
+
+func TestNewLimiter_OrderRate(t *testing.T) {
+	// 주문 생성 그룹: 2026-08-21 changelog에 따라 초당 12회
+	l := NewLimiter()
+	b := l.buckets[GroupOrder]
+	b.mu.Lock()
+	rate := b.rate
+	b.mu.Unlock()
+	if rate != 12.0 {
+		t.Errorf("주문 그룹 rate=12.0 기대, 실제: %f", rate)
 	}
 }
 

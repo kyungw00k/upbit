@@ -54,7 +54,7 @@ func NewClientWithURL(baseURL, accessKey, secretKey string) *Client {
 
 // Request executes an HTTP request with integrated rate limiting, retry, and error parsing.
 func (c *Client) Request(ctx context.Context, method, path string, query map[string]string, body interface{}, result interface{}) error {
-	group := ratelimit.GroupFromPath(path)
+	group := ratelimit.GroupFromMethodPath(method, path)
 
 	return retry.Retry(ctx, func() error {
 		// Wait for rate limit token.
@@ -198,7 +198,7 @@ func (c *Client) DELETEWithRawQuery(ctx context.Context, path string, rawQuery s
 // RequestWithRawQuery executes an HTTP request supporting array query parameters.
 // Supports array parameters (e.g. uuids[]=a&uuids[]=b) that cannot be expressed as map[string]string.
 func (c *Client) RequestWithRawQuery(ctx context.Context, method, path string, rawQuery string, result interface{}) error {
-	group := ratelimit.GroupFromPath(path)
+	group := ratelimit.GroupFromMethodPath(method, path)
 
 	return retry.Retry(ctx, func() error {
 		// Wait for rate limit token.
