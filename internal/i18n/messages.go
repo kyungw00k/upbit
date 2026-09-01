@@ -436,6 +436,26 @@ const (
 
 	MsgConfirmNonTTY Key = "MsgConfirmNonTTY"
 	ErrInputRead     Key = "ErrInputRead"
+
+	// ── Pocket ──
+
+	MsgPocketRootShort       Key = "MsgPocketRootShort"
+	MsgPocketListShort       Key = "MsgPocketListShort"
+	MsgPocketBalanceShort    Key = "MsgPocketBalanceShort"
+	MsgPocketAPIKeysShort    Key = "MsgPocketAPIKeysShort"
+	MsgPocketTransferShort   Key = "MsgPocketTransferShort"
+	MsgPocketTransferSend    Key = "MsgPocketTransferSend"
+	MsgPocketTransferList    Key = "MsgPocketTransferList"
+	MsgPocketUniversalShort  Key = "MsgPocketUniversalShort"
+	MsgPocketUniversalSend   Key = "MsgPocketUniversalSend"
+	MsgPocketUniversalList   Key = "MsgPocketUniversalList"
+	ErrPocketUUIDRequired    Key = "ErrPocketUUIDRequired"
+	ErrPocketTransferArgs    Key = "ErrPocketTransferArgs"
+	ErrPocketUnivTransferArg Key = "ErrPocketUnivTransferArg"
+	FlagPocketIncExpired     Key = "FlagPocketIncExpired"
+	FlagPocketDirection      Key = "FlagPocketDirection"
+	FlagPocketStates         Key = "FlagPocketStates"
+	MsgPocketConfirmSend     Key = "MsgPocketConfirmSend"
 )
 
 var ko = map[Key]string{
@@ -842,6 +862,25 @@ var ko = map[Key]string{
 	// Confirm
 	MsgConfirmNonTTY: "확인 프롬프트: non-tty 환경에서는 --force 플래그가 필요합니다.",
 	ErrInputRead:     "입력 읽기 실패",
+
+	// Pocket
+	MsgPocketRootShort:       "포켓(서브계좌) 관리",
+	MsgPocketListShort:       "포켓 목록 조회",
+	MsgPocketBalanceShort:    "서브포켓 잔고 조회",
+	MsgPocketAPIKeysShort:    "포켓별 API Key 목록 조회",
+	MsgPocketTransferShort:   "포켓 간 자산 이전",
+	MsgPocketTransferSend:    "다른 포켓으로 자산 이전",
+	MsgPocketTransferList:    "포켓 간 이전 내역 조회",
+	MsgPocketUniversalShort:  "메인포켓 자산 이전",
+	MsgPocketUniversalSend:   "메인포켓 자산 이전 실행",
+	MsgPocketUniversalList:   "메인포켓 자산 이전 내역 조회",
+	ErrPocketUUIDRequired:    "포켓 UUID가 필요합니다",
+	ErrPocketTransferArgs:    "<to> <currency> <amount> 인자가 필요합니다",
+	ErrPocketUnivTransferArg: "<from> <to> <currency> <amount> 인자가 필요합니다",
+	FlagPocketIncExpired:     "만료된 API Key 포함",
+	FlagPocketDirection:      "이전 방향 필터 (in | out)",
+	FlagPocketStates:         "상태 필터 (쉼표로 구분, 예: WAIT,OK)",
+	MsgPocketConfirmSend:     "%s %s을(를) 포켓 %s(으)로 이전할까요?",
 }
 
 var en = map[Key]string{
@@ -1248,4 +1287,23 @@ var en = map[Key]string{
 	// Confirm
 	MsgConfirmNonTTY: "Confirmation prompt: --force flag required in non-tty environment.",
 	ErrInputRead:     "Failed to read input",
+
+	// Pocket
+	MsgPocketRootShort:       "Manage pockets (sub-accounts)",
+	MsgPocketListShort:       "List pockets",
+	MsgPocketBalanceShort:    "Show sub-pocket balance",
+	MsgPocketAPIKeysShort:    "List API keys per pocket",
+	MsgPocketTransferShort:   "Transfer assets between pockets",
+	MsgPocketTransferSend:    "Send assets to another pocket",
+	MsgPocketTransferList:    "List pocket transfer history",
+	MsgPocketUniversalShort:  "Main-pocket asset transfers",
+	MsgPocketUniversalSend:   "Send main-pocket assets",
+	MsgPocketUniversalList:   "List main-pocket transfer history",
+	ErrPocketUUIDRequired:    "pocket UUID is required",
+	ErrPocketTransferArgs:    "<to> <currency> <amount> arguments are required",
+	ErrPocketUnivTransferArg: "<from> <to> <currency> <amount> arguments are required",
+	FlagPocketIncExpired:     "include expired API keys",
+	FlagPocketDirection:      "transfer direction filter (in | out)",
+	FlagPocketStates:         "state filter (comma-separated, e.g. WAIT,OK)",
+	MsgPocketConfirmSend:     "Transfer %s %s to pocket %s?",
 }

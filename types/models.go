@@ -405,3 +405,37 @@ type CancelAndNewOrderResult struct {
 	TradesCount     int     `json:"trades_count"`
 	NewOrderUUID    string  `json:"new_order_uuid"` // UUID of the newly created order
 }
+
+// Pocket represents a main/sub pocket (account partition).
+// API: GET /pockets — https://docs.upbit.com/reference/list-pockets
+type Pocket struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// PocketAPIKey is an API key scoped to a pocket.
+type PocketAPIKey struct {
+	AccessKey   string   `json:"access_key"`
+	Permissions []string `json:"permissions"`
+	AllowedIPs  []string `json:"allowed_ips"`
+	CreatedAt   string   `json:"created_at"`
+	ExpiredAt   string   `json:"expired_at"`
+}
+
+// PocketAPIKeys is a pocket UUID with its API keys.
+type PocketAPIKeys struct {
+	UUID string         `json:"uuid"`
+	Keys []PocketAPIKey `json:"keys"`
+}
+
+// PocketTransfer is an asset transfer between pockets.
+type PocketTransfer struct {
+	From       string  `json:"from"`
+	To         string  `json:"to"`
+	UUID       string  `json:"uuid"`
+	Identifier string  `json:"identifier"`
+	State      string  `json:"state"`
+	Currency   string  `json:"currency"`
+	Amount     Float64 `json:"amount"`
+	CreatedAt  string  `json:"created_at"`
+}
