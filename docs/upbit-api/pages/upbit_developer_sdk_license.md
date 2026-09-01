@@ -1,0 +1,21 @@
+---
+updatedAt: 2026-01-07T10:02:17.000Z
+---
+
+Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
+
+# 업비트 개발자 SDK 라이센스
+
+[block:html]
+{
+  "html": "<style>\n  body {\n    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n    line-height: 1.65;\n    color: #333;\n    padding: 20px 0;\n  }\n\n  h1, h2, h3 {\n    font-weight: 600;\n    margin: 32px 0 16px;\n  }\n\n  h1 { font-size: 1.8rem; }\n  h2 { font-size: 1.35rem; }\n  h3 { font-size: 1.1rem; }\n\n  p {\n    margin: 10px 0 18px;\n  }\n\n  ul {\n    margin: 6px 0 22px 0;\n    padding-left: 20px;\n  }\n\n  li {\n    margin-bottom: 6px;\n  }\n\n  .section {\n    margin-bottom: 48px;\n  }\n\n  .box {\n    border: 1px solid #e5e5e5;\n    background: #fafafa;\n    padding: 18px 20px;\n    margin: 18px 0 24px;\n    border-radius: 8px;\n  }\n\n  .divider {\n    border-top: 1px solid #e5e5e5;\n    margin: 40px 0;\n  }\n</style>\n\n<div class=\"section\">\n  <h3>Upbit Developer SDK License v1.0</h3>\n  <p>License text copyright (c) 2025 Dunamu Inc, All rights reserved.</p>\n\n  <p>본 라이선스는 두나무 주식회사(이하 “두나무“)가 업비트 회원의 서비스 이용 편의를 지원하기 위해 공개하는 소프트웨어, 스크립트, 관련 소스코드, 구성 파일 및 이에 포함된 문서 일체(이하 “본 자료“)에 적용됩니다.</p>\n\n  <p>본 라이선스는 오픈소스 라이선스가 아닙니다.</p>\n</div>\n\n\n<div class=\"section\">\n  <h3>1. 사용 권한 및 허용 범위</h3>\n\n  <p>본 라이선스에 따라 귀하는 다음과 같은 조건 하에 본 자료를 사용할 수 있는 제한적·비독점적·무상 라이선스를 부여받습니다:</p>\n\n  <ul>\n    <li>업비트 서비스를 이용하기 위한 개인적 목적의 사용</li>\n    <li>업비트 Open API 이용약관(https://upbit.com/open_api_agreement)에 동의하고 이를 준수하는 범위에서의 사용</li>\n    <li>본 라이선스 전문을 그대로 포함시키고 동일한 조건을 유지하는 경우에 한하여 수정 및 재배포 가능 (이 경우, 수정 또는 재배포되는 자료는 반드시 전체 소스코드 형태로 공개되어야 합니다.)</li>\n  </ul>\n\n  <p>또한, 본 라이선스에 따라 귀하는 다음에 대한 권리도 함께 부여받습니다:</p>\n\n  <ul>\n    <li>본 자료 및 그 파생 저작물을 소스코드 및 오브젝트코드 형태로 복제, 수정, 실행 및 재배포할 수 있는 제한적·비독점적·무상 저작권 라이선스</li>\n    <li>본 자료 중 두나무가 보유한 특허에 의해 보호되는 기술이 있는 경우, 해당 기술을 사용하는 데 필요한 제한적·비독점적·무상 특허 라이선스(단, 귀하가 두나무를 상대로 특허 관련 소송을 제기할 경우, 본 라이선스에 따라 부여된 모든 특허 라이선스는 소송 제기일로부터 자동으로 종료됩니다.)</li>\n  </ul>\n</div>\n\n\n<div class=\"section\">\n  <h3>2. 금지 사항</h3>\n\n  <p>다음 행위는 명시적으로 금지됩니다:</p>\n\n  <ul>\n    <li>\n      개인적 목적이 아닌 사업적 활용, 서비스 운영 또는 수익을 목적으로 하는 모든 사용 행위<br>\n      ① 본 자료를 사용한 서비스 등을 통해 직접적으로 수익을 창출하는 행위 (예: 프로그램 판매, 유료 기능 탑재, 유료 API 또는 회원제 구성 등)<br>\n      ② 간접적 수익을 창출하는 방식(예: 광고 수익, 제휴 수익 등)의 서비스 등에 본 자료를 사용하는 행위 (예: 광고가 포함된 웹서비스, 배너 또는 트래픽 기반 수익을 얻는 API 응답 서비스 등)\n    </li>\n\n    <li>가상자산 관련 사업자, 두나무와 동일·유사 업종의 사업자 및 그 외 업종의 사업자의 사용 행위</li>\n\n    <li>본 자료 또는 이를 기반으로 한 파생물을 바탕으로 특허, 실용신안, 상표, 디자인 등 지식재산권 취득을 시도하거나 지식재산권을 취득할 수 있는 권리를 주장하는 행위</li>\n  </ul>\n</div>\n\n\n<div class=\"section\">\n  <h2>3. 지식재산권의 귀속</h2>\n\n  <p>본 자료의 모든 저작권 및 지식재산권(특허, 실용신안, 상표, 디자인 포함)은 두나무에 귀속됩니다. 단 귀하가 본 자료를 수정하였고 수정 부분 중 지식재산권으로 보호받을 수 있는 요소가 있는 경우, 해당 요소의 지식재산권은 귀하에게 귀속됩니다.</p>\n\n  <p>본 라이선스는 두나무가 보유한 상표, 로고, 명칭, 브랜드를 포함한 일체의 지식재산권에 대해 어떠한 사용 권한도 부여하지 않습니다.</p>\n</div>\n\n\n<div class=\"section\">\n  <h3>4. 면책 조항</h3>\n\n  <p>본 자료는 \"있는 그대로\"(AS IS) 제공되며 다음을 포함한 모든 직접적 또는 간접적 결과에 대하여, 두나무는 법적 책임을 지지 않습니다:</p>\n\n  <ul>\n    <li>본 자료의 오용, 수정 또는 재배포로 인해 발생한 시스템 오류, 데이터 손실, 서비스 중단, 제3자와의 분쟁 등</li>\n    <li>본 자료를 기반으로 구현된 기능, 알고리즘, 서비스 등의 정확성 및 안정성</li>\n  </ul>\n\n  <p>본 자료는 전적으로 사용자의 책임 하에 제공되며, 이를 사용하는 것은 본 면책 조항에 동의하는 것으로 간주됩니다.</p>\n</div>\n\n\n<div class=\"section\">\n  <h3>5. 라이선스 위반 시 조치</h3>\n\n  <p>본 라이선스 위반 시 귀하의 사용 권한은 자동으로 종료되며, 두나무는 이에 대해 법적 조치를 포함한 가능한 모든 대응을 취할 수 있습니다.</p>\n</div>\n\n\n<div class=\"section\">\n  <h3>6. 문의</h3>\n\n  <p>본 라이선스와 관련한 문의는 아래로 연락주시기 바랍니다.<br>\n  open-api@upbit.com</p>\n</div>\n\n<br><br>\n"
+}
+[/block]
+
+# Sibling pages
+
+* [업비트 개발자 센터 개인정보처리방침](https://docs.upbit.com/kr/page/privacy_policy_v1_4.md)
+* [업비트 Open API 기술 지원 안내](https://docs.upbit.com/kr/page/upbit_open_api_support.md)
+* [업비트 어시스턴트 이용 유의사항](https://docs.upbit.com/kr/page/upbit-assistant-disclaimer.md)
+* [두나무 업비트 개발자 센터 개인정보처리방침](https://docs.upbit.com/kr/page/privacy_policy_v1_5.md)
+* [업비트 Open API 기술 지원 안내](https://docs.upbit.com/kr/page/업비트-open-api-기술-지원-안내.md)
