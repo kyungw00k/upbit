@@ -27,7 +27,8 @@ var orderShowCmd = &cobra.Command{
 	Args:  RequireMinArgs(1, i18n.T(i18n.ErrOrderShowArgs)),
 	Example: `  upbit order show 12345678-abcd-efgh-ijkl-1234567890ab            # 단일 조회
   upbit order show uuid1 uuid2 uuid3                                # 복수 UUID 조회
-  upbit order show my-order-001 --id                                # Identifier로 조회`,
+  upbit order show my-order-001 --id                                # Identifier로 조회
+  upbit order show my-order-001 my-order-02 --id                    # 복수 Identifier 조회`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client, err := GetClientE(true)
 		if err != nil {
@@ -37,9 +38,17 @@ var orderShowCmd = &cobra.Command{
 
 		byID, _ := cmd.Flags().GetBool("id")
 
-		// Identifier 조회는 단일만 지원
+		// Identifier 조회
 		if byID {
 			formatter := GetFormatterWithColumns(orderShowColumns)
+			if len(args) > 1 {
+				// 복수 identifier: batch 조회
+				orders, err := ec.GetOrdersByIDs(cmd.Context(), exchange.GetOrdersByIDsOptions{Identifiers: args})
+				if err != nil {
+					return err
+				}
+				return formatter.Format(orders)
+			}
 			order, err := ec.GetOrderByIdentifier(cmd.Context(), args[0])
 			if err != nil {
 				return err

@@ -19,7 +19,7 @@ const (
 	FlagForceUsage      Key = "FlagForceUsage"
 
 	// Root errors
-	ErrConfigLoad  Key = "ErrConfigLoad"
+	ErrConfigLoad   Key = "ErrConfigLoad"
 	ErrAuthRequired Key = "ErrAuthRequired"
 
 	// Args helper
@@ -27,50 +27,50 @@ const (
 
 	// ── Balance ──
 
-	HdrCurrency   Key = "HdrCurrency"
-	HdrBalance    Key = "HdrBalance"
-	HdrLocked     Key = "HdrLocked"
+	HdrCurrency    Key = "HdrCurrency"
+	HdrBalance     Key = "HdrBalance"
+	HdrLocked      Key = "HdrLocked"
 	HdrAvgBuyPrice Key = "HdrAvgBuyPrice"
-	HdrEvalKRW    Key = "HdrEvalKRW"
+	HdrEvalKRW     Key = "HdrEvalKRW"
 
-	MsgBalanceShort      Key = "MsgBalanceShort"
-	ErrBalanceNotFound   Key = "ErrBalanceNotFound"
-	MsgBalanceEmpty      Key = "MsgBalanceEmpty"
+	MsgBalanceShort    Key = "MsgBalanceShort"
+	ErrBalanceNotFound Key = "ErrBalanceNotFound"
+	MsgBalanceEmpty    Key = "MsgBalanceEmpty"
 
 	// ── Buy ──
 
-	MsgBuyShort             Key = "MsgBuyShort"
-	ErrBuyArgsRequired      Key = "ErrBuyArgsRequired"
-	ErrBuyParamsRequired    Key = "ErrBuyParamsRequired"
-	MsgTickCheckFailed      Key = "MsgTickCheckFailed"
-	MsgBuyOrderAdjusted     Key = "MsgBuyOrderAdjusted"
-	MsgBuyOrderNormal       Key = "MsgBuyOrderNormal"
-	MsgTickAdjusted         Key = "MsgTickAdjusted"
-	MsgOrderCancelled       Key = "MsgOrderCancelled"
-	MsgDescLimitOrder       Key = "MsgDescLimitOrder"
-	MsgDescPriceOrder       Key = "MsgDescPriceOrder"
-	FlagPriceUsage          Key = "FlagPriceUsage"
-	FlagVolumeUsage         Key = "FlagVolumeUsage"
-	FlagTotalUsage          Key = "FlagTotalUsage"
-	FlagSMPUsage            Key = "FlagSMPUsage"
-	FlagIdentifierUsage     Key = "FlagIdentifierUsage"
-	FlagTestUsage           Key = "FlagTestUsage"
-	FlagBestUsage           Key = "FlagBestUsage"
-	FlagWatchPriceUsage     Key = "FlagWatchPriceUsage"
-	MsgDescBestOrder        Key = "MsgDescBestOrder"
-	MsgDescReservedOrder    Key = "MsgDescReservedOrder"
+	MsgBuyShort          Key = "MsgBuyShort"
+	ErrBuyArgsRequired   Key = "ErrBuyArgsRequired"
+	ErrBuyParamsRequired Key = "ErrBuyParamsRequired"
+	MsgTickCheckFailed   Key = "MsgTickCheckFailed"
+	MsgBuyOrderAdjusted  Key = "MsgBuyOrderAdjusted"
+	MsgBuyOrderNormal    Key = "MsgBuyOrderNormal"
+	MsgTickAdjusted      Key = "MsgTickAdjusted"
+	MsgOrderCancelled    Key = "MsgOrderCancelled"
+	MsgDescLimitOrder    Key = "MsgDescLimitOrder"
+	MsgDescPriceOrder    Key = "MsgDescPriceOrder"
+	FlagPriceUsage       Key = "FlagPriceUsage"
+	FlagVolumeUsage      Key = "FlagVolumeUsage"
+	FlagTotalUsage       Key = "FlagTotalUsage"
+	FlagSMPUsage         Key = "FlagSMPUsage"
+	FlagIdentifierUsage  Key = "FlagIdentifierUsage"
+	FlagTestUsage        Key = "FlagTestUsage"
+	FlagBestUsage        Key = "FlagBestUsage"
+	FlagWatchPriceUsage  Key = "FlagWatchPriceUsage"
+	MsgDescBestOrder     Key = "MsgDescBestOrder"
+	MsgDescReservedOrder Key = "MsgDescReservedOrder"
 
 	// ── Percent ──
 
-	ErrTickerFetch         Key = "ErrTickerFetch"
-	ErrTickerEmpty         Key = "ErrTickerEmpty"
+	ErrTickerFetch          Key = "ErrTickerFetch"
+	ErrTickerEmpty          Key = "ErrTickerEmpty"
 	MsgPriceKeywordResolved Key = "MsgPriceKeywordResolved"
 
-	ErrPercentParse        Key = "ErrPercentParse"
-	ErrPercentRange        Key = "ErrPercentRange"
+	ErrPercentParse         Key = "ErrPercentParse"
+	ErrPercentRange         Key = "ErrPercentRange"
 	ErrPercentBuyNeedsPrice Key = "ErrPercentBuyNeedsPrice"
-	ErrChanceFetch         Key = "ErrChanceFetch"
-	MsgPercentResolved     Key = "MsgPercentResolved"
+	ErrChanceFetch          Key = "ErrChanceFetch"
+	MsgPercentResolved      Key = "MsgPercentResolved"
 
 	// ── Sell ──
 
@@ -93,25 +93,25 @@ const (
 
 	// ── Ticker ──
 
-	HdrPrice        Key = "HdrPrice"
-	HdrChange       Key = "HdrChange"
-	HdrChangeRate   Key = "HdrChangeRate"
-	HdrVolume24h    Key = "HdrVolume24h"
+	HdrPrice         Key = "HdrPrice"
+	HdrChange        Key = "HdrChange"
+	HdrChangeRate    Key = "HdrChangeRate"
+	HdrVolume24h     Key = "HdrVolume24h"
 	HdrTradePrice24h Key = "HdrTradePrice24h"
-	HdrHigh         Key = "HdrHigh"
-	HdrLow          Key = "HdrLow"
+	HdrHigh          Key = "HdrHigh"
+	HdrLow           Key = "HdrLow"
 
-	MsgTickerShort        Key = "MsgTickerShort"
-	ErrTickerNoMarket     Key = "ErrTickerNoMarket"
-	FlagTickerQuoteUsage  Key = "FlagTickerQuoteUsage"
+	MsgTickerShort       Key = "MsgTickerShort"
+	ErrTickerNoMarket    Key = "ErrTickerNoMarket"
+	FlagTickerQuoteUsage Key = "FlagTickerQuoteUsage"
 
 	// ── API Keys ──
 
 	HdrAccessKey Key = "HdrAccessKey"
 	HdrExpireAt  Key = "HdrExpireAt"
 
-	MsgApiKeysShort    Key = "MsgApiKeysShort"
-	MsgApiKeysEmpty    Key = "MsgApiKeysEmpty"
+	MsgApiKeysShort     Key = "MsgApiKeysShort"
+	MsgApiKeysEmpty     Key = "MsgApiKeysEmpty"
 	FlagApiKeysAllUsage Key = "FlagApiKeysAllUsage"
 
 	// ── Candle ──
@@ -121,43 +121,43 @@ const (
 	HdrClose        Key = "HdrClose"
 	HdrCandleVolume Key = "HdrCandleVolume"
 
-	MsgCandleShort         Key = "MsgCandleShort"
+	MsgCandleShort          Key = "MsgCandleShort"
 	ErrCandleMarketRequired Key = "ErrCandleMarketRequired"
-	FlagIntervalUsage      Key = "FlagIntervalUsage"
-	FlagCountUsage         Key = "FlagCountUsage"
-	FlagFromUsage          Key = "FlagFromUsage"
-	FlagAscUsage           Key = "FlagAscUsage"
-	FlagDescUsage          Key = "FlagDescUsage"
-	FlagNoCacheUsage       Key = "FlagNoCacheUsage"
-	MsgCandleConfirm       Key = "MsgCandleConfirm"
-	MsgCancelled           Key = "MsgCancelled"
-	ErrFromParse           Key = "ErrFromParse"
-	ErrUnrecognizedTime    Key = "ErrUnrecognizedTime"
+	FlagIntervalUsage       Key = "FlagIntervalUsage"
+	FlagCountUsage          Key = "FlagCountUsage"
+	FlagFromUsage           Key = "FlagFromUsage"
+	FlagAscUsage            Key = "FlagAscUsage"
+	FlagDescUsage           Key = "FlagDescUsage"
+	FlagNoCacheUsage        Key = "FlagNoCacheUsage"
+	MsgCandleConfirm        Key = "MsgCandleConfirm"
+	MsgCancelled            Key = "MsgCancelled"
+	ErrFromParse            Key = "ErrFromParse"
+	ErrUnrecognizedTime     Key = "ErrUnrecognizedTime"
 
 	// Cache (candle.go internal messages)
-	MsgCacheInitFailed      Key = "MsgCacheInitFailed"
-	MsgCacheRangeError      Key = "MsgCacheRangeError"
-	MsgCacheSaveError       Key = "MsgCacheSaveError"
-	MsgCacheUpdateError     Key = "MsgCacheUpdateError"
-	ErrOlderRangeFetch      Key = "ErrOlderRangeFetch"
-	ErrNewerRangeFetch      Key = "ErrNewerRangeFetch"
-	ErrCacheQuery           Key = "ErrCacheQuery"
+	MsgCacheInitFailed  Key = "MsgCacheInitFailed"
+	MsgCacheRangeError  Key = "MsgCacheRangeError"
+	MsgCacheSaveError   Key = "MsgCacheSaveError"
+	MsgCacheUpdateError Key = "MsgCacheUpdateError"
+	ErrOlderRangeFetch  Key = "ErrOlderRangeFetch"
+	ErrNewerRangeFetch  Key = "ErrNewerRangeFetch"
+	ErrCacheQuery       Key = "ErrCacheQuery"
 
 	// ── Orderbook ──
 
-	MsgOrderbookShort     Key = "MsgOrderbookShort"
-	ErrOrderbookMarket    Key = "ErrOrderbookMarket"
-	MsgOrderbookMarket    Key = "MsgOrderbookMarket"
+	MsgOrderbookShort      Key = "MsgOrderbookShort"
+	ErrOrderbookMarket     Key = "ErrOrderbookMarket"
+	MsgOrderbookMarket     Key = "MsgOrderbookMarket"
 	MsgOrderbookTotalSizes Key = "MsgOrderbookTotalSizes"
-	HdrAskSize            Key = "HdrAskSize"
-	HdrAskPrice           Key = "HdrAskPrice"
-	HdrBidPrice           Key = "HdrBidPrice"
-	HdrBidSize            Key = "HdrBidSize"
+	HdrAskSize             Key = "HdrAskSize"
+	HdrAskPrice            Key = "HdrAskPrice"
+	HdrBidPrice            Key = "HdrBidPrice"
+	HdrBidSize             Key = "HdrBidSize"
 
 	// ── Orderbook Levels ──
 
-	HdrSupportedLevels       Key = "HdrSupportedLevels"
-	MsgOrderbookLevelsShort  Key = "MsgOrderbookLevelsShort"
+	HdrSupportedLevels      Key = "HdrSupportedLevels"
+	MsgOrderbookLevelsShort Key = "MsgOrderbookLevelsShort"
 
 	// ── Trades ──
 
@@ -167,7 +167,7 @@ const (
 	HdrAskBid      Key = "HdrAskBid"
 	HdrChangePrice Key = "HdrChangePrice"
 
-	MsgTradesShort  Key = "MsgTradesShort"
+	MsgTradesShort Key = "MsgTradesShort"
 
 	// ── Order Root ──
 
@@ -175,13 +175,13 @@ const (
 
 	// ── Order List ──
 
-	HdrSide         Key = "HdrSide"
-	HdrOrdType      Key = "HdrOrdType"
-	HdrOrderPrice   Key = "HdrOrderPrice"
-	HdrOrderVolume  Key = "HdrOrderVolume"
-	HdrExecutedVol  Key = "HdrExecutedVol"
-	HdrState        Key = "HdrState"
-	HdrCreatedAt    Key = "HdrCreatedAt"
+	HdrSide        Key = "HdrSide"
+	HdrOrdType     Key = "HdrOrdType"
+	HdrOrderPrice  Key = "HdrOrderPrice"
+	HdrOrderVolume Key = "HdrOrderVolume"
+	HdrExecutedVol Key = "HdrExecutedVol"
+	HdrState       Key = "HdrState"
+	HdrCreatedAt   Key = "HdrCreatedAt"
 
 	MsgOrderListShort     Key = "MsgOrderListShort"
 	MsgOrderListClosed    Key = "MsgOrderListClosed"
@@ -192,38 +192,38 @@ const (
 
 	// ── Order Show ──
 
-	HdrRemainingVol    Key = "HdrRemainingVol"
-	MsgOrderShowShort  Key = "MsgOrderShowShort"
-	ErrOrderShowArgs   Key = "ErrOrderShowArgs"
+	HdrRemainingVol      Key = "HdrRemainingVol"
+	MsgOrderShowShort    Key = "MsgOrderShowShort"
+	ErrOrderShowArgs     Key = "ErrOrderShowArgs"
 	FlagOrderShowIDUsage Key = "FlagOrderShowIDUsage"
 
 	// ── Order Cancel ──
 
-	MsgOrderCancelShort     Key = "MsgOrderCancelShort"
-	MsgCancelAllOrders      Key = "MsgCancelAllOrders"
-	MsgCancelAllMarket      Key = "MsgCancelAllMarket"
-	MsgCancelAborted        Key = "MsgCancelAborted"
-	MsgCancelSuccess        Key = "MsgCancelSuccess"
-	MsgCancelFailed         Key = "MsgCancelFailed"
-	ErrCancelNoUUID         Key = "ErrCancelNoUUID"
-	MsgCancelSingleOrder    Key = "MsgCancelSingleOrder"
-	FlagCancelAllUsage      Key = "FlagCancelAllUsage"
-	FlagCancelMarketUsage   Key = "FlagCancelMarketUsage"
+	MsgOrderCancelShort   Key = "MsgOrderCancelShort"
+	MsgCancelAllOrders    Key = "MsgCancelAllOrders"
+	MsgCancelAllMarket    Key = "MsgCancelAllMarket"
+	MsgCancelAborted      Key = "MsgCancelAborted"
+	MsgCancelSuccess      Key = "MsgCancelSuccess"
+	MsgCancelFailed       Key = "MsgCancelFailed"
+	ErrCancelNoUUID       Key = "ErrCancelNoUUID"
+	MsgCancelSingleOrder  Key = "MsgCancelSingleOrder"
+	FlagCancelAllUsage    Key = "FlagCancelAllUsage"
+	FlagCancelMarketUsage Key = "FlagCancelMarketUsage"
 
 	// ── Order Replace ──
 
-	MsgOrderReplaceShort    Key = "MsgOrderReplaceShort"
-	ErrReplaceArgs          Key = "ErrReplaceArgs"
-	ErrReplaceNoParam       Key = "ErrReplaceNoParam"
-	ErrReplaceLimitNoPrice  Key = "ErrReplaceLimitNoPrice"
-	MsgReplaceConfirm       Key = "MsgReplaceConfirm"
-	MsgReplacePrice         Key = "MsgReplacePrice"
-	MsgReplaceVolume        Key = "MsgReplaceVolume"
-	MsgReplaceRemain        Key = "MsgReplaceRemain"
-	MsgReplaceCancelled     Key = "MsgReplaceCancelled"
-	FlagNewPriceUsage       Key = "FlagNewPriceUsage"
-	FlagNewVolumeUsage      Key = "FlagNewVolumeUsage"
-	FlagOrdTypeUsage        Key = "FlagOrdTypeUsage"
+	MsgOrderReplaceShort   Key = "MsgOrderReplaceShort"
+	ErrReplaceArgs         Key = "ErrReplaceArgs"
+	ErrReplaceNoParam      Key = "ErrReplaceNoParam"
+	ErrReplaceLimitNoPrice Key = "ErrReplaceLimitNoPrice"
+	MsgReplaceConfirm      Key = "MsgReplaceConfirm"
+	MsgReplacePrice        Key = "MsgReplacePrice"
+	MsgReplaceVolume       Key = "MsgReplaceVolume"
+	MsgReplaceRemain       Key = "MsgReplaceRemain"
+	MsgReplaceCancelled    Key = "MsgReplaceCancelled"
+	FlagNewPriceUsage      Key = "FlagNewPriceUsage"
+	FlagNewVolumeUsage     Key = "FlagNewVolumeUsage"
+	FlagOrdTypeUsage       Key = "FlagOrdTypeUsage"
 
 	// ── Order Chance ──
 
@@ -249,96 +249,97 @@ const (
 	MsgWatchMyAssetShort   Key = "MsgWatchMyAssetShort"
 	FlagWatchIntervalUsage Key = "FlagWatchIntervalUsage"
 
-	ErrMarketNotFound     Key = "ErrMarketNotFound"
-	ErrSubscribeBuild     Key = "ErrSubscribeBuild"
-	ErrSubscribeSend      Key = "ErrSubscribeSend"
-	ErrMessageReceive     Key = "ErrMessageReceive"
-	ErrServerError        Key = "ErrServerError"
+	ErrMarketNotFound Key = "ErrMarketNotFound"
+	ErrSubscribeBuild Key = "ErrSubscribeBuild"
+	ErrSubscribeSend  Key = "ErrSubscribeSend"
+	ErrMessageReceive Key = "ErrMessageReceive"
+	ErrServerError    Key = "ErrServerError"
 
 	// Watch formatters
-	WatchVolume    Key = "WatchVolume"
-	WatchSell      Key = "WatchSell"
-	WatchBuy       Key = "WatchBuy"
-	WatchSpread    Key = "WatchSpread"
-	WatchQty       Key = "WatchQty"
-	WatchOpen      Key = "WatchOpen"
-	WatchHigh      Key = "WatchHigh"
-	WatchLow       Key = "WatchLow"
-	WatchClose     Key = "WatchClose"
-	WatchState     Key = "WatchState"
-	WatchLocking   Key = "WatchLocking"
+	WatchVolume  Key = "WatchVolume"
+	WatchSell    Key = "WatchSell"
+	WatchBuy     Key = "WatchBuy"
+	WatchSpread  Key = "WatchSpread"
+	WatchQty     Key = "WatchQty"
+	WatchOpen    Key = "WatchOpen"
+	WatchHigh    Key = "WatchHigh"
+	WatchLow     Key = "WatchLow"
+	WatchClose   Key = "WatchClose"
+	WatchState   Key = "WatchState"
+	WatchLocking Key = "WatchLocking"
 
 	// ── Wallet / Status ──
 
-	HdrWalletState   Key = "HdrWalletState"
-	HdrBlockState    Key = "HdrBlockState"
-	HdrNetwork       Key = "HdrNetwork"
-	HdrNetworkType   Key = "HdrNetworkType"
-	MsgWalletShort   Key = "MsgWalletShort"
+	HdrWalletState Key = "HdrWalletState"
+	HdrBlockState  Key = "HdrBlockState"
+	HdrNetwork     Key = "HdrNetwork"
+	HdrNetworkType Key = "HdrNetworkType"
+	MsgWalletShort Key = "MsgWalletShort"
 
 	// ── Tick Size ──
 
-	HdrQuoteCurrency  Key = "HdrQuoteCurrency"
-	HdrTickSize       Key = "HdrTickSize"
-	MsgTickSizeShort  Key = "MsgTickSizeShort"
+	HdrQuoteCurrency Key = "HdrQuoteCurrency"
+	HdrTickSize      Key = "HdrTickSize"
+	MsgTickSizeShort Key = "MsgTickSizeShort"
 
 	// ── Cache command ──
 
-	HdrPath             Key = "HdrPath"
-	HdrFiles            Key = "HdrFiles"
-	HdrSize             Key = "HdrSize"
-	MsgCacheShort       Key = "MsgCacheShort"
-	MsgCacheFileCount   Key = "MsgCacheFileCount"
-	ErrCachePathFailed  Key = "ErrCachePathFailed"
+	HdrPath              Key = "HdrPath"
+	HdrFiles             Key = "HdrFiles"
+	HdrSize              Key = "HdrSize"
+	MsgCacheShort        Key = "MsgCacheShort"
+	MsgCacheFileCount    Key = "MsgCacheFileCount"
+	ErrCachePathFailed   Key = "ErrCachePathFailed"
 	MsgCacheConfirmClear Key = "MsgCacheConfirmClear"
-	ErrCacheOpenFailed  Key = "ErrCacheOpenFailed"
-	ErrCacheClearFailed Key = "ErrCacheClearFailed"
-	MsgCacheCleared     Key = "MsgCacheCleared"
-	FlagCacheClearUsage Key = "FlagCacheClearUsage"
+	ErrCacheOpenFailed   Key = "ErrCacheOpenFailed"
+	ErrCacheClearFailed  Key = "ErrCacheClearFailed"
+	MsgCacheCleared      Key = "MsgCacheCleared"
+	FlagCacheClearUsage  Key = "FlagCacheClearUsage"
 
 	// ── Deposit ──
 
-	MsgDepositShort         Key = "MsgDepositShort"
-	MsgDepositListShort     Key = "MsgDepositListShort"
-	MsgDepositShowShort     Key = "MsgDepositShowShort"
-	MsgDepositAddressShort  Key = "MsgDepositAddressShort"
-	MsgDepositCreateShort   Key = "MsgDepositCreateShort"
-	MsgDepositListEmpty     Key = "MsgDepositListEmpty"
-	MsgDepositAddressEmpty  Key = "MsgDepositAddressEmpty"
-	MsgDepositAddrCreated   Key = "MsgDepositAddrCreated"
-	MsgDepositAddrCheck     Key = "MsgDepositAddrCheck"
-	ErrDepositUUIDRequired  Key = "ErrDepositUUIDRequired"
-	ErrDepositCurrRequired  Key = "ErrDepositCurrRequired"
+	MsgDepositShort        Key = "MsgDepositShort"
+	MsgDepositListShort    Key = "MsgDepositListShort"
+	MsgDepositShowShort    Key = "MsgDepositShowShort"
+	MsgDepositAddressShort Key = "MsgDepositAddressShort"
+	MsgDepositCreateShort  Key = "MsgDepositCreateShort"
+	MsgDepositListEmpty    Key = "MsgDepositListEmpty"
+	MsgDepositAddressEmpty Key = "MsgDepositAddressEmpty"
+	MsgDepositAddrCreated  Key = "MsgDepositAddrCreated"
+	MsgDepositAddrCheck    Key = "MsgDepositAddrCheck"
+	ErrDepositUUIDRequired Key = "ErrDepositUUIDRequired"
+	ErrDepositCurrRequired Key = "ErrDepositCurrRequired"
 
-	HdrAmount        Key = "HdrAmount"
-	HdrFee           Key = "HdrFee"
-	HdrTransType     Key = "HdrTransType"
-	HdrTXID          Key = "HdrTXID"
-	HdrDoneAt        Key = "HdrDoneAt"
-	HdrDepositAddr   Key = "HdrDepositAddr"
-	HdrTag           Key = "HdrTag"
+	HdrAmount      Key = "HdrAmount"
+	HdrFee         Key = "HdrFee"
+	HdrTransType   Key = "HdrTransType"
+	HdrTXID        Key = "HdrTXID"
+	HdrDoneAt      Key = "HdrDoneAt"
+	HdrDepositAddr Key = "HdrDepositAddr"
+	HdrTag         Key = "HdrTag"
 
-	FlagCurrencyUsage     Key = "FlagCurrencyUsage"
-	FlagStateUsage        Key = "FlagStateUsage"
-	FlagNetTypeUsage      Key = "FlagNetTypeUsage"
+	FlagCurrencyUsage Key = "FlagCurrencyUsage"
+	FlagStateUsage    Key = "FlagStateUsage"
+	FlagNetTypeUsage  Key = "FlagNetTypeUsage"
 
 	// ── Withdraw ──
 
-	MsgWithdrawShort         Key = "MsgWithdrawShort"
-	MsgWithdrawListShort     Key = "MsgWithdrawListShort"
-	MsgWithdrawShowShort     Key = "MsgWithdrawShowShort"
-	MsgWithdrawRequestShort  Key = "MsgWithdrawRequestShort"
-	MsgWithdrawCancelShort   Key = "MsgWithdrawCancelShort"
-	MsgWithdrawListEmpty     Key = "MsgWithdrawListEmpty"
-	MsgWithdrawCancelled     Key = "MsgWithdrawCancelled"
-	ErrWithdrawUUIDRequired  Key = "ErrWithdrawUUIDRequired"
-	ErrWithdrawCurrRequired  Key = "ErrWithdrawCurrRequired"
-	ErrAmountRequired        Key = "ErrAmountRequired"
-	ErrTwoFactorRequired     Key = "ErrTwoFactorRequired"
-	MsgWithdrawConfirmKRW    Key = "MsgWithdrawConfirmKRW"
-	ErrWithdrawAddrRequired  Key = "ErrWithdrawAddrRequired"
-	MsgWithdrawConfirmCoin   Key = "MsgWithdrawConfirmCoin"
-	MsgWithdrawCancelConfirm Key = "MsgWithdrawCancelConfirm"
+	MsgWithdrawShort          Key = "MsgWithdrawShort"
+	MsgWithdrawListShort      Key = "MsgWithdrawListShort"
+	MsgWithdrawShowShort      Key = "MsgWithdrawShowShort"
+	MsgWithdrawRequestShort   Key = "MsgWithdrawRequestShort"
+	MsgWithdrawCancelShort    Key = "MsgWithdrawCancelShort"
+	MsgWithdrawListEmpty      Key = "MsgWithdrawListEmpty"
+	MsgWithdrawCancelled      Key = "MsgWithdrawCancelled"
+	ErrWithdrawUUIDRequired   Key = "ErrWithdrawUUIDRequired"
+	ErrWithdrawCurrRequired   Key = "ErrWithdrawCurrRequired"
+	ErrAmountRequired         Key = "ErrAmountRequired"
+	ErrTwoFactorRequired      Key = "ErrTwoFactorRequired"
+	MsgWithdrawConfirmKRW     Key = "MsgWithdrawConfirmKRW"
+	ErrWithdrawAddrRequired   Key = "ErrWithdrawAddrRequired"
+	MsgWithdrawConfirmCoin    Key = "MsgWithdrawConfirmCoin"
+	MsgWithdrawCancelConfirm  Key = "MsgWithdrawCancelConfirm"
+	MsgWithdrawSafetyLockHint Key = "MsgWithdrawSafetyLockHint"
 
 	FlagAmountUsage        Key = "FlagAmountUsage"
 	FlagToUsage            Key = "FlagToUsage"
@@ -349,70 +350,70 @@ const (
 
 	// ── Travelrule ──
 
-	MsgTravelruleShort       Key = "MsgTravelruleShort"
-	MsgTravelruleVaspsShort  Key = "MsgTravelruleVaspsShort"
-	MsgTravelruleTxIDShort   Key = "MsgTravelruleTxIDShort"
-	MsgTravelruleUUIDShort   Key = "MsgTravelruleUUIDShort"
-	ErrTravelruleTxIDArgs    Key = "ErrTravelruleTxIDArgs"
-	ErrTravelruleUUIDArgs    Key = "ErrTravelruleUUIDArgs"
+	MsgTravelruleShort      Key = "MsgTravelruleShort"
+	MsgTravelruleVaspsShort Key = "MsgTravelruleVaspsShort"
+	MsgTravelruleTxIDShort  Key = "MsgTravelruleTxIDShort"
+	MsgTravelruleUUIDShort  Key = "MsgTravelruleUUIDShort"
+	ErrTravelruleTxIDArgs   Key = "ErrTravelruleTxIDArgs"
+	ErrTravelruleUUIDArgs   Key = "ErrTravelruleUUIDArgs"
 
-	HdrVaspName      Key = "HdrVaspName"
-	HdrVaspNameEn    Key = "HdrVaspNameEn"
-	HdrDepositable   Key = "HdrDepositable"
-	HdrWithdrawable  Key = "HdrWithdrawable"
-	HdrDepositUUID   Key = "HdrDepositUUID"
-	HdrVerifyResult  Key = "HdrVerifyResult"
-	HdrDepositState  Key = "HdrDepositState"
+	HdrVaspName     Key = "HdrVaspName"
+	HdrVaspNameEn   Key = "HdrVaspNameEn"
+	HdrDepositable  Key = "HdrDepositable"
+	HdrWithdrawable Key = "HdrWithdrawable"
+	HdrDepositUUID  Key = "HdrDepositUUID"
+	HdrVerifyResult Key = "HdrVerifyResult"
+	HdrDepositState Key = "HdrDepositState"
 
-	FlagVaspUsage         Key = "FlagVaspUsage"
-	FlagTRCurrencyUsage   Key = "FlagTRCurrencyUsage"
-	FlagTRNetTypeUsage    Key = "FlagTRNetTypeUsage"
+	FlagVaspUsage       Key = "FlagVaspUsage"
+	FlagTRCurrencyUsage Key = "FlagTRCurrencyUsage"
+	FlagTRNetTypeUsage  Key = "FlagTRNetTypeUsage"
 
 	// ── Tool Schema ──
 
-	MsgToolSchemaShort   Key = "MsgToolSchemaShort"
+	MsgToolSchemaShort    Key = "MsgToolSchemaShort"
 	ErrToolSchemaNotFound Key = "ErrToolSchemaNotFound"
 
 	// Tool schema arg descriptions
-	ArgMarketCode     Key = "ArgMarketCode"
+	ArgMarketCode      Key = "ArgMarketCode"
 	ArgOrderbookMarket Key = "ArgOrderbookMarket"
-	ArgTradesMarket   Key = "ArgTradesMarket"
-	ArgCandleMarket   Key = "ArgCandleMarket"
-	ArgBuyMarket      Key = "ArgBuyMarket"
-	ArgSellMarket     Key = "ArgSellMarket"
+	ArgTradesMarket    Key = "ArgTradesMarket"
+	ArgCandleMarket    Key = "ArgCandleMarket"
+	ArgBuyMarket       Key = "ArgBuyMarket"
+	ArgSellMarket      Key = "ArgSellMarket"
 	ArgBalanceCurrency Key = "ArgBalanceCurrency"
-	ArgShowUUID       Key = "ArgShowUUID"
-	ArgCancelUUID     Key = "ArgCancelUUID"
-	ArgReplaceUUID    Key = "ArgReplaceUUID"
+	ArgShowUUID        Key = "ArgShowUUID"
+	ArgCancelUUID      Key = "ArgCancelUUID"
+	ArgReplaceUUID     Key = "ArgReplaceUUID"
 	ArgRequestCurrency Key = "ArgRequestCurrency"
 	ArgAddressCurrency Key = "ArgAddressCurrency"
-	ArgChanceMarket   Key = "ArgChanceMarket"
+	ArgChanceMarket    Key = "ArgChanceMarket"
 
 	// ── Price Adjust ──
 
-	ErrTickSizeFetch  Key = "ErrTickSizeFetch"
-	ErrTickSizeEmpty  Key = "ErrTickSizeEmpty"
-	ErrTickSizeParse  Key = "ErrTickSizeParse"
-	ErrTickSizeZero   Key = "ErrTickSizeZero"
-	ErrPriceParse     Key = "ErrPriceParse"
-	ErrUnknownSide    Key = "ErrUnknownSide"
+	ErrTickSizeFetch Key = "ErrTickSizeFetch"
+	ErrTickSizeEmpty Key = "ErrTickSizeEmpty"
+	ErrTickSizeParse Key = "ErrTickSizeParse"
+	ErrTickSizeZero  Key = "ErrTickSizeZero"
+	ErrPriceParse    Key = "ErrPriceParse"
+	ErrUnknownSide   Key = "ErrUnknownSide"
 
 	// ── Update ──
 
-	MsgUpdateShort        Key = "MsgUpdateShort"
-	MsgUpdateChecking     Key = "MsgUpdateChecking"
-	MsgUpdateLatest       Key = "MsgUpdateLatest"
-	MsgUpdateAvailable    Key = "MsgUpdateAvailable"
-	MsgUpdateDownloading  Key = "MsgUpdateDownloading"
-	MsgUpdateComplete     Key = "MsgUpdateComplete"
+	MsgUpdateShort         Key = "MsgUpdateShort"
+	MsgUpdateChecking      Key = "MsgUpdateChecking"
+	MsgUpdateLatest        Key = "MsgUpdateLatest"
+	MsgUpdateAvailable     Key = "MsgUpdateAvailable"
+	MsgUpdateDownloading   Key = "MsgUpdateDownloading"
+	MsgUpdateComplete      Key = "MsgUpdateComplete"
 	MsgUpdateAlreadyLatest Key = "MsgUpdateAlreadyLatest"
-	ErrUpdateFetch        Key = "ErrUpdateFetch"
-	ErrUpdateNoAsset      Key = "ErrUpdateNoAsset"
-	ErrUpdateDownload     Key = "ErrUpdateDownload"
-	ErrUpdateReplace      Key = "ErrUpdateReplace"
-	ErrUpdateChecksum     Key = "ErrUpdateChecksum"
-	MsgUpdateVerifying    Key = "MsgUpdateVerifying"
-	FlagUpdateCheckUsage  Key = "FlagUpdateCheckUsage"
+	ErrUpdateFetch         Key = "ErrUpdateFetch"
+	ErrUpdateNoAsset       Key = "ErrUpdateNoAsset"
+	ErrUpdateDownload      Key = "ErrUpdateDownload"
+	ErrUpdateReplace       Key = "ErrUpdateReplace"
+	ErrUpdateChecksum      Key = "ErrUpdateChecksum"
+	MsgUpdateVerifying     Key = "MsgUpdateVerifying"
+	FlagUpdateCheckUsage   Key = "FlagUpdateCheckUsage"
 
 	// ── TUI ──
 
@@ -476,18 +477,18 @@ var ko = map[Key]string{
 	FlagForceUsage:      "확인 프롬프트 스킵",
 
 	// Root errors
-	ErrConfigLoad:  "설정 로드 실패",
+	ErrConfigLoad:   "설정 로드 실패",
 	ErrAuthRequired: "인증이 필요합니다: ACCESS_KEY 및 SECRET_KEY를 설정하세요",
 
 	// Args helper
 	MsgUsagePrefix: "사용법",
 
 	// Balance
-	HdrCurrency:   "통화",
-	HdrBalance:    "잔고",
-	HdrLocked:     "주문중",
+	HdrCurrency:    "통화",
+	HdrBalance:     "잔고",
+	HdrLocked:      "주문중",
 	HdrAvgBuyPrice: "평균 매수가",
-	HdrEvalKRW:    "평가금액(KRW)",
+	HdrEvalKRW:     "평가금액(KRW)",
 
 	MsgBalanceShort:    "계정 잔고 조회",
 	ErrBalanceNotFound: "%s 잔고를 찾을 수 없습니다",
@@ -521,11 +522,11 @@ var ko = map[Key]string{
 	MsgPriceKeywordResolved: "가격 키워드 %s → %s\n",
 
 	// Percent
-	ErrPercentParse:        "퍼센트 값을 파싱할 수 없습니다",
-	ErrPercentRange:        "퍼센트는 0 초과 100 이하여야 합니다",
+	ErrPercentParse:         "퍼센트 값을 파싱할 수 없습니다",
+	ErrPercentRange:         "퍼센트는 0 초과 100 이하여야 합니다",
 	ErrPercentBuyNeedsPrice: "퍼센트 수량 매수 시 --price가 필요합니다",
-	ErrChanceFetch:         "주문 가능 정보 조회 실패",
-	MsgPercentResolved:     "%s의 %s%% → %s\n",
+	ErrChanceFetch:          "주문 가능 정보 조회 실패",
+	MsgPercentResolved:      "%s의 %s%% → %s\n",
 
 	// Sell
 	MsgSellShort:          "매도 주문",
@@ -545,13 +546,13 @@ var ko = map[Key]string{
 	FlagQuoteUsage:       "호가 통화 필터 (KRW, BTC, USDT)",
 
 	// Ticker
-	HdrPrice:        "현재가",
-	HdrChange:       "전일 대비",
-	HdrChangeRate:   "변동률",
-	HdrVolume24h:    "거래량(24h)",
+	HdrPrice:         "현재가",
+	HdrChange:        "전일 대비",
+	HdrChangeRate:    "변동률",
+	HdrVolume24h:     "거래량(24h)",
 	HdrTradePrice24h: "거래대금(24h)",
-	HdrHigh:         "고가",
-	HdrLow:          "저가",
+	HdrHigh:          "고가",
+	HdrLow:           "저가",
 
 	MsgTickerShort:       "현재가 조회",
 	ErrTickerNoMarket:    "마켓 코드를 지정하세요 (예: KRW-BTC) 또는 --quote 플래그를 사용하세요\n\n사용법: %s",
@@ -561,8 +562,8 @@ var ko = map[Key]string{
 	HdrAccessKey: "키(마스킹)",
 	HdrExpireAt:  "만료일",
 
-	MsgApiKeysShort:    "API 키 목록 조회",
-	MsgApiKeysEmpty:    "유효한 API 키가 없습니다 (--all로 만료 포함 확인)",
+	MsgApiKeysShort:     "API 키 목록 조회",
+	MsgApiKeysEmpty:     "유효한 API 키가 없습니다 (--all로 만료 포함 확인)",
 	FlagApiKeysAllUsage: "만료된 키 포함 전체 표시",
 
 	// Candle
@@ -571,18 +572,18 @@ var ko = map[Key]string{
 	HdrClose:        "종가",
 	HdrCandleVolume: "거래량",
 
-	MsgCandleShort:         "캔들 조회",
+	MsgCandleShort:          "캔들 조회",
 	ErrCandleMarketRequired: "마켓 코드를 지정하세요 (예: KRW-BTC)",
-	FlagIntervalUsage:      "캔들 간격 (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m, 1d, 1w, 1M, 1y)",
-	FlagCountUsage:         "조회 개수",
-	FlagFromUsage:          "시작 시각 (예: 2025-01-01, 2025-01-01T09:00:00+09:00)",
-	FlagAscUsage:           "오래된 순 정렬 (기본)",
-	FlagDescUsage:          "최신 순 정렬",
-	FlagNoCacheUsage:       "캐시 무시",
-	MsgCandleConfirm:       "약 %d개 캔들, %d회 API 호출이 필요합니다. 계속하시겠습니까?",
-	MsgCancelled:           "취소되었습니다.",
-	ErrFromParse:           "--from 파싱 실패",
-	ErrUnrecognizedTime:    "인식할 수 없는 시각 형식: %s (예: 2025-01-01, 2025-01-01T09:00:00+09:00)",
+	FlagIntervalUsage:       "캔들 간격 (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m, 1d, 1w, 1M, 1y)",
+	FlagCountUsage:          "조회 개수",
+	FlagFromUsage:           "시작 시각 (예: 2025-01-01, 2025-01-01T09:00:00+09:00)",
+	FlagAscUsage:            "오래된 순 정렬 (기본)",
+	FlagDescUsage:           "최신 순 정렬",
+	FlagNoCacheUsage:        "캐시 무시",
+	MsgCandleConfirm:        "약 %d개 캔들, %d회 API 호출이 필요합니다. 계속하시겠습니까?",
+	MsgCancelled:            "취소되었습니다.",
+	ErrFromParse:            "--from 파싱 실패",
+	ErrUnrecognizedTime:     "인식할 수 없는 시각 형식: %s (예: 2025-01-01, 2025-01-01T09:00:00+09:00)",
 
 	MsgCacheInitFailed:  "캐시 초기화 실패, API 직접 호출:",
 	MsgCacheRangeError:  "캐시 범위 조회 실패:",
@@ -719,17 +720,17 @@ var ko = map[Key]string{
 	MsgTickSizeShort: "호가 단위 조회",
 
 	// Cache command
-	HdrPath:             "경로",
-	HdrFiles:            "파일",
-	HdrSize:             "크기",
-	MsgCacheShort:       "캐시 관리",
-	MsgCacheFileCount:   "%d개",
-	ErrCachePathFailed:  "캐시 경로 확인 실패",
+	HdrPath:              "경로",
+	HdrFiles:             "파일",
+	HdrSize:              "크기",
+	MsgCacheShort:        "캐시 관리",
+	MsgCacheFileCount:    "%d개",
+	ErrCachePathFailed:   "캐시 경로 확인 실패",
 	MsgCacheConfirmClear: "캐시를 삭제하시겠습니까?",
-	ErrCacheOpenFailed:  "캐시 열기 실패",
-	ErrCacheClearFailed: "캐시 삭제 실패",
-	MsgCacheCleared:     "캐시가 삭제되었습니다.",
-	FlagCacheClearUsage: "캐시 삭제",
+	ErrCacheOpenFailed:   "캐시 열기 실패",
+	ErrCacheClearFailed:  "캐시 삭제 실패",
+	MsgCacheCleared:      "캐시가 삭제되었습니다.",
+	FlagCacheClearUsage:  "캐시 삭제",
 
 	// Deposit
 	MsgDepositShort:        "입금 관리 (조회, 주소)",
@@ -757,21 +758,21 @@ var ko = map[Key]string{
 	FlagNetTypeUsage:  "네트워크 유형 (기본: currency와 동일)",
 
 	// Withdraw
-	MsgWithdrawShort:         "출금 관리 (조회, 요청, 취소)",
-	MsgWithdrawListShort:     "출금 목록 조회",
-	MsgWithdrawShowShort:     "개별 출금 조회",
-	MsgWithdrawRequestShort:  "출금 요청",
-	MsgWithdrawCancelShort:   "출금 취소",
-	MsgWithdrawListEmpty:     "출금 내역이 없습니다",
-	MsgWithdrawCancelled:     "출금이 취소되었습니다",
-	ErrWithdrawUUIDRequired:  "출금 UUID를 지정하세요",
-	ErrWithdrawCurrRequired:  "출금할 통화 코드를 지정하세요 (예: BTC, KRW)",
-	ErrAmountRequired:        "--amount 플래그는 필수입니다",
-	ErrTwoFactorRequired:     "KRW 출금 시 --two-factor 플래그가 필요합니다 (kakao, naver, hana)",
-	MsgWithdrawConfirmKRW:    "출금: KRW %s",
-	ErrWithdrawAddrRequired:  "디지털 자산 출금에는 --to (수신 주소) 플래그가 필요합니다",
-	MsgWithdrawConfirmCoin:   "출금: %s %s -> %s",
-	MsgWithdrawCancelConfirm: "출금 %s을(를) 취소합니다",
+	MsgWithdrawShort:          "출금 관리 (조회, 요청, 취소)",
+	MsgWithdrawListShort:      "출금 목록 조회",
+	MsgWithdrawShowShort:      "개별 출금 조회",
+	MsgWithdrawRequestShort:   "출금 요청",
+	MsgWithdrawCancelShort:    "출금 취소",
+	MsgWithdrawListEmpty:      "출금 내역이 없습니다",
+	MsgWithdrawCancelled:      "출금이 취소되었습니다",
+	ErrWithdrawUUIDRequired:   "출금 UUID를 지정하세요",
+	ErrWithdrawCurrRequired:   "출금할 통화 코드를 지정하세요 (예: BTC, KRW)",
+	ErrAmountRequired:         "--amount 플래그는 필수입니다",
+	ErrTwoFactorRequired:      "KRW 출금 시 --two-factor 플래그가 필요합니다 (kakao, naver, hana)",
+	MsgWithdrawConfirmKRW:     "출금: KRW %s",
+	ErrWithdrawAddrRequired:   "디지털 자산 출금에는 --to (수신 주소) 플래그가 필요합니다",
+	MsgWithdrawConfirmCoin:    "출금: %s %s -> %s",
+	MsgWithdrawSafetyLockHint: "참고: 출금 안심차단 — 2026-07-09 이후 발급된 출금 권한 API Key는 기본 차단됩니다. 업비트 모바일 앱에서 해당 Key의 차단을 해제했는지 확인하세요. (API Key별 개별 적용)",
 
 	FlagAmountUsage:        "출금 수량/금액 (필수)",
 	FlagToUsage:            "수신 주소 (디지털 자산 필수)",
@@ -901,18 +902,18 @@ var en = map[Key]string{
 	FlagForceUsage:      "Skip confirmation prompt",
 
 	// Root errors
-	ErrConfigLoad:  "Failed to load config",
+	ErrConfigLoad:   "Failed to load config",
 	ErrAuthRequired: "Authentication required: set ACCESS_KEY and SECRET_KEY",
 
 	// Args helper
 	MsgUsagePrefix: "Usage",
 
 	// Balance
-	HdrCurrency:   "Currency",
-	HdrBalance:    "Balance",
-	HdrLocked:     "Locked",
+	HdrCurrency:    "Currency",
+	HdrBalance:     "Balance",
+	HdrLocked:      "Locked",
 	HdrAvgBuyPrice: "Avg Buy Price",
-	HdrEvalKRW:    "Value(KRW)",
+	HdrEvalKRW:     "Value(KRW)",
 
 	MsgBalanceShort:    "View account balance",
 	ErrBalanceNotFound: "Balance not found for %s",
@@ -946,11 +947,11 @@ var en = map[Key]string{
 	MsgPriceKeywordResolved: "Price keyword %s → %s\n",
 
 	// Percent
-	ErrPercentParse:        "Cannot parse percent value",
-	ErrPercentRange:        "Percent must be between 0 (exclusive) and 100 (inclusive)",
+	ErrPercentParse:         "Cannot parse percent value",
+	ErrPercentRange:         "Percent must be between 0 (exclusive) and 100 (inclusive)",
 	ErrPercentBuyNeedsPrice: "--price is required for percent volume buy",
-	ErrChanceFetch:         "Failed to fetch order chance",
-	MsgPercentResolved:     "%s %s%% → %s\n",
+	ErrChanceFetch:          "Failed to fetch order chance",
+	MsgPercentResolved:      "%s %s%% → %s\n",
 
 	// Sell
 	MsgSellShort:          "Place sell order",
@@ -970,13 +971,13 @@ var en = map[Key]string{
 	FlagQuoteUsage:       "Quote currency filter (KRW, BTC, USDT)",
 
 	// Ticker
-	HdrPrice:        "Price",
-	HdrChange:       "Change",
-	HdrChangeRate:   "Change%",
-	HdrVolume24h:    "Volume(24h)",
+	HdrPrice:         "Price",
+	HdrChange:        "Change",
+	HdrChangeRate:    "Change%",
+	HdrVolume24h:     "Volume(24h)",
 	HdrTradePrice24h: "Trade Amt(24h)",
-	HdrHigh:         "High",
-	HdrLow:          "Low",
+	HdrHigh:          "High",
+	HdrLow:           "Low",
 
 	MsgTickerShort:       "View current price",
 	ErrTickerNoMarket:    "Specify market code (e.g. KRW-BTC) or use --quote flag\n\nUsage: %s",
@@ -986,8 +987,8 @@ var en = map[Key]string{
 	HdrAccessKey: "Key(masked)",
 	HdrExpireAt:  "Expires",
 
-	MsgApiKeysShort:    "List API keys",
-	MsgApiKeysEmpty:    "No valid API keys (use --all to include expired)",
+	MsgApiKeysShort:     "List API keys",
+	MsgApiKeysEmpty:     "No valid API keys (use --all to include expired)",
 	FlagApiKeysAllUsage: "Show all including expired",
 
 	// Candle
@@ -996,18 +997,18 @@ var en = map[Key]string{
 	HdrClose:        "Close",
 	HdrCandleVolume: "Volume",
 
-	MsgCandleShort:         "View candles",
+	MsgCandleShort:          "View candles",
 	ErrCandleMarketRequired: "Specify market code (e.g. KRW-BTC)",
-	FlagIntervalUsage:      "Candle interval (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m, 1d, 1w, 1M, 1y)",
-	FlagCountUsage:         "Number of results",
-	FlagFromUsage:          "Start time (e.g. 2025-01-01, 2025-01-01T09:00:00+09:00)",
-	FlagAscUsage:           "Sort oldest first (default)",
-	FlagDescUsage:          "Sort newest first",
-	FlagNoCacheUsage:       "Skip cache",
-	MsgCandleConfirm:       "Approximately %d candles, %d API calls required. Continue?",
-	MsgCancelled:           "Cancelled.",
-	ErrFromParse:           "Failed to parse --from",
-	ErrUnrecognizedTime:    "Unrecognized time format: %s (e.g. 2025-01-01, 2025-01-01T09:00:00+09:00)",
+	FlagIntervalUsage:       "Candle interval (1s, 1m, 3m, 5m, 10m, 15m, 30m, 60m, 240m, 1d, 1w, 1M, 1y)",
+	FlagCountUsage:          "Number of results",
+	FlagFromUsage:           "Start time (e.g. 2025-01-01, 2025-01-01T09:00:00+09:00)",
+	FlagAscUsage:            "Sort oldest first (default)",
+	FlagDescUsage:           "Sort newest first",
+	FlagNoCacheUsage:        "Skip cache",
+	MsgCandleConfirm:        "Approximately %d candles, %d API calls required. Continue?",
+	MsgCancelled:            "Cancelled.",
+	ErrFromParse:            "Failed to parse --from",
+	ErrUnrecognizedTime:     "Unrecognized time format: %s (e.g. 2025-01-01, 2025-01-01T09:00:00+09:00)",
 
 	MsgCacheInitFailed:  "Cache init failed, calling API directly:",
 	MsgCacheRangeError:  "Cache range query failed:",
@@ -1144,17 +1145,17 @@ var en = map[Key]string{
 	MsgTickSizeShort: "View tick size",
 
 	// Cache command
-	HdrPath:             "Path",
-	HdrFiles:            "Files",
-	HdrSize:             "Size",
-	MsgCacheShort:       "Cache management",
-	MsgCacheFileCount:   "%d",
-	ErrCachePathFailed:  "Failed to get cache path",
+	HdrPath:              "Path",
+	HdrFiles:             "Files",
+	HdrSize:              "Size",
+	MsgCacheShort:        "Cache management",
+	MsgCacheFileCount:    "%d",
+	ErrCachePathFailed:   "Failed to get cache path",
 	MsgCacheConfirmClear: "Delete cache?",
-	ErrCacheOpenFailed:  "Failed to open cache",
-	ErrCacheClearFailed: "Failed to clear cache",
-	MsgCacheCleared:     "Cache cleared.",
-	FlagCacheClearUsage: "Clear cache",
+	ErrCacheOpenFailed:   "Failed to open cache",
+	ErrCacheClearFailed:  "Failed to clear cache",
+	MsgCacheCleared:      "Cache cleared.",
+	FlagCacheClearUsage:  "Clear cache",
 
 	// Deposit
 	MsgDepositShort:        "Deposit management (list, address)",
@@ -1182,21 +1183,21 @@ var en = map[Key]string{
 	FlagNetTypeUsage:  "Network type (default: same as currency)",
 
 	// Withdraw
-	MsgWithdrawShort:         "Withdrawal management (list, request, cancel)",
-	MsgWithdrawListShort:     "List withdrawals",
-	MsgWithdrawShowShort:     "View withdrawal details",
-	MsgWithdrawRequestShort:  "Request withdrawal",
-	MsgWithdrawCancelShort:   "Cancel withdrawal",
-	MsgWithdrawListEmpty:     "No withdrawal history",
-	MsgWithdrawCancelled:     "Withdrawal cancelled",
-	ErrWithdrawUUIDRequired:  "Specify withdrawal UUID",
-	ErrWithdrawCurrRequired:  "Specify currency code (e.g. BTC, KRW)",
-	ErrAmountRequired:        "--amount flag is required",
-	ErrTwoFactorRequired:     "--two-factor flag required for KRW withdrawal (kakao, naver, hana)",
-	MsgWithdrawConfirmKRW:    "Withdraw: KRW %s",
-	ErrWithdrawAddrRequired:  "--to (recipient address) flag required for digital asset withdrawal",
-	MsgWithdrawConfirmCoin:   "Withdraw: %s %s -> %s",
-	MsgWithdrawCancelConfirm: "Cancel withdrawal %s",
+	MsgWithdrawShort:          "Withdrawal management (list, request, cancel)",
+	MsgWithdrawListShort:      "List withdrawals",
+	MsgWithdrawShowShort:      "View withdrawal details",
+	MsgWithdrawRequestShort:   "Request withdrawal",
+	MsgWithdrawCancelShort:    "Cancel withdrawal",
+	MsgWithdrawListEmpty:      "No withdrawal history",
+	MsgWithdrawCancelled:      "Withdrawal cancelled",
+	ErrWithdrawUUIDRequired:   "Specify withdrawal UUID",
+	ErrWithdrawCurrRequired:   "Specify currency code (e.g. BTC, KRW)",
+	ErrAmountRequired:         "--amount flag is required",
+	ErrTwoFactorRequired:      "--two-factor flag required for KRW withdrawal (kakao, naver, hana)",
+	MsgWithdrawConfirmKRW:     "Withdraw: KRW %s",
+	ErrWithdrawAddrRequired:   "--to (recipient address) flag required for digital asset withdrawal",
+	MsgWithdrawConfirmCoin:    "Withdraw: %s %s -> %s",
+	MsgWithdrawSafetyLockHint: "Note: withdrawal safety lock — API keys with withdrawal permission issued after 2026-07-09 are blocked by default. Unlock the key in the Upbit mobile app (applied per API key).",
 
 	FlagAmountUsage:        "Withdrawal amount (required)",
 	FlagToUsage:            "Recipient address (required for digital assets)",

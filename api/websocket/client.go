@@ -62,6 +62,10 @@ type WSClient struct {
 	pingInterval time.Duration
 	maxRetries   int
 
+	// sendLimiter enforces the per-connection websocket-message budget
+	// (5/sec, 100/min per https://docs.upbit.com/reference/rate-limits).
+	sendLimiter *msgLimiter
+
 	conn      *websocket.Conn
 	mu        sync.Mutex
 	closed    bool
@@ -81,6 +85,7 @@ func NewWSClient(url string, opts ...Option) *WSClient {
 		pingInterval: defaultPingInterval,
 		maxRetries:   defaultMaxRetries,
 		closeCh:      make(chan struct{}),
+		sendLimiter:  newMsgLimiter(maxMessagesPerSec, maxMessagesPerMin),
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -118,7 +123,12 @@ func (c *WSClient) connectWithRetry(ctx context.Context) error {
 
 // dial establishes the underlying WebSocket connection.
 func (c *WSClient) dial(ctx context.Context) error {
+	// websocket-connect group: 5/sec shared per IP (unauthenticated) or pocket.
+	if err := connectLimiter.wait(ctx); err != nil {
+		return err
+	}
 	dialer := websocket.DefaultDialer
+
 	header := http.Header{}
 
 	// Add authorization header for private channel access.
@@ -145,6 +155,9 @@ func (c *WSClient) dial(ctx context.Context) error {
 	// C-1: Recreate pingDone channel on each reconnect to prevent close panics.
 	c.pingDone = make(chan struct{})
 	c.mu.Unlock()
+
+	// websocket-message budget is per connection: new dial, fresh allowance.
+	c.sendLimiter.reset()
 
 	// C-3: Set initial ReadDeadline to detect the 120-second idle timeout.
 	_ = conn.SetReadDeadline(time.Now().Add(readWait))
@@ -198,7 +211,14 @@ func (c *WSClient) pingLoop() {
 }
 
 // Subscribe sends a subscription message and stores it for reconnect resubscription.
+// Blocks until the per-connection websocket-message budget allows the write.
 func (c *WSClient) Subscribe(msg []byte) error {
+	// websocket-message group: 5/sec, 100/min per connection. The wait is
+	// bounded by the token refill rate (≤200ms once the burst is spent).
+	if err := c.sendLimiter.wait(context.Background()); err != nil {
+		return err
+	}
+
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

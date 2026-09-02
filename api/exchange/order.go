@@ -13,8 +13,8 @@ type OrderRequest struct {
 	Market      string `json:"market"`
 	Side        string `json:"side"`                    // bid, ask
 	OrdType     string `json:"ord_type"`                // limit, price, market, best
-	Volume      string `json:"volume,omitempty"`         // order volume
-	Price       string `json:"price,omitempty"`          // order price or total amount
+	Volume      string `json:"volume,omitempty"`        // order volume
+	Price       string `json:"price,omitempty"`         // order price or total amount
 	WatchPrice  string `json:"watch_price,omitempty"`   // trigger price for reserved orders
 	TimeInForce string `json:"time_in_force,omitempty"` // ioc, fok, post_only
 	SMPType     string `json:"smp_type,omitempty"`      // cancel_maker, cancel_taker, reduce
@@ -123,16 +123,37 @@ func (c *ExchangeClient) ListClosedOrders(ctx context.Context, market string, li
 	return orders, nil
 }
 
-// GetOrdersByUUIDs retrieves multiple orders by UUID list (max 100).
-// API: GET /orders/uuids?uuids[]=xxx&uuids[]=yyy
-// See https://docs.upbit.com/reference/id%EB%A1%9C-%EC%A3%BC%EB%AC%B8%EC%A1%B0%ED%9A%8C
-func (c *ExchangeClient) GetOrdersByUUIDs(ctx context.Context, uuids []string) ([]types.Order, error) {
+// GetOrdersByIDsOptions filters the batch order query (GET /orders/uuids).
+// At most 100 UUIDs or 100 identifiers per request.
+type GetOrdersByIDsOptions struct {
+	UUIDs       []string
+	Identifiers []string
+	Market      string
+	OrderBy     string // asc, desc (default desc)
+}
+
+// GetOrdersByIDs retrieves multiple orders by UUID or identifier list.
+// API: GET /orders/uuids?uuids[]=xxx&identifiers[]=yyy&market=KRW-BTC&order_by=desc
+// See https://docs.upbit.com/reference/list-orders-by-ids
+func (c *ExchangeClient) GetOrdersByIDs(ctx context.Context, opts GetOrdersByIDsOptions) ([]types.Order, error) {
 	var orders []types.Order
 
-	// build array query string: uuids[]=uuid1&uuids[]=uuid2
-	parts := make([]string, len(uuids))
-	for i, id := range uuids {
-		parts[i] = "uuids[]=" + id
+	var parts []string
+	for _, id := range opts.UUIDs {
+		if id != "" {
+			parts = append(parts, "uuids[]="+id)
+		}
+	}
+	for _, id := range opts.Identifiers {
+		if id != "" {
+			parts = append(parts, "identifiers[]="+id)
+		}
+	}
+	if opts.Market != "" {
+		parts = append(parts, "market="+opts.Market)
+	}
+	if opts.OrderBy != "" {
+		parts = append(parts, "order_by="+opts.OrderBy)
 	}
 	rawQuery := strings.Join(parts, "&")
 
@@ -141,4 +162,10 @@ func (c *ExchangeClient) GetOrdersByUUIDs(ctx context.Context, uuids []string) (
 		return nil, err
 	}
 	return orders, nil
+}
+
+// GetOrdersByUUIDs retrieves multiple orders by UUID list (max 100).
+// API: GET /orders/uuids?uuids[]=xxx&uuids[]=yyy
+func (c *ExchangeClient) GetOrdersByUUIDs(ctx context.Context, uuids []string) ([]types.Order, error) {
+	return c.GetOrdersByIDs(ctx, GetOrdersByIDsOptions{UUIDs: uuids})
 }

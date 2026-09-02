@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/kyungw00k/upbit/api"
 	"github.com/kyungw00k/upbit/api/wallet"
 	"github.com/kyungw00k/upbit/internal/i18n"
 	"github.com/kyungw00k/upbit/internal/output"
@@ -68,6 +69,7 @@ var withdrawRequestCmd = &cobra.Command{
 
 			withdrawal, err := wc.WithdrawKRW(cmd.Context(), amount, twoFactorType)
 			if err != nil {
+				printWithdrawSafetyLockHint(err)
 				return err
 			}
 			return formatter.Format(withdrawal)
@@ -104,13 +106,23 @@ var withdrawRequestCmd = &cobra.Command{
 			SecondaryAddress: secondaryAddr,
 			TransactionType:  txType,
 		}
-
 		withdrawal, err := wc.WithdrawCoin(cmd.Context(), req)
 		if err != nil {
+			printWithdrawSafetyLockHint(err)
 			return err
 		}
 		return formatter.Format(withdrawal)
 	},
+}
+
+// printWithdrawSafetyLockHint prints the withdrawal safety lock guidance
+// (changelog/withdrawal-safety-lock.md) when a withdraw request is rejected
+// by the server. The lock is per API key and must be unlocked in the
+// Upbit mobile app.
+func printWithdrawSafetyLockHint(err error) {
+	if apiErr, ok := api.AsAPIError(err); ok && apiErr.StatusCode >= 400 {
+		fmt.Fprintln(os.Stderr, i18n.T(i18n.MsgWithdrawSafetyLockHint))
+	}
 }
 
 func init() {
