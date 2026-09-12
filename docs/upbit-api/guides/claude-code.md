@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-06-01T04:26:20.000Z
+updatedAt: 2026-09-01T06:37:30.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -44,7 +44,7 @@ upbit --version
 
 시세, 호가, 체결, 캔들, 마켓 목록 등 공개 API는 인증 없이 사용할 수 있습니다.
 
-잔고 조회, 주문, 입출금, 트래블룰 등 계정 관련 API를 사용하려면 업비트 Open API 키가 필요합니다.
+잔고 조회, 주문, 입출금, 포켓, 트래블룰 등 계정 관련 API를 사용하려면 업비트 Open API 키가 필요합니다.
 
 권장 방식:
 
@@ -72,7 +72,7 @@ Claude Code에서 Upbit CLI Skill이 정상적으로 동작하는 경우 이 설
 ````markdown
 # Upbit CLI 규칙
 
-사용자가 업비트 시세, 잔고, 주문, 입금, 출금, 지갑 상태, Travel Rule 관련 작업을 요청하면 Upbit CLI Skill을 사용합니다.
+사용자가 업비트 시세, 잔고, 주문, 입금, 출금, 포켓, 지갑 상태, Travel Rule 관련 작업을 요청하면 Upbit CLI Skill을 사용합니다.
 
 업비트 REST API 작업은 `upbit` CLI를 사용합니다.
 
@@ -92,6 +92,7 @@ Claude Code에서 Upbit CLI Skill이 정상적으로 동작하는 경우 이 설
 다음 API는 인증이 필요합니다.
 
 - `accounts`
+- `pockets`
 - `api-keys`
 - `orders`
 - `withdraws`
@@ -115,6 +116,8 @@ API Key와 Secret Key는 응답, 코드, 로그에 그대로 출력하거나 저
 - 원화 입금 요청
 - 입금 주소 생성
 - Travel Rule 입금 검증
+- 메인포켓 자산 이전
+- 서브포켓 자산 이전
 
 `orders test-create`는 실제 주문을 생성하지 않으므로 `CONFIRM`이 필요하지 않습니다.
 
@@ -166,6 +169,19 @@ upbit tickers list-by-trading-pairs --markets KRW-BTC
 upbit accounts list
 ```
 
+서브포켓 잔고 조회:
+
+> 포켓 자산 조회는 메인포켓 API Key로만 이용할 수 있습니다. 서브포켓 API Key로 요청하는 경우 out\_of\_scope 오류가 발생합니다.
+
+```Text bash
+서브포켓 잔고 확인해줘
+```
+
+```Text bash
+upbit pockets retrieve-balance
+ --uuid "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
+```
+
 주문 가능 정보 조회:
 
 ```Text bash
@@ -188,7 +204,7 @@ upbit orders test-create --market KRW-BTC --side bid --ord-type price --price 10
 
 <br />
 
-## 6. 실제 주문 또는 출금 전 확인
+## 6. 실제 자산에 영향을 주는 작업 전 확인
 
 Claude Code가 실제 자산에 영향을 줄 수 있는 명령을 실행하려는 경우, 바로 실행하지 않고 먼저 실행 내용을 요약해야 합니다.
 
@@ -217,8 +233,7 @@ upbit orders create --market KRW-BTC --side bid --ord-type price --price 10000
 * 출금 전에는 자산, 네트워크, 주소, 보조 주소 또는 메모 필요 여부를 반드시 확인합니다.
 * API Key와 Secret Key는 절대 코드에 하드코딩하지 않습니다.
 * 자동 매매 예제는 Dry run으로 먼저 검토한 뒤 실제 실행 여부를 결정합니다.
-
-<br />
+* 메인포켓 및 서브포켓 자산 이전 전에는 출발 포켓, 대상 포켓, 이전 자산 및 수량을 확인합니다.
 
 # Sibling pages
 

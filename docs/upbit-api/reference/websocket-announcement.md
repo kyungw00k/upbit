@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:45:35.000Z
+updatedAt: 2026-09-02T01:39:36.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -13,6 +13,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 구분      | Endpoint                                   |
 | ------- | ------------------------------------------ |
 | Private | `wss://api.upbit.com/websocket/v1/private` |
+
+<Callout icon="fad fa-triangle-exclamation" theme="error">
+  ### **Private WebSocket 연결 관리 안내**
+
+  **Private WebSocket은 동시에 많은 연결을 유지하는 경우 신규 연결이 거절될 수 있습니다.**
+
+  불필요한 연결 생성을 최소화하고, 가능한 경우 하나의 연결에서 필요한 데이터 타입을 함께 구독해 주세요.
+</Callout>
 
 <Callout icon="fad fa-circle-info" theme="info">
   ### **신규 공지 또는 갱신이 없으면 데이터가 전송되지 않습니다.**

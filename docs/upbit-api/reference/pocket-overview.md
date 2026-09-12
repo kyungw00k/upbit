@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-25T12:21:10.000Z
+updatedAt: 2026-09-11T09:49:32.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -10,7 +10,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 ### '포켓(Pocket)'이란?
 
-포켓(Pocket)은 업비트 계정 안에서 자산을 목적별로 나누어 투자하고 관리할 수 있는 기능입니다. 기본으로 제공되는 ‘메인포켓’ 외에 서브포켓을 추가로 만들어 이용할 수 있습니다.
+포켓(Pocket)은 업비트 계정 안에서 자산을 목적별로 나누어 투자하고 관리할 수 있는 기능입니다. 기본으로 제공되는 ‘메인포켓’ 외에 서브포켓을 추가로 만들어 이용할 수 있습니다. 메인포켓은 1개, 서브포켓은 필요에 따라 직접 추가할 수 있으며 최대 5개까지 만들 수 있습니다.
 
 * 메인포켓(Main Pocket) : 업비트 계정을 만들 때 기본으로 제공되는 기본 포켓입니다. 외부 입출금을 포함한 계정의 기본 거래를 할 수 있고, 계정 내 전체 포켓을 관리할 수 있는 마스터 권한을 받을 수 있습니다.
 * 서브포켓(Sub Pocket): 특정 목적에 따라 사용자가 추가로 만드는 포켓입니다. API Key에 부여된 권한 안에서 독립적으로 동작하며, 외부 입출금은 제한됩니다.
@@ -170,8 +170,6 @@ API Key 발급 시 선택할 수 있는 권한과 각 권한의 주요 기능, �
 <Callout icon="📘" theme="info">
   거래 및 자산 관리(Exchange) API의 Rate Limit은 포켓(Pocket) 단위로 적용됩니다.<br />동일 포켓에서 발급된 API Key는 요청 한도를 공유하며, 서로 다른 포켓은 각각 독립적인 요청 한도를 가집니다.<br />자세한 내용은 [요청 수 제한(Rate Limits)](/reference/rate-limits) 문서를 참고하세요.
 </Callout>
-
-<br />
 
 # Sub pages
 

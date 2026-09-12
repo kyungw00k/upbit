@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T02:50:22.000Z
+updatedAt: 2026-09-01T10:28:35.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -211,25 +211,13 @@ API Key의 Secret Key를 사용하여 헤더와 페이로드를 서명합니다.
 ### `GET` 또는 `DELETE` REST API 요청 시
 
 * 실제 요청에 포함된 쿼리 문자열을 그대로 발췌하여 Hash합니다. 파라미터 간 순서를 변경하거나 재정렬하지 않습니다.
-* `uuids[]` 또는 `states[]`와 같이 이름에 `[]`가 명시된 배열 형식의 쿼리 파라미터에 다중 파라미터를 사용하는 경우 반드시 `uuids[]=UUID1&uuids[]=UUID2...`와 같이 Key-Value를 반복하여 연결하는 형식으로 쿼리 문자열을 구성해야 합니다.
-* `pairs`, `quote_currencies`와 같이 이름에 `[]`가 명시되어 있지 않고 쉼표(`,`)로 구분되는 문자열 형식을 지원하는 파라미터의 경우 쿼리 문자열을 `pairs=KRW-BTC,KRW-ETH...`와 같이 구성합니다.
+* 배열 형식의 쿼리 파라미터인 `uuids[]` 또는 `states[]`처럼 이름에 `[]`가 포함된 파라미터에 여러 값을 사용하는 경우, `uuids[]=UUID1&uuids[]=UUID2...`와 같이 동일한 Key를 반복하여 값을 연결합니다.
+* 쉼표로 구분된 문자열 값을 사용하는 쿼리 파라미터인 `pairs`, `quote_currencies`처럼 이름에 `[]`가 포함되지 않은 경우, 쿼리 문자열을 `pairs=KRW-BTC,KRW-ETH...`형식으로 작성합니다.
 * URL 인코딩되지 않은 쿼리 문자열을 기준으로 Hash 값을 생성해야 합니다.
-
-> **예시 - [체결 대기 주문 목록 조회](https://docs.upbit.com/kr/reference/list-open-orders) API를 호출하는 경우**
->
-> * `GET /v1/orders/open?market=KRW-BTC&limit=10`으로 요청 시 쿼리 문자열은 `market=KRW-BTC&limit=10`이 됩니다. `query_hash` 값은 `market=KRW-BTC&limit=10`을 Hash한 값을 사용합니다.
->
-> * `GET /v1/orders/open?market=KRW-BTC&states[]=wait&states[]=watch`로 요청 시 쿼리 문자열은 `market=KRW-BTC&states[]=wait&states[]=watch`가 됩니다. `query_hash` 값은 `market=KRW-BTC&states[]=wait&states[]=watch`를 Hash한 값을 사용합니다.
 
 ### `POST` REST API 요청 시
 
 * JSON 형식의 요청 본문(Body)의 모든 Key-Value 쌍을 쿼리 문자열 형식(`=`로 Key-Value 연결, `&`로 구분)으로 가공해야 합니다.
-
-> **예시 - [주문 생성](https://docs.upbit.com/kr/reference/new-order) API를 호출하는 경우**
->
-> 요청 본문이 `{"market":"KRW-BTC","side":"bid","volume":"0.01","price":"100.0","ord_type":"limit"}`인 경우, 쿼리 문자열은 `market=KRW-BTC&side=bid&volume=0.01&price=100.0&ord_type=limit`가 됩니다.
->
-> `query_hash` 값은 `market=KRW-BTC&side=bid&volume=0.01&price=100.0&ord_type=limit`을 Hash한 값을 사용합니다.
 
 <br />
 
