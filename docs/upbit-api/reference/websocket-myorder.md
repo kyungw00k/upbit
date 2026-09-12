@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:33:03.000Z
+updatedAt: 2026-09-09T06:07:41.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -13,6 +13,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 구분      | Endpoint                                   |
 | ------- | ------------------------------------------ |
 | Private | `wss://api.upbit.com/websocket/v1/private` |
+
+<Callout icon="fad fa-triangle-exclamation" theme="error">
+  ### **Private WebSocket 연결 관리 안내**
+
+  **Private WebSocket은 동시에 많은 연결을 유지하는 경우 신규 연결이 거절될 수 있습니다.**
+
+  불필요한 연결 생성을 최소화하고, 가능한 경우 하나의 연결에서 필요한 데이터 타입을 함께 구독해 주세요.
+</Callout>
 
 <Callout icon="fad fa-circle-info" theme="info">
   ### **주문 또는 체결이 없으면 데이터가 전송되지 않습니다.**
@@ -29,7 +37,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 필드명    | 타입          | 내용                                                                                                                                                        | 필수 여부    | 기본 값                                    |
 | ------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------- |
 | type   | String      | 수신할 데이터 타입.<br />내 주문 및 체결 데이터를 요청하는 경우 `myOrder`로 지정합니다.                                                                                                 | Required |                                         |
-| code   | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Optional | 생략하거나 빈 배열로 요청할 경우 모든 마켓에 대한 정보를 수신합니다. |
+| codes  | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Optional | 생략하거나 빈 배열로 요청할 경우 모든 마켓에 대한 정보를 수신합니다. |
 | format | String      | 수신하고자 하는 데이터 포맷입니다. <br />`DEFAULT` : 기본 포맷.<br />`SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />`JSON_LIST` : 리스트 포맷.<br />`SIMPLE_LIST` : 축약어 형태의 리스트 포맷. | Required |                                         |
 
 <br />
@@ -39,7 +47,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 <Callout icon="fad fa-circle-info" theme="info">
   ### **신규 필드 추가 안내 (2025.07.02)**
 
-  자전거래 체결 방지 (Self-Match Prevention) 기능 추가로 인해 주문 데이터 필드가 아래와 같이 추가됩니다. 자세한 사항은 관련 공지 참고 부탁드립니다.<Anchor target="_blank" href="/kr/docs/smp">&#x20;\[SMP 상세 설명 바로가기]</Anchor>
+  자전거래 체결 방지 (Self-Match Prevention) 기능 추가로 인해 주문 데이터 필드가 아래와 같이 추가됩니다. 자세한 사항은 관련 공지 참고 부탁드립니다.<Anchor target="_blank" href="/kr/docs/smp"> \[SMP 상세 설명 바로가기]</Anchor>
 
   - smp_type : `reduce`, `cancel_maker`, `cancel_taker`
   - 주문 상태 state 필드에 `prevented` (체결 방지) 타입이 신규로 추가됩니다.
@@ -70,7 +78,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | trade\_fee        | tf   | 체결 시 발생한 수수료 (state:trade가 아닐 경우 null)                          | Double  |                                                                                                                   |
 | is\_maker         | im   | 체결이 발생한 주문의 메이커/테이커 여부 (state:trade가 아닐 경우 null)                | Boolean | `true` : 메이커 주문 `false` : 테이커 주문                                                                                  |
 | identifier        | id   | 클라이언트 지정 주문 식별자                                                 | String  |                                                                                                                   |
-| smp\_type         | smpt | 자전거래 체결 방지 타입 (동일 회원의 메이커/테이커 주문 간 체결 방지)                       | String  | `reduce`: 주문 줄이고 진행<br />`cancel_maker`: 메이커 주문 취소 `cancel_taker`: 테이커 주문 취소                                      |
+| smp\_type         | smpt | 자전거래 체결 방지 타입 (동일 회원의 메이커/테이커 주문 간 체결 방지)                       | String  | `reduce`: 체결 수량만큼 주문 수량 차감 후 진행<br />`cancel_maker`: 메이커 주문 취소 `cancel_taker`: 테이커 주문 취소                          |
 | prevented\_volume | pv   | 자전거래 체결 방지로 인해 취소된 주문 수량                                        | Double  |                                                                                                                   |
 | prevented\_locked | pl   | (매수 시)자전거래 체결 방지 설정으로 인해 취소된 금액 (매도 시)자전거래 체결 방지 설정으로 인해 취소된 수량 | Double  |                                                                                                                   |
 | trade\_timestamp  | ttms | 체결 타임스탬프 (ms)                                                   | Long    |                                                                                                                   |

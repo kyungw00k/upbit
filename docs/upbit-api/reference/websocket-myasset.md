@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:33:13.000Z
+updatedAt: 2026-09-02T01:40:37.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -13,6 +13,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 구분      | Endpoint                                   |
 | ------- | ------------------------------------------ |
 | Private | `wss://api.upbit.com/websocket/v1/private` |
+
+<Callout icon="fad fa-triangle-exclamation" theme="error">
+  ### **Private WebSocket 연결 관리 안내**
+
+  **Private WebSocket은 동시에 많은 연결을 유지하는 경우 신규 연결이 거절될 수 있습니다.**
+
+  불필요한 연결 생성을 최소화하고, 가능한 경우 하나의 연결에서 필요한 데이터 타입을 함께 구독해 주세요.
+</Callout>
 
 <Callout icon="fad fa-circle-info" theme="info">
   ### **자산 변동이 없으면 데이터가 전송되지 않습니다.**
@@ -40,7 +48,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 내 자산 데이터 수신을 요청하기 위해서는 WebSocket 연결 이후 아래 구조의 JSON Object를 생성한 뒤 요청 메세지의 Data Type Object로 포함하여 전송해야 합니다. Ticket, Format 필드를 포함한 전체 WebSocket 데이터 요청 메세지 명세는 [WebSocket 사용 안내](https://docs.upbit.com/kr/reference/websocket-guide) 문서를 참고해주세요.
 
-<Callout icon="fad fa-circle-info" theme="error">
+<Callout icon="fad fa-triangle-exclamation" theme="error">
   ### **내 자산 타입 데이터 구독 요청은 페어 코드("codes") 파라미터를 지원하지 않습니다.**
 
   다른 데이터 항목 구독 요청과 달리 내 자산 타입 데이터 구독 요청에 페어 코드 파라미터를 포함하는 경우 "WRONG_FORMAT" 에러가 발생하오니 사용에 주의바랍니다.

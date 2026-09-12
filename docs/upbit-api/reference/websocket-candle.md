@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:32:51.000Z
+updatedAt: 2026-09-09T06:01:05.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -51,7 +51,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 필드명                | 타입          | 내용                                                                                                                                                                                                                          | 필수 여부    | 기본 값    |
 | ------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
 | type               | String      | 수신할 캔들 단위.<br />`candle.1s`: 초봉<br />`candle.1m`: 1분봉<br />`candle.3m`: 3분봉<br />`candle.5m`: 5분봉<br />`candle.10m`: 10분봉<br />`candle.15m`: 15분봉<br />`candle.30m`: 30분봉<br />`candle.60m`: 60분봉<br />`candle.240m`: 240분봉 | Required |         |
-| code               | List:String | 현재가 데이터를 수신할 페어 코드 목록. 페어 코드는 대문자로 입력해야 합니다.                                                                                                                                                                                | Required |         |
+| codes              | List:String | 현재가 데이터를 수신할 페어 코드 목록. 페어 코드는 대문자로 입력해야 합니다.                                                                                                                                                                                | Required |         |
 | is\_only\_snapshot | Boolean     | `true`로 설정하면 요청 시점의 현재가 스냅샷 데이터만 1회 수신합니다.                                                                                                                                                                                  | Optional | `false` |
 | is\_only\_realtime | Boolean     | `true`로 설정하면 현재가 스냅샷 없이 실시간 스트림 데이터만 수신합니다.                                                                                                                                                                                 | Optional | `false` |
 | format             | String      | 수신하고자 하는 데이터 포맷입니다. <br />`DEFAULT` : 기본 포맷.<br />`SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />`JSON_LIST` : 리스트 포맷.<br />`SIMPLE_LIST` : 축약어 형태의 리스트 포맷.                                                                   | Required |         |
@@ -178,21 +178,11 @@ API는 Rate Limit 그룹으로 묶입니다. 같은 그룹의 API는 초당 한�
 | `websocket-connect` | 초당 최대 5회          | IP    |
 | `websocket-message` | 초당 최대 5회, 분당 100회 | 커넥션   |
 
-<br />
+<Callout icon="fad fa-gauge" theme="warn">
+  ### **WebSocket 요청 수 제한 관리**
 
-## 잔여 요청 수 확인 방법
-
-REST API 응답의 Remaining-Req 헤더로 잔여 요청 수를 확인할 수 있습니다.
-
-```http
-Remaining-Req: group=default; min=1800; sec=29
-```
-
-| 항목      | 설명                                                                                                                               |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `group` | 요청이 속한 Rate Limit 그룹                                                                                                             |
-| `min`   | <span style="color: #D92D20;"><strong> Deprecated</strong>— 분 단위 필드. <br />더 이상 사용되지 않는 필드 입니다. 응답 처리 시 참조하지 않는 것을 권장합니다.</span> |
-| `sec`   | 현재 잔여 요청 수.<br />0이면 일정 시간 후에 다시 요청해야 합니다.                                                                                       |
+  WebSocket은 REST API와 달리 잔여 요청 수를 별도로 제공하지 않습니다. 클라이언트에서 WebSocket 연결 및 데이터 요청 메시지의 전송 횟수를 관리하여 요청 수 제한을 준수해 주세요. 요청 수 제한에 도달한 경우 일정 시간 대기한 후 다시 요청해 주세요.
+</Callout>
 
 # Sibling pages
 

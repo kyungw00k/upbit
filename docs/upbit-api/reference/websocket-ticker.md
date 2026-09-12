@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:32:22.000Z
+updatedAt: 2026-09-09T05:59:59.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -23,7 +23,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | 필드명                | 타입          | 내용                                                                                                                                                        | 필수 여부    | 기본 값    |
 | ------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
 | type               | String      | 수신할 데이터 타입.<br />현재가 데이터를 요청하는 경우 `ticker`로 지정합니다.                                                                                                        | Required |         |
-| code               | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Required |         |
+| codes              | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Required |         |
 | is\_only\_snapshot | Boolean     | `true`로 설정하면 요청 시점의 현재가 스냅샷 데이터만 1회 수신합니다.                                                                                                                | Optional | `false` |
 | is\_only\_realtime | Boolean     | `true`로 설정하면 현재가 스냅샷 없이 실시간 스트림 데이터만 수신합니다.                                                                                                               | Optional | `false` |
 | format             | String      | 수신하고자 하는 데이터 포맷입니다. <br />`DEFAULT` : 기본 포맷.<br />`SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />`JSON_LIST` : 리스트 포맷.<br />`SIMPLE_LIST` : 축약어 형태의 리스트 포맷. | Required |         |
@@ -212,7 +212,7 @@ API는 Rate Limit 그룹으로 묶입니다. 같은 그룹의 API는 초당 한�
 <Callout icon="fad fa-gauge" theme="warn">
   ### **WebSocket 요청 수 제한 관리**
 
-  WebSocket은 REST API와 달리 잔여 요청 수를 별도로 제공하지 않습니다. 클라이언트에서 WebSocket 연결 및 데이터 요청 메시지의 전송 횟수를 관리하여 요청 수 제한을 준수해 주세요.<br />요청 수 제한에 도달한 경우 일정 시간 대기한 후 다시 요청해 주세요.
+  WebSocket은 REST API와 달리 잔여 요청 수를 별도로 제공하지 않습니다. 클라이언트에서 WebSocket 연결 및 데이터 요청 메시지의 전송 횟수를 관리하여 요청 수 제한을 준수해 주세요. 요청 수 제한에 도달한 경우 일정 시간 대기한 후 다시 요청해 주세요.
 </Callout>
 
 # Sibling pages
