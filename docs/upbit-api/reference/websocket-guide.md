@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T04:34:46.000Z
+updatedAt: 2026-09-16T09:50:03.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -354,7 +354,7 @@ Connected!
 
 * KRW-BTC, BTC-XRP 페어의 실시간 체결 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC","BTC-XRP"]}]
 * KRW-BTC, BTC-XRP 페어의 실시간 호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC","BTC-XRP"]}]
-* KRW-BTC 페어의 1~~3호가, BTC-XRP 페어의 실시간 1~~5호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC.3","BTC-XRP.5"]}]
+* KRW-BTC 페어의 1\~3호가, BTC-XRP 페어의 실시간 1\~5호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC.3","BTC-XRP.5"]}]
 * KRW-BTC 페어의 체결 정보, KRW-ETH 페어의 실시간 호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]}]
 * KRW-BTC 페어의 체결, KRW-ETH 페어의 호가, KRW-EOS 페어의 현재가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]},{"type":"ticker", "codes":["KRW-EOS"]}]
 * 공지사항 실시간 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"announcement"}]

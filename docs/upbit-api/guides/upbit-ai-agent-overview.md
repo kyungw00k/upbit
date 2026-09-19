@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-18T06:09:35.000Z
+updatedAt: 2026-08-31T13:21:46.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -47,10 +47,10 @@ Upbit AI Agent는 AI 기반 개발 환경 (Claude Code, Cursor, Codex 등)에서
 
 Upbit API는 두 종류의 엔드포인트로 나뉩니다. 어떤 작업을 하느냐에 따라 API 키 필요 여부가 달라집니다.
 
-| 구분              | 하는 일                   | API 키 |
-| :-------------- | :--------------------- | :---- |
-| **공개(Public)**  | 시세, 호가, 캔들, 마켓 목록 조회   | 불필요   |
-| **인증(Private)** | 잔고 조회, 주문, 입출금 등 계좌 작업 | 필요    |
+| 구분              | 하는 일                       | API 키 |
+| :-------------- | :------------------------- | :---- |
+| **공개(Public)**  | 시세, 호가, 캔들, 마켓 목록 조회       | 불필요   |
+| **인증(Private)** | 포켓, 잔고 조회, 주문, 입출금 등 계좌 작업 | 필요    |
 
 자세한 준비 과정은 <Anchor target="_blank" href="https://docs.upbit.com/kr/docs/api-setup">Upbit API 이용 준비</Anchor>를 참고합니다.
 

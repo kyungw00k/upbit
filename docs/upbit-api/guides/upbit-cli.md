@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-06-01T04:24:08.000Z
+updatedAt: 2026-09-01T06:32:23.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -12,7 +12,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 CLI(Command Line Interface)는 텍스트 기반의 명령줄 인터페이스로, 터미널에서 명령어를 입력하여 기능을 실행하는 방식입니다.<br />Upbit CLI는 터미널 환경에서 Upbit API를 호출할 수 있도록 제공되는 공식 명령줄 도구입니다.
 
-Upbit CLI를 사용하면 별도의 코드 작성 없이 업비트 개발자센터에서 지원하는 시세 조회, 계좌 조회, 주문 조회 등의 작업을 수행할 수 있습니다. 명령어 기반으로 API를 실행할 수 있어 반복적인 작업을 간단하게 처리할 수 있습니다.
+Upbit CLI를 사용하면 별도의 코드 작성 없이 업비트 개발자센터에서 지원하는 시세 조회, 계좌 조회, 주문, 입출금, 포켓 조회 및 자산 이전 등의 작업을 수행할 수 있습니다. 명령어 기반으로 API를 실행할 수 있어 반복적인 작업을 간단하게 처리할 수 있습니다.
 
 <br />
 
@@ -141,6 +141,15 @@ upbit orders list-open --market KRW-BTC
 upbit accounts list
 ```
 
+#### 포켓 조회 및 관리
+
+> 포켓 자산 조회는 메인포켓 API Key로만 이용할 수 있습니다. 서브포켓 API Key로 요청하는 경우 out\_of\_scope 오류가 발생합니다.
+
+```bash
+upbit pockets retrieve-balance 
+  --uuid "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
+```
+
 #### 입출금 조회
 
 ```
@@ -208,8 +217,6 @@ upbit accounts list --debug
 
 * [Upbit CLI ReadMe](https://github.com/upbit-official/upbit-cli)
 * [Upbit CLI 예제 코드](https://github.com/upbit-official/upbit-cli/tree/main/examples)
-
-<br />
 
 # Sibling pages
 
