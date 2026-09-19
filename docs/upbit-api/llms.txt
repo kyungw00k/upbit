@@ -142,6 +142,7 @@ Append .md to any documentation page URL to get its markdown version.
 - [업비트 Open API 기술 지원 안내](https://docs.upbit.com/kr/page/업비트-open-api-기술-지원-안내.md)
 
 ## Changelog
+- [[안내] SDK, CLI, Skills '포켓 API' 지원 업데이트 안내](https://docs.upbit.com/kr/changelog/pocket-api-support-update.md)
 - [[안내] 공지사항(Announcement) WebSocket 지원](https://docs.upbit.com/kr/changelog/websocket-announcement.md)
 - [[안내]업비트 Open API Rate Limit 상향 안내](https://docs.upbit.com/kr/changelog/order-rate-limit-update.md)
 - [[안내] Open API 요청 헤더 중복 전송 방지 안내](https://docs.upbit.com/kr/changelog/prevent-duplicate-request-headers.md)
@@ -151,4 +152,3 @@ Append .md to any documentation page URL to get its markdown version.
 - [[안내] 거래소 API Rate Limit 적용 단위 변경 (계정 → 포켓)](https://docs.upbit.com/kr/changelog/exchange-api-rate-limit-pocket-scope.md)
 - [[안내] 포켓(Pocket) 기능 및 신규 API 출시 안내](https://docs.upbit.com/kr/changelog/pockets.md)
 - [[안내] 업비트 개발자 센터 개인정보처리방침 개정 안내 (05/18 적용 예정)](https://docs.upbit.com/kr/changelog/privacy_policy_upgrade0518.md)
-- [[안내] Upbit Skills 출시](https://docs.upbit.com/kr/changelog/upbit-agent-skills-release.md)

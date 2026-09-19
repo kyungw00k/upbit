@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-26T08:52:21.000Z
+updatedAt: 2026-09-09T06:08:43.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -26,26 +26,24 @@ WebSocket 연결을 통해 구독중인 데이터 스트림 항목을 확인할 
 <Callout icon="fad fa-code" theme="warn">
   **현재 구독 중인 스트림과 동일한 Format을 사용해주세요.**
 
-  `LIST_SUBSCRIPTIONS` 요청의 Format을 변경하면 기존에 구독 중인 실시간 스트림의 응답 Format도 함께 변경됩니다.
+  구독 목록 조회 요청에서 Format을 변경하면 기존에 구독 중인 실시간 스트림의 응답 Format도 함께 변경됩니다.
 
-  예를 들어 `SIMPLE` 포맷으로 실시간 데이터를 수신하는 중 `LIST_SUBSCRIPTIONS`를 `DEFAULT` 포맷으로 요청하면, 이후 구독 중인 실시간 스트림도 `DEFAULT` 포맷으로 반환됩니다.
+  예를 들어 SIMPLE 포맷으로 실시간 데이터를 수신하는 중 LIST_SUBSCRIPTIONS 요청의 Format을 DEFAULT로 지정하면, 이후 구독 중인 실시간 스트림도 DEFAULT 포맷으로 반환됩니다.
 </Callout>
 
 <Callout icon="fad fa-gauge-high" theme="info">
   **요청 수 제한이 적용됩니다.**
 
-  `LIST_SUBSCRIPTIONS` 요청도 WebSocket 요청 수 제한에 포함됩니다.
+  구독 목록 조회 요청도 WebSocket 요청 수 제한에 포함됩니다.
 </Callout>
 
 <br />
 
-## Request 메시지 형식
-
 현재 WebSocket 연결에서 구독 중인 스트림 목록을 조회하려면 아래 형식의 Operation Object를 요청 메시지에 포함하여 전송합니다. Ticket, Format 필드를 포함한 전체 WebSocket 요청 메시지 명세는 <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide">WebSocket 사용 안내</Anchor> 문서를 참고해주세요.
 
-| 필드명      | 타입     | 내용                                                         | 필수 여부    | 기본 값 |
-| -------- | ------ | ---------------------------------------------------------- | -------- | ---- |
-| `method` | String | 요청 메서드.<br />구독 중인 스트림 목록 조회는 `LIST_SUBSCRIPTIONS`로 지정합니다. | Required |      |
+| 필드명    | 타입     | 내용                                                         | 필수 여부    | 기본 값 |
+| ------ | ------ | ---------------------------------------------------------- | -------- | ---- |
+| method | String | 요청 메서드.<br />구독 중인 스트림 목록 조회는 `LIST_SUBSCRIPTIONS`로 지정합니다. | Required |      |
 
 ### 예시
 
