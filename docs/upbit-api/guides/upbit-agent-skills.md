@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-07-09T02:26:54.000Z
+updatedAt: 2026-09-01T06:40:51.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -10,11 +10,11 @@ Upbit Skills에 대하여 안내합니다.
 
 Upbit Skills은 AI 에이전트가 `upbit` CLI를 통해 업비트 API를 더 쉽고 정확하게 사용할 수 있도록 돕는 Skills 패키지입니다.
 
-시세 조회, 잔고 확인, 주문, 입출금, 트래블룰 검증(Travel Rule) 관련 작업을 자연어 요청에 맞게 처리할 수 있습니다.
+시세 조회, 잔고 확인, 주문, 입출금, 포켓, 트래블룰 검증(Travel Rule) 관련 작업을 자연어 요청에 맞게 처리할 수 있습니다.
 
 예시:
 
-> “KRW-BTC 현재가 알려줘”<br />“내 잔고 확인해줘”<br />“BTC 1만 원 시장가 매수 명령 만들어줘”<br />“USDT 출금 가능한 네트워크 확인해줘”<br />“Travel Rule 확인이 필요한 입금 내역 조회해줘”
+> “KRW-BTC 현재가 알려줘”<br />“내 잔고 확인해줘”<br />“서브포켓 잔고 확인해줘”<br />“BTC 1만 원 시장가 매수 명령 만들어줘”<br />“USDT 출금 가능한 네트워크 확인해줘”<br />“Travel Rule 확인이 필요한 입금 내역 조회해줘”
 
 <br />
 
@@ -22,7 +22,7 @@ Upbit Skills은 AI 에이전트가 `upbit` CLI를 통해 업비트 API를 더 �
 
 Node.js 18 이상이 필요합니다.
 
-```bash bash
+```bash
 npx skills add upbit-official/upbit-agent-skills
 npm install -g @upbit-official/upbit-cli
 upbit --version
@@ -30,7 +30,7 @@ upbit --version
 
 전역 설치가 필요한 경우:
 
-```bash bash
+```bash
 npx skills add upbit-official/upbit-agent-skills -g
 ```
 
@@ -38,26 +38,27 @@ npx skills add upbit-official/upbit-agent-skills -g
 
 ## 주요 기능
 
-| 구분      | 할 수 있는 일                                 | 인증    |
-| ------- | ---------------------------------------- | ----- |
-| 시세      | 현재가, 호가, 체결, 캔들, 마켓 목록 조회                | 불필요   |
-| 계정      | 잔고, 보유 자산, API 키 정보 조회                   | 필요    |
-| 주문      | 주문 가능 정보 조회, 주문 생성, 주문 조회, 주문 취소, 주문 테스트 | 필요    |
-| 입금      | 입금 주소 조회·생성, 입금 내역 조회                    | 필요    |
-| 출금      | 출금 가능 정보 조회, 출금 요청, 출금 취소                | 필요    |
-| 트래블룰 검증 | VASP 목록 조회, 계정주 확인이 필요한 입금건에 대한 검증       | 필요    |
-| 지갑 상태   | 자산별 입출금 지원 상태 조회                         | 불필요   |
-| 예제      | 주문, 입출금, DCA, TP/SL 시나리오 실행              | 일부 필요 |
+| 구분      | 할 수 있는 일                                          | 인증    |
+| ------- | ------------------------------------------------- | ----- |
+| 시세      | 현재가, 호가, 체결, 캔들, 마켓 목록 조회                         | 불필요   |
+| 계정      | 잔고, 보유 자산, API 키 정보 조회                            | 필요    |
+| 주문      | 주문 가능 정보 조회, 주문 생성, 주문 조회, 주문 취소, 주문 테스트          | 필요    |
+| 입금      | 입금 주소 조회·생성, 입금 내역 조회                             | 필요    |
+| 출금      | 출금 가능 정보 조회, 출금 요청, 출금 취소                         | 필요    |
+| 포켓      | 포켓 목록, API Key, 잔고 조회, 메인포켓·서브포켓 자산 이전 및 이전 내역 조회 | 필요    |
+| 트래블룰 검증 | VASP 목록 조회, 계정주 확인이 필요한 입금건에 대한 검증                | 필요    |
+| 지갑 상태   | 자산별 입출금 지원 상태 조회                                  | 불필요   |
+| 예제      | 주문, 입출금, DCA, TP/SL 시나리오 실행                       | 일부 필요 |
 
 권장 설정 방식:
 
-```bash bash
+```bash
 upbit config set
 ```
 
 또는 환경 변수 사용:
 
-```bash bash
+```bash
 export UPBIT_ACCESS_KEY=<your-access-key>
 export UPBIT_SECRET_KEY=<your-secret-key>
 ```
@@ -68,7 +69,9 @@ API 키와 Secret Key는 응답, 로그, 코드 예제에 노출하지 않아야
 
 ## 자주 쓰는 명령
 
-```bash bash
+> 포켓 자산 조회는 메인포켓 API Key로만 이용할 수 있습니다. 서브포켓 API Key로 요청하는 경우 out\_of\_scope 오류가 발생합니다.
+
+```bash
 # 현재가 조회
 upbit tickers list-by-trading-pairs --markets KRW-BTC
 
@@ -80,6 +83,13 @@ upbit orderbooks list --markets KRW-BTC
 
 # 잔고 조회
 upbit accounts list
+
+# 포켓 목록 조회
+upbit pockets list
+
+# 서브포켓 잔고 조회
+upbit pockets retrieve-balance 
+  --uuid "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
 
 # 주문 가능 정보 조회
 upbit orders retrieve-chance --market KRW-BTC
@@ -121,19 +131,19 @@ upbit orders test-create --market KRW-BTC --side bid --ord-type price --price 10
 
 시장가 매수는 수량이 아니라 사용할 총 금액을 `price`에 입력합니다.
 
-```bash bash
+```bash
 upbit orders test-create --market KRW-BTC --side bid --ord-type price --price 10000
 ```
 
 시장가 매도는 매도할 수량을 `volume`에 입력합니다.
 
-```bash bash
+```bash
 upbit orders test-create --market KRW-BTC --side ask --ord-type market --volume 0.001
 ```
 
 처음 주문하는 마켓에서는 주문 전 가능 정보를 먼저 확인하는 것이 좋습니다.
 
-```bash bash
+```bash
 upbit orders retrieve-chance --market KRW-BTC
 ```
 
@@ -149,12 +159,14 @@ upbit orders retrieve-chance --market KRW-BTC
 * 출금 취소
 * 원화 입금 요청
 * 입금 주소 생성
+* 메인포켓 자산 이전
+* 서브포켓 자산 이전
 * Travel Rule 입금 검증
 * 자동 매매 예제의 실제 실행
 
 AI 에이전트는 먼저 실행 내용을 요약하고, 사용자가 아래 문구를 단독으로 입력한 경우에만 실행해야 합니다.
 
-```text bash
+```text
 CONFIRM
 ```
 
@@ -176,7 +188,7 @@ CONFIRM
 
 멀티체인 자산은 출금 네트워크를 반드시 확인해야 합니다.
 
-```bash bash
+```bash
 upbit withdraws list-coin-addresses
 ```
 
@@ -200,7 +212,7 @@ upbit withdraws list-coin-addresses
 
 ## 예제 코드
 
-```bash bash
+```bash
 # 인증 불필요 예제
 bash examples/quotation_kr.sh
 
@@ -237,8 +249,9 @@ DRY_RUN=false UPBIT_ACCESS_KEY=<key> UPBIT_SECRET_KEY=<secret> bash examples/ord
 
 * 사용자 언어에 맞춰 응답합니다.
 * 공개 조회는 인증 없이 수행합니다.
-* 개인 계정 관련 요청은 인증 설정 여부를 먼저 확인합니다.
+* 개인 계정 및 포켓 관련 요청은 인증 설정 여부를 먼저 확인합니다.
 * 실제 자산에 영향을 주는 작업은 실행 전 반드시 요약하고 확인을 받습니다.
+* 메인포켓 및 서브포켓 자산 이전은 실행 전에 출발 포켓, 대상 포켓, 이전 자산 및 수량을 확인합니다.
 * 실제 거래 전에는 `orders test-create` 또는 Dry run을 우선 사용합니다.
 * API 키와 Secret Key는 절대 출력하지 않습니다.
 * 사용자의 마켓 표기가 업비트 형식과 다르면 올바른 형식으로 변환합니다.
@@ -268,6 +281,12 @@ upbit <resource> <command> --help
 upbit orders create --help
 ```
 
+포켓 명령을 확인하려면:
+
+```bash
+upbit pockets --help
+```
+
 <br />
 
 ## 참조 문서
@@ -283,6 +302,7 @@ upbit orders create --help
 | `references/trading-pairs.md` | 마켓 목록       |
 | `references/withdraws.md`     | 출금          |
 | `references/deposits.md`      | 입금          |
+| `references/pockets.md`       | 포켓          |
 | `references/travel-rule.md`   | Travel Rule |
 | `references/account.md`       | 계정 및 지갑 상태  |
 | `references/output.md`        | 출력 형식 및 필터링 |
@@ -298,7 +318,10 @@ upbit orders create --help
 open-api@upbit.com
 ```
 
-Upbit CLI Skill은 업비트 Open API와 `upbit` CLI 사용을 보조하는 도구입니다.<br />이 Skill을 통해 실행되는 모든 주문, 출금, 자동 매매 및 기타 계정 관련 작업의 최종 책임은 사용자에게 있습니다.
+Upbit CLI Skill은 업비트 Open API와 `upbit` CLI 사용을 보조하는 도구입니다.
+이 Skill을 통해 실행되는 모든 주문, 출금, 포켓 간 자산 이전, 자동 매매 및 기타 계정 관련 작업의 최종 책임은 사용자에게 있습니다.
+
+<br />
 
 # Sub pages
 
