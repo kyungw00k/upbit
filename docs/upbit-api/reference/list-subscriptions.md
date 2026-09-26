@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-26T08:52:21.000Z
+updatedAt: 2026-09-22T02:01:24.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -26,26 +26,24 @@ WebSocket 연결을 통해 구독중인 데이터 스트림 항목을 확인할 
 <Callout icon="fad fa-code" theme="warn">
   **현재 구독 중인 스트림과 동일한 Format을 사용해주세요.**
 
-  `LIST_SUBSCRIPTIONS` 요청의 Format을 변경하면 기존에 구독 중인 실시간 스트림의 응답 Format도 함께 변경됩니다.
+  구독 목록 조회 요청에서 Format을 변경하면 기존에 구독 중인 실시간 스트림의 응답 Format도 함께 변경됩니다.
 
-  예를 들어 `SIMPLE` 포맷으로 실시간 데이터를 수신하는 중 `LIST_SUBSCRIPTIONS`를 `DEFAULT` 포맷으로 요청하면, 이후 구독 중인 실시간 스트림도 `DEFAULT` 포맷으로 반환됩니다.
+  예를 들어 SIMPLE 포맷으로 실시간 데이터를 수신하는 중 LIST_SUBSCRIPTIONS 요청의 Format을 DEFAULT로 지정하면, 이후 구독 중인 실시간 스트림도 DEFAULT 포맷으로 반환됩니다.
 </Callout>
 
 <Callout icon="fad fa-gauge-high" theme="info">
   **요청 수 제한이 적용됩니다.**
 
-  `LIST_SUBSCRIPTIONS` 요청도 WebSocket 요청 수 제한에 포함됩니다.
+  구독 목록 조회 요청도 WebSocket 요청 수 제한에 포함됩니다.
 </Callout>
 
 <br />
 
-## Request 메시지 형식
+현재 WebSocket 연결에서 구독 중인 스트림 목록을 조회하려면 아래 형식의 Operation Object를 요청 메시지에 포함하여 전송합니다. <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide#:~:text=%EB%93%A4%EC%9D%84%20%ED%8F%AC%ED%95%A8%ED%95%B4%EC%95%BC%20%ED%95%A9%EB%8B%88%EB%8B%A4.-,Ticket%20Object,-%EB%B0%B0%EC%97%B4%EC%9D%98%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%86%8C%EB%A1%9C">Ticket</Anchor>, <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide#:~:text=%EC%82%AC%EC%9A%A9%ED%95%A0%20%EC%88%98%20%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Format%20Object,-%EB%B0%B0%EC%97%B4%EC%9D%98%20%EB%A7%88%EC%A7%80%EB%A7%89%20%EC%9A%94%EC%86%8C%EB%A1%9C">Format 필드</Anchor>를 포함한 전체 WebSocket 데이터 요청 메시지 명세는 <Anchor target="_blank" href="ref:websocket-guide">WebSocket 사용 안내</Anchor> 문서를 참고해주세요.
 
-현재 WebSocket 연결에서 구독 중인 스트림 목록을 조회하려면 아래 형식의 Operation Object를 요청 메시지에 포함하여 전송합니다. Ticket, Format 필드를 포함한 전체 WebSocket 요청 메시지 명세는 <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide">WebSocket 사용 안내</Anchor> 문서를 참고해주세요.
-
-| 필드명      | 타입     | 내용                                                         | 필수 여부    | 기본 값 |
-| -------- | ------ | ---------------------------------------------------------- | -------- | ---- |
-| `method` | String | 요청 메서드.<br />구독 중인 스트림 목록 조회는 `LIST_SUBSCRIPTIONS`로 지정합니다. | Required |      |
+| 필드명    | 타입     | 내용                                                         | 필수 여부    | 기본 값 |
+| ------ | ------ | ---------------------------------------------------------- | -------- | ---- |
+| method | String | 요청 메서드.<br />구독 중인 스트림 목록 조회는 `LIST_SUBSCRIPTIONS`로 지정합니다. | Required |      |
 
 ### 예시
 
@@ -147,16 +145,15 @@ WebSocket 연결 후 요청에 대한 에러 발생 시, 응답은 다음과 같
 
 반환될 수 있는 주요 에러 코드 목록은 아래와 같습니다.
 
-| error.name        | 발생 이유                                    | 권장 조치                                                                                               |
-| ----------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| INVALID\_AUTH     | 인증 정보 누락 또는 인증 토큰 검증 실패                  | Private WebSocket을 사용하는 경우 올바른 Endpoint에 연결했는지 확인하고, Authorization 헤더에 유효한 인증 토큰이 포함되어 있는지 확인해 주세요. |
-| WRONG\_FORMAT     | 요청 메시지 형식 오류                             | 요청 메시지가 WebSocket 요청 형식에 맞게 작성되었는지 확인해 주세요. Object 구성과 각 필드의 타입 및 값을 함께 확인해 주세요.                    |
-| NO\_TICKET        | ticket 필드 누락                             | 요청 메시지에 Ticket Object와 ticket 필드가 포함되어 있는지 확인해 주세요.                                                 |
-| NO\_TYPE          | type 필드 누락                               | Data Type Object에 type 필드가 포함되어 있는지 확인하고, 구독할 데이터 타입을 지정해 주세요.                                      |
-| NO\_CODES         | codes 필드 누락                              | 구독하려는 데이터 타입에서 codes 필드가 필요한지 확인하고, 수신할 페어 코드 목록을 지정해 주세요.                                          |
-| INVALID\_PARAM    | 필수 요청 필드 누락 또는 지원하지 않는 값 요청              | 요청 메시지에 필요한 필드가 포함되어 있는지, 각 필드에 지원하는 값이 지정되었는지 확인해 주세요.                                             |
-| Too Many Requests | 요청 한도 초과                                 | 다음 요청이 가능한 시점까지 대기한 후 다시 요청해 주세요. 요청 한도와 잔여 요청 수 확인 방법은 아래 잔여 요청 수 확인 방법을 참고해 주세요.                  |
-| I'm a teapot      | Too Many Requests가 반복되어 일정 시간 요청이 제한된 상태 | 응답에 포함된 제한 시간을 확인하고, 안내된 시간이 지난 후 다시 요청해 주세요.                                                       |
+| error.name         | 발생 이유                       | 권장 조치                                                                                               |
+| ------------------ | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| INVALID\_AUTH      | 인증 정보 누락 또는 인증 토큰 검증 실패     | Private WebSocket을 사용하는 경우 올바른 Endpoint에 연결했는지 확인하고, Authorization 헤더에 유효한 인증 토큰이 포함되어 있는지 확인해 주세요. |
+| WRONG\_FORMAT      | 요청 메시지 형식 오류                | 요청 메시지가 WebSocket 요청 형식에 맞게 작성되었는지 확인해 주세요. Object 구성과 각 필드의 타입 및 값을 함께 확인해 주세요.                    |
+| NO\_TICKET         | ticket 필드 누락                | 요청 메시지에 Ticket Object와 ticket 필드가 포함되어 있는지 확인해 주세요.                                                 |
+| NO\_TYPE           | type 필드 누락                  | Data Type Object에 type 필드가 포함되어 있는지 확인하고, 구독할 데이터 타입을 지정해 주세요.                                      |
+| NO\_CODES          | codes 필드 누락                 | 구독하려는 데이터 타입에서 codes 필드가 필요한지 확인하고, 수신할 페어 코드 목록을 지정해 주세요.                                          |
+| INVALID\_PARAM     | 필수 요청 필드 누락 또는 지원하지 않는 값 요청 | 요청 메시지에 필요한 필드가 포함되어 있는지, 각 필드에 지원하는 값이 지정되었는지 확인해 주세요.                                             |
+| TOO\_MANY\_REQUEST | 요청 한도 초과                    | 다음 요청이 가능한 시점까지 대기한 후 다시 요청해 주세요. 요청 한도와 잔여 요청 수 확인 방법은 아래 잔여 요청 수 확인 방법을 참고해 주세요.                  |
 
 <br />
 
@@ -181,6 +178,7 @@ API는 Rate Limit 그룹으로 묶입니다. 같은 그룹의 API는 초당 한�
 * [체결 (Trade)](https://docs.upbit.com/kr/reference/websocket-trade.md)
 * [호가 (Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook.md)
 * [캔들 (Candle)](https://docs.upbit.com/kr/reference/websocket-candle.md)
-* [공지사항(Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement.md)
 * [내 주문 및 체결 (MyOrder)](https://docs.upbit.com/kr/reference/websocket-myorder.md)
 * [내 자산 (MyAsset)](https://docs.upbit.com/kr/reference/websocket-myasset.md)
+* [공지사항 (Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement.md)
+* [기술적 지표](https://docs.upbit.com/kr/reference/websocket-indicator-and-indicator-signal.md)

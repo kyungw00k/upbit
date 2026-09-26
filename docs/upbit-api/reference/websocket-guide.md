@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T04:34:46.000Z
+updatedAt: 2026-09-23T07:13:53.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -12,11 +12,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 업비트 WebSocket Endpoint는 아래와 같습니다. 조회하고자 하는 데이터의 분류에 따라 세부 Endpoint가 구분됩니다.
 
-> **시세(Quotation)**: wss\://api.upbit.com/websocket/v1
->
-> **자산 및 주문(Exchange)**: wss\://api.upbit.com/websocket/v1/private
->
-> **공지사항(Announcement)**: wss\://api.upbit.com/websocket/v1/private
+| 구분      | Endpoint                                   | 지원 데이터 타입                                |
+| ------- | ------------------------------------------ | ---------------------------------------- |
+| Public  | `wss://api.upbit.com/websocket/v1`         | `ticker`, `trade`, `orderbook`, `candle` |
+| Pravite | `wss://api.upbit.com/websocket/v1/private` | `myOrder`, `myAsset`, `announcement`     |
+| Pravite | `wss://api.upbit.com/websocket/v1/info`    | `indicator`, `indicator_signal`          |
 
 <br />
 
@@ -30,7 +30,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 Exchange 데이터를 수신하기 위해 WebSocket을 `wss://api.upbit.com/websocket/v1/private` 도메인으로 연결하는 경우 인증이 필요합니다. [인증](https://docs.upbit.com/kr/reference/auth) 가이드를 참고하여 생성한 JWT 토큰을 Authorization 헤더에 반드시 포함하여 요청해야 합니다. Bearer 인증을 지원하며, 아래와 같은 형식으로 입력합니다.
 
-공지사항 데이터를 수신하는 경우에도 `wss://api.upbit.com/websocket/v1/private` 도메인을 사용하므로 동일한 인증이 필요합니다.
+공지사항(Announcement)과 기술적 지표(Indicator) 데이터를 수신하는 경우에도 `wss://api.upbit.com/websocket/v1/private` 도메인을 사용하므로 동일한 인증이 필요합니다.
 
 > Authorization: Bearer eyJhb...d8sTw
 
@@ -38,12 +38,6 @@ Exchange 데이터를 수신하기 위해 WebSocket을 `wss://api.upbit.com/webs
   ### **WebSocket 클라이언트 사용 시 헤더 설정을 지원하지 않을 수 있습니다.**
 
   wscat과 같은 일부 WebSocket 클라이언트들은 커스텀 헤더 설정을 지원하지 않으므로 Exchange 데이터 수신 확인이 어려울 수 있습니다. 클라이언트 선택 전 헤더 지원 여부를 확인하시고, 필요한 경우 아래 구현 가이드를 참고하여 구현 후 사용하시기를 권장드립니다.
-</Callout>
-
-<Callout icon="fad fa-circle-info" theme="info">
-  ### **공지사항 WebSocket API Key 권한 안내**
-
-  공지사항(Announcement) WebSocket은 Private WebSocket을 사용하지만, 별도의 API Key 권한(scope)은 필요하지 않습니다.
 </Callout>
 
 <br />
@@ -93,17 +87,17 @@ WebSocket 연결 후 요청에 대한 에러 발생 시, 응답은 다음과 같
 
 업비트 WebSocket을 통해 조회 및 구독할 수 있는 데이터 항목은 다음과 같습니다.
 
-| 데이터 항목(type)                   | 설명                | 지원 형식        |
-| ------------------------------ | ----------------- | ------------ |
-| Quotation<br />`ticker`        | 현재가 데이터 수신        | 스냅샷, 실시간 스트림 |
-| Quotation<br />`trade`         | 체결 데이터 수신         | 스냅샷, 실시간 스트림 |
-| Quotation<br />`orderbook`     | 호가 데이터 수신         | 스냅샷, 실시간 스트림 |
-| Quotation<br />`candle.{unit}` | 캔들(초봉, 분봉) 데이터 수신 | 스냅샷, 실시간 스트림 |
-| Exchange<br />`myAsset`        | 내 자산 데이터 수신       | 실시간 스트림      |
-| Exchange<br />`myOrder`        | 내 주문 데이터 수신       | 실시간 스트림      |
-| Service<br />`announcement`    | 공지사항 데이터 수신       | 실시간 스트림      |
-
-<br />
+| 데이터 항목(`type`)     | 설명           | 지원 형식        |
+| ------------------ | ------------ | ------------ |
+| `ticker`           | 현재가 데이터 수신   | 스냅샷, 실시간 스트림 |
+| `trade`            | 체결 데이터 수신    | 스냅샷, 실시간 스트림 |
+| `orderbook`        | 호가 데이터 수신    | 스냅샷, 실시간 스트림 |
+| `candle.{unit}`    | 캔들 데이터 수신    | 스냅샷, 실시간 스트림 |
+| `myAsset`          | 내 자산 데이터 수신  | 실시간 스트림      |
+| `myOrder`          | 내 주문 데이터 수신  | 실시간 스트림      |
+| `announcement`     | 공지사항 데이터 수신  | 실시간 스트림      |
+| `indicator`        | 지표 값 데이터 수신  | 실시간 스트림      |
+| `indicator_signal` | 지표 조건 이벤트 수신 | 이벤트 스트림      |
 
 ## 데이터 유형
 
@@ -130,29 +124,45 @@ WebSocket을 통해 수신할 수 있는 데이터는 스냅샷 데이터와 실
 | -------- | ------ | -------- | ------------------------------------------- |
 | `ticket` | String | Required | 요청 티켓의 고유 식별자. UUID 등 고유성을 보장하는 문자열을 사용합니다. |
 
-<br />
-
 ### Data Type Object
 
 배열의 두번째 요소 부터 조회하고자 하는 데이터 요청 Object를 입력합니다. 2개 이상의 Object를 입력하여 동시에 여러 데이터를 요청 및 수신할 수 있습니다. 데이터 구독 요청의 공통 필드인 `type` 필드를 제외한 **항목별 요청 Object 명세와 응답 명세는 항목별 Reference 문서를 참고해주시기 바랍니다.**
 
-| 필드명                | 형식      | 필수 여부       | 설명                                                                                                                          |
-| ------------------ | ------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `type`             | String  | Required    | 수신하고자 하는 데이터 항목. `ticker`, `trade`, `orderbook`, `candle.{unit}`, `myAsset`, `myOrder`, `announcement` 중 하나를 입력할 수 있습니다.    |
-| `codes`            | String  | Conditional | 조회하고자 하는 페어 목록. type 필드가 `ticker`, `trade`, `orderbook`, `candle.{unit}` 인 경우 필수(Required), `myOrder`인 경우 선택적으로 사용할 수 있습니다. |
-| `level`            | String  | Optional    | 호가 모아보기 단위. type 필드가 `orderbook`인 경우에만 선택적으로 사용할 수 있습니다.                                                                    |
-| `categories`       | List    | Optional    | 수신하고자 하는 공지사항 카테고리 목록. type 필드가 `announcement`인 경우에만 선택적으로 사용할 수 있습니다.                                                      |
-| `include_body`     | Boolean | Optional    | 공지사항 본문 포함 여부. type 필드가 `announcement`인 경우에만 선택적으로 사용할 수 있습니다.                                                              |
-| `is_only_snapshot` | String  | Optional    | 스냅샷만 요청. type 필드가 `ticker`, `trade`, `orderbook`, `candle.{unit}` 인 경우에만 선택적으로 사용할 수 있습니다.                                  |
-| `is_only_realtime` | String  | Optional    | 실시간 스트림만 요청. type 필드가 `ticker`, `trade`, `orderbook`, `candle.{unit}` 인 경우에만 선택적으로 사용할 수 있습니다.                              |
+| 필드명                | 형식            | 필수 여부       | 설명                                                                                                                                                                                                                                                                                                                          |
+| ------------------ | ------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`             | String        | Required    | 수신하고자 하는 데이터 항목을 지정합니다. 자세한 내용은 아래 `type` 목록을 참고해 주세요.                                                                                                                                                                                                                                                                      |
+| `codes`            | List\[String] | Conditional | 조회 또는 구독할 페어 코드 목록입니다. 데이터 타입에 따라 필수 여부가 다릅니다.                                                                                                                                                                                                                                                                              |
+| `level`            | String        | Optional    | 호가 모아보기 단위입니다.[<br />호가(Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook)에서 사용할 수 있습니다.                                                                                                                                                                                                                  |
+| `categories`       | List\[String] | Optional    | 수신할 공지사항 카테고리 목록입니다.<br />[공지사항(Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement)에서 사용할 수 있습니다.                                                                                                                                                                                                    |
+| `include_body`     | Boolean       | Optional    | 공지사항 본문 포함 여부입니다.<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-announcement"><br />공지사항(Announcement)</Anchor>에서 사용할 수 있습니다.                                                                                                                                                                  |
+| `timeframe`        | String        | Required    | 지표 계산에 사용할 캔들 단위입니다.<br />[지표 값(Indicator)](https://docs.upbit.com/kr/reference/websocket-indicator), [지표 조건 이벤트(Indicator Signal)](https://docs.upbit.com/kr/reference/websocket-indicator-signal)에서 사용할 수 있습니다.                                                                                                           |
+| `indicators`       | List\[Object] | Required    | 구독할 지표 또는 지표 조건 목록입니다. [지표 값(Indicator)](https://docs.upbit.com/kr/reference/websocket-indicator), [지표 조건 이벤트(Indicator Signal)](https://docs.upbit.com/kr/reference/websocket-indicator-signal)에서 사용할 수 있습니다.                                                                                                              |
+| `is_only_snapshot` | Boolean       | Optional    | 스냅샷 데이터만 요청할지 여부입니다.[<br />현재가(Ticker)](https://docs.upbit.com/kr/reference/websocket-ticker), [체결(Trade)](https://docs.upbit.com/kr/reference/websocket-trade), [호가(Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook), [캔들(Candle)](https://docs.upbit.com/kr/reference/websocket-candle)에서 사용할 수 있습니다. |
+| `is_only_realtime` | Boolean       | Optional    | 실시간 스트림 데이터만 요청할지 여부입니다. [현재가(Ticker)](https://docs.upbit.com/kr/reference/websocket-ticker), [체결(Trade)](https://docs.upbit.com/kr/reference/websocket-trade), [호가(Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook), [캔들(Candle)](https://docs.upbit.com/kr/reference/websocket-candle)에서 사용할 수 있습니다.  |
+
+### type별 Reference
+
+type에 따라 사용할 수 있는 요청 필드와 데이터가 다릅니다.
+
+| `type`             | Reference                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| `ticker`           | [현재가(Ticker)](https://docs.upbit.com/kr/reference/websocket-ticker)                           |
+| `trade`            | [체결(Trade)](https://docs.upbit.com/kr/reference/websocket-trade)                              |
+| `orderbook`        | [호가(Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook)                      |
+| `candle.{unit}`    | [캔들(Candle)](https://docs.upbit.com/kr/reference/websocket-candle)                            |
+| `myAsset`          | [내 자산(MyAsset)](https://docs.upbit.com/kr/reference/websocket-myasset)                        |
+| `myOrder`          | [내 주문 및 체결(MyOrder)](https://docs.upbit.com/kr/reference/websocket-myorder)                   |
+| `announcement`     | [공지사항(Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement)              |
+| `indicator`        | [지표 값(Indicator)](https://docs.upbit.com/kr/reference/websocket-indicator)                    |
+| `indicator_signal` | [지표 조건 이벤트(Indicator Signal)](https://docs.upbit.com/kr/reference/websocket-indicator-signal) |
 
 ### Format Object
 
 배열의 마지막 요소로 Format Object를 입력합니다. 설정에 따라 일반 포맷, SIMPLE 포맷, 또는 배열 포맷으로 데이터를 수신할 수 있습니다. SIMPLE 포맷은 각 필드의 key 값이 축약어 형태로 반환되는 포맷입니다. 예를 들어 `market` 필드는 `mk`으로 표기됩니다. 많은 데이터를 수신하여 데이터 사이즈를 줄이고자 하는 경우 유용하게 사용할 수 있습니다. Format Object 명세는 아래와 같습니다.
 
-| 필드명      | 형식     | 필수 여부    | 설명                                                                                                                                                                                                                                    |
-| -------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `format` | String | Required | 수신하고자 하는 데이터 포맷입니다. `DEFAULT`,`SIMPLE`,`JSON_LIST`,`SIMPLE_LIST` 중 하나를 입력할 수 있습니다.<br /><br />· `DEFAULT` : 기본 포맷.<br />· `SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />· `JSON_LIST` : 리스트 포맷.<br />· `SIMPLE_LIST` : 축약어 형태의 리스트 포맷. |
+| 필드명    | 형식     | 필수 여부    | 설명                                                                                                                                                                                                                                    |
+| ------ | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| format | String | Required | 수신하고자 하는 데이터 포맷입니다. `DEFAULT`,`SIMPLE`,`JSON_LIST`,`SIMPLE_LIST` 중 하나를 입력할 수 있습니다.<br /><br />· `DEFAULT` : 기본 포맷.<br />· `SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />· `JSON_LIST` : 리스트 포맷.<br />· `SIMPLE_LIST` : 축약어 형태의 리스트 포맷. |
 
 ### 요청 예제
 
@@ -354,7 +364,7 @@ Connected!
 
 * KRW-BTC, BTC-XRP 페어의 실시간 체결 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC","BTC-XRP"]}]
 * KRW-BTC, BTC-XRP 페어의 실시간 호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC","BTC-XRP"]}]
-* KRW-BTC 페어의 1~~3호가, BTC-XRP 페어의 실시간 1~~5호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC.3","BTC-XRP.5"]}]
+* KRW-BTC 페어의 1\~3호가, BTC-XRP 페어의 실시간 1\~5호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"orderbook","codes":["KRW-BTC.3","BTC-XRP.5"]}]
 * KRW-BTC 페어의 체결 정보, KRW-ETH 페어의 실시간 호가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]}]
 * KRW-BTC 페어의 체결, KRW-ETH 페어의 호가, KRW-EOS 페어의 현재가 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]},{"type":"ticker", "codes":["KRW-EOS"]}]
 * 공지사항 실시간 스트림 구독<br />\[{"ticket":"UNIQUE_TICKET"},{"type":"announcement"}]

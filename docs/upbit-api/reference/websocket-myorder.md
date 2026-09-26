@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-08-31T12:33:03.000Z
+updatedAt: 2026-09-22T01:59:27.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -14,6 +14,12 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | ------- | ------------------------------------------ |
 | Private | `wss://api.upbit.com/websocket/v1/private` |
 
+<Callout icon="fad fa-triangle-exclamation" theme="error">
+  ### **Private WebSocket 연결 관리 안내**
+
+  **Private WebSocket은 동시에 많은 연결을 유지하는 경우 신규 연결이 거절될 수 있습니다.**<br />불필요한 연결 생성을 최소화하고, 가능한 경우 하나의 연결에서 필요한 데이터 타입을 함께 구독해 주세요.
+</Callout>
+
 <Callout icon="fad fa-circle-info" theme="info">
   ### **주문 또는 체결이 없으면 데이터가 전송되지 않습니다.**
 
@@ -22,15 +28,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 <br />
 
-## Request 메세지 형식
+## Request 메시지 형식
 
-내 주문 및 체결 데이터 수신을 요청하기 위해서는 WebSocket 연결 이후 아래 구조의 JSON Object를 생성한 뒤 요청 메세지의 Data Type Object로 포함하여 전송해야 합니다. Ticket, Format 필드를 포함한 전체 WebSocket 데이터 요청 메세지 명세는 [WebSocket 사용 안내](https://docs.upbit.com/kr/reference/websocket-guide) 문서를 참고해주세요.
+내 주문 및 체결 데이터 수신을 요청하기 위해서는 WebSocket 연결 이후 아래 구조의 JSON Object를 생성한 뒤 요청 메시지의 Data Type Object로 포함하여 전송해야 합니다. <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide#:~:text=%EB%93%A4%EC%9D%84%20%ED%8F%AC%ED%95%A8%ED%95%B4%EC%95%BC%20%ED%95%A9%EB%8B%88%EB%8B%A4.-,Ticket%20Object,-%EB%B0%B0%EC%97%B4%EC%9D%98%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%86%8C%EB%A1%9C">Ticket</Anchor>, <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/websocket-guide#:~:text=%EC%82%AC%EC%9A%A9%ED%95%A0%20%EC%88%98%20%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Format%20Object,-%EB%B0%B0%EC%97%B4%EC%9D%98%20%EB%A7%88%EC%A7%80%EB%A7%89%20%EC%9A%94%EC%86%8C%EB%A1%9C">Format 필드</Anchor>를 포함한 전체 WebSocket 데이터 요청 메시지 명세는 <Anchor target="_blank" href="ref:websocket-guide">WebSocket 사용 안내</Anchor> 문서를 참고해주세요.
 
-| 필드명    | 타입          | 내용                                                                                                                                                        | 필수 여부    | 기본 값                                    |
-| ------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------- |
-| type   | String      | 수신할 데이터 타입.<br />내 주문 및 체결 데이터를 요청하는 경우 `myOrder`로 지정합니다.                                                                                                 | Required |                                         |
-| code   | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                                                                                                                  | Optional | 생략하거나 빈 배열로 요청할 경우 모든 마켓에 대한 정보를 수신합니다. |
-| format | String      | 수신하고자 하는 데이터 포맷입니다. <br />`DEFAULT` : 기본 포맷.<br />`SIMPLE` : 간략한 포맷. 각 필드가 축약어 형태로 반환됩니다.<br />`JSON_LIST` : 리스트 포맷.<br />`SIMPLE_LIST` : 축약어 형태의 리스트 포맷. | Required |                                         |
+| 필드명   | 타입          | 내용                                                        | 필수 여부    | 기본 값                                    |
+| ----- | ----------- | --------------------------------------------------------- | -------- | --------------------------------------- |
+| type  | String      | 수신할 데이터 타입.<br />내 주문 및 체결 데이터를 요청하는 경우 `myOrder`로 지정합니다. | Required |                                         |
+| codes | List:String | 수신할 페어 코드 목록.<br />페어 코드는 대문자로 입력해야 합니다.                  | Optional | 생략하거나 빈 배열로 요청할 경우 모든 마켓에 대한 정보를 수신합니다. |
 
 <br />
 
@@ -39,7 +44,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 <Callout icon="fad fa-circle-info" theme="info">
   ### **신규 필드 추가 안내 (2025.07.02)**
 
-  자전거래 체결 방지 (Self-Match Prevention) 기능 추가로 인해 주문 데이터 필드가 아래와 같이 추가됩니다. 자세한 사항은 관련 공지 참고 부탁드립니다.<Anchor target="_blank" href="/kr/docs/smp">&#x20;\[SMP 상세 설명 바로가기]</Anchor>
+  자전거래 체결 방지 (Self-Match Prevention) 기능 추가로 인해 주문 데이터 필드가 아래와 같이 추가됩니다. 자세한 사항은 관련 공지 참고 부탁드립니다.<Anchor target="_blank" href="/kr/docs/smp"> \[SMP 상세 설명 바로가기]</Anchor>
 
   - smp_type : `reduce`, `cancel_maker`, `cancel_taker`
   - 주문 상태 state 필드에 `prevented` (체결 방지) 타입이 신규로 추가됩니다.
@@ -70,7 +75,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 | trade\_fee        | tf   | 체결 시 발생한 수수료 (state:trade가 아닐 경우 null)                          | Double  |                                                                                                                   |
 | is\_maker         | im   | 체결이 발생한 주문의 메이커/테이커 여부 (state:trade가 아닐 경우 null)                | Boolean | `true` : 메이커 주문 `false` : 테이커 주문                                                                                  |
 | identifier        | id   | 클라이언트 지정 주문 식별자                                                 | String  |                                                                                                                   |
-| smp\_type         | smpt | 자전거래 체결 방지 타입 (동일 회원의 메이커/테이커 주문 간 체결 방지)                       | String  | `reduce`: 주문 줄이고 진행<br />`cancel_maker`: 메이커 주문 취소 `cancel_taker`: 테이커 주문 취소                                      |
+| smp\_type         | smpt | 자전거래 체결 방지 타입 (동일 회원의 메이커/테이커 주문 간 체결 방지)                       | String  | `reduce`: 체결 수량만큼 주문 수량 차감 후 진행<br />`cancel_maker`: 메이커 주문 취소 `cancel_taker`: 테이커 주문 취소                          |
 | prevented\_volume | pv   | 자전거래 체결 방지로 인해 취소된 주문 수량                                        | Double  |                                                                                                                   |
 | prevented\_locked | pl   | (매수 시)자전거래 체결 방지 설정으로 인해 취소된 금액 (매도 시)자전거래 체결 방지 설정으로 인해 취소된 수량 | Double  |                                                                                                                   |
 | trade\_timestamp  | ttms | 체결 타임스탬프 (ms)                                                   | Long    |                                                                                                                   |
@@ -220,16 +225,15 @@ WebSocket 연결 후 요청에 대한 에러 발생 시, 응답은 다음과 같
 
 반환될 수 있는 주요 에러 코드 목록은 아래와 같습니다.
 
-| error.name        | 발생 이유                                    | 권장 조치                                                                                               |
-| ----------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| INVALID\_AUTH     | 인증 정보 누락 또는 인증 토큰 검증 실패                  | Private WebSocket을 사용하는 경우 올바른 Endpoint에 연결했는지 확인하고, Authorization 헤더에 유효한 인증 토큰이 포함되어 있는지 확인해 주세요. |
-| WRONG\_FORMAT     | 요청 메시지 형식 오류                             | 요청 메시지가 WebSocket 요청 형식에 맞게 작성되었는지 확인해 주세요. Object 구성과 각 필드의 타입 및 값을 함께 확인해 주세요.                    |
-| NO\_TICKET        | ticket 필드 누락                             | 요청 메시지에 Ticket Object와 ticket 필드가 포함되어 있는지 확인해 주세요.                                                 |
-| NO\_TYPE          | type 필드 누락                               | Data Type Object에 type 필드가 포함되어 있는지 확인하고, 구독할 데이터 타입을 지정해 주세요.                                      |
-| NO\_CODES         | codes 필드 누락                              | 구독하려는 데이터 타입에서 codes 필드가 필요한지 확인하고, 수신할 페어 코드 목록을 지정해 주세요.                                          |
-| INVALID\_PARAM    | 필수 요청 필드 누락 또는 지원하지 않는 값 요청              | 요청 메시지에 필요한 필드가 포함되어 있는지, 각 필드에 지원하는 값이 지정되었는지 확인해 주세요.                                             |
-| Too Many Requests | 요청 한도 초과                                 | 다음 요청이 가능한 시점까지 대기한 후 다시 요청해 주세요. 요청 한도와 잔여 요청 수 확인 방법은 아래 잔여 요청 수 확인 방법을 참고해 주세요.                  |
-| I'm a teapot      | Too Many Requests가 반복되어 일정 시간 요청이 제한된 상태 | 응답에 포함된 제한 시간을 확인하고, 안내된 시간이 지난 후 다시 요청해 주세요.                                                       |
+| error.name         | 발생 이유                       | 권장 조치                                                                                               |
+| ------------------ | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| INVALID\_AUTH      | 인증 정보 누락 또는 인증 토큰 검증 실패     | Private WebSocket을 사용하는 경우 올바른 Endpoint에 연결했는지 확인하고, Authorization 헤더에 유효한 인증 토큰이 포함되어 있는지 확인해 주세요. |
+| WRONG\_FORMAT      | 요청 메시지 형식 오류                | 요청 메시지가 WebSocket 요청 형식에 맞게 작성되었는지 확인해 주세요. Object 구성과 각 필드의 타입 및 값을 함께 확인해 주세요.                    |
+| NO\_TICKET         | ticket 필드 누락                | 요청 메시지에 Ticket Object와 ticket 필드가 포함되어 있는지 확인해 주세요.                                                 |
+| NO\_TYPE           | type 필드 누락                  | Data Type Object에 type 필드가 포함되어 있는지 확인하고, 구독할 데이터 타입을 지정해 주세요.                                      |
+| NO\_CODES          | codes 필드 누락                 | 구독하려는 데이터 타입에서 codes 필드가 필요한지 확인하고, 수신할 페어 코드 목록을 지정해 주세요.                                          |
+| INVALID\_PARAM     | 필수 요청 필드 누락 또는 지원하지 않는 값 요청 | 요청 메시지에 필요한 필드가 포함되어 있는지, 각 필드에 지원하는 값이 지정되었는지 확인해 주세요.                                             |
+| TOO\_MANY\_REQUEST | 요청 한도 초과                    | 다음 요청이 가능한 시점까지 대기한 후 다시 요청해 주세요. 요청 한도와 잔여 요청 수 확인 방법은 아래 잔여 요청 수 확인 방법을 참고해 주세요.                  |
 
 <br />
 
@@ -254,6 +258,7 @@ API는 Rate Limit 그룹으로 묶입니다. 같은 그룹의 API는 초당 한�
 * [체결 (Trade)](https://docs.upbit.com/kr/reference/websocket-trade.md)
 * [호가 (Orderbook)](https://docs.upbit.com/kr/reference/websocket-orderbook.md)
 * [캔들 (Candle)](https://docs.upbit.com/kr/reference/websocket-candle.md)
-* [공지사항(Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement.md)
 * [내 자산 (MyAsset)](https://docs.upbit.com/kr/reference/websocket-myasset.md)
+* [공지사항 (Announcement)](https://docs.upbit.com/kr/reference/websocket-announcement.md)
+* [기술적 지표](https://docs.upbit.com/kr/reference/websocket-indicator-and-indicator-signal.md)
 * [구독 중인 스트림 목록 조회(Subscriptions)](https://docs.upbit.com/kr/reference/list-subscriptions.md)
