@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-08-20T10:03:37.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 자전거래 체결 방지(Self-Match Prevention, SMP)
 
