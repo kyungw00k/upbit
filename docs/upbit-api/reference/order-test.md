@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-10-07T11:33:28.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 주문 생성 테스트
 
@@ -29,6 +30,18 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <table className="custom-table">
     <thead>
         <tr>
@@ -51,24 +64,26 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 </div>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 8회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [order-test 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="box-rate-limit">
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-초당 최대 8회 호출할 수 있습니다. 포켓 단위로 측정되며 \[주문 테스트 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-</div>
-
-<br />
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -120,7 +135,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
           "cancel_taker",
           "reduce"
         ],
-        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n"
       },
       "Order": {
         "type": "object",
@@ -472,7 +487,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                         "$ref": "#/components/schemas/SmpTypeEnum"
                       }
                     ],
-                    "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+                    "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n"
                   }
                 }
               }

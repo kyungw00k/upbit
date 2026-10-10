@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-28T12:58:02.000Z
+updatedAt: 2026-10-07T11:42:17.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 입금 TxID로 계정주 검증 요청
 
@@ -27,39 +28,36 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     </label>
 
     <div className="accordion-changelog-content">
-        <table className="custom-table">
-            <thead>
-                <tr>
-                    <th>반영 버전</th>
-                    <th>반영 일자</th>
-                    <th>변경 사항</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td className="code-col">-</td>
-                    <td>2024-04-24</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/travelrule_verification"> '입금 TxID로 트래블룰 검증 요청' 기능 신규 지원</a></td>
-                </tr>
-            </tbody>
-        </table>
+        
+
+
+
+<table className="custom-table">
+    <thead>
+        <tr>
+            <th>반영 버전</th>
+            <th>반영 일자</th>
+            <th>변경 사항</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td className="code-col">-</td>
+            <td>2024-04-24</td>
+            <td><a href="https://docs.upbit.com/kr/changelog/travelrule_verification"> '입금 TxID로 트래블룰 검증 요청' 기능 신규 지원</a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
     </div>
 </div>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. 단, 동일 입금건에 대해서는 <span style="color: #C92532;">10분당 최대 1회</span> 호출할 수 있습니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="box-rate-limit">
-  초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 [Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. 단, 동일 입금건에 대해서는 <span style="color: #C92532;">10분당 최대 1회</span> 호출할 수 있습니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [입금하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div><div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [입금하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -76,6 +74,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     }
   ],
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "요청 쿼리 파라미터 또는 본문(Body)을 API Key로 서명한 JWT Token을 입력합니다.\n자세한 사항은 https://docs.upbit.com/reference/auth 를 참고해주세요.\n\n`예시` Bearer <ACCESS_TOKEN>\n"
+      }
+    },
     "schemas": {
       "Error": {
         "type": "object",
@@ -153,6 +159,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         "tags": [
           "Exchange"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "x-readme": {
           "code-samples": [
             {
@@ -211,12 +222,12 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   },
                   "currency": {
                     "type": "string",
-                    "description": "조회하고자 하는 통화 코드",
+                    "description": "검증하고자 하는 통화 코드",
                     "example": "BTC"
                   },
                   "net_type": {
                     "type": "string",
-                    "description": "디지털 자산 입출금에 사용되는 블록체인 네트워크 식별자.\n\n조회 대상을 네트워크 식별자로 한정하기 위한 필터 파라미터입니다.\n",
+                    "description": "디지털 자산 입출금에 사용되는 블록체인 네트워크 식별자.\n\n검증 대상을 네트워크 식별자로 한정하기 위한 필터 파라미터입니다.\n",
                     "example": "BTC"
                   }
                 }
