@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-10-07T11:41:45.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 계정주 확인 서비스 지원 거래소 목록 조회
 
@@ -24,6 +25,10 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     <div className="accordion-changelog-content">
         
 
+
+
+
+
 <table className="custom-table">
     <thead>
         <tr>
@@ -42,25 +47,16 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 </table>
 
 
+
+
+
+
     </div>
 </div>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [입금조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div><div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [입금조회] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -77,6 +73,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     }
   ],
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "요청 쿼리 파라미터 또는 본문(Body)을 API Key로 서명한 JWT Token을 입력합니다.\n자세한 사항은 https://docs.upbit.com/reference/auth 를 참고해주세요.\n\n`예시` Bearer <ACCESS_TOKEN>\n"
+      }
+    },
     "schemas": {
       "TravelRuleVasp": {
         "type": "object",
@@ -128,6 +132,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         "description": "계정주 확인 서비스를 지원하는 거래소 목록을 조회합니다.",
         "tags": [
           "Exchange"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "x-readme": {
           "code-samples": [

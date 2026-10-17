@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-10-07T11:34:53.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 종료 주문 목록 조회
 
@@ -25,6 +26,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
     <div className="accordion-changelog-content">
         
+
+
+
+
+
+
+
+
 
 
 
@@ -68,26 +77,23 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 
 
+
+
+
+
+
+
+
+
   </div>
 
 </div>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="box-rate-limit">
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-<br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문조회] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -113,7 +119,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         ],
         "description": "완료 주문 상태.\n\n* `done`: 완전 체결\n* `cancel`: 취소\n"
       },
-      "Order": {
+      "ClosedOrder": {
         "type": "object",
         "required": [
           "market",
@@ -172,13 +178,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
           "state": {
             "type": "string",
             "enum": [
-              "wait",
-              "watch",
               "done",
               "cancel"
             ],
-            "description": "주문 상태\n\n- `wait`: 체결 대기\n- `watch`: 예약 주문 대기\n- `done`: 체결 완료\n- `cancel`: 주문 취소\n",
-            "example": "wait"
+            "description": "주문 상태\n\n- `done`: 체결 완료\n- `cancel`: 주문 취소\n",
+            "example": "done"
           },
           "created_at": {
             "type": "string",
@@ -505,7 +509,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/ClosedOrder"
                   }
                 },
                 "examples": {
