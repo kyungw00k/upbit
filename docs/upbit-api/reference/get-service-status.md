@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-28T12:03:06.000Z
+updatedAt: 2026-10-07T11:42:34.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 입출금 서비스 상태 조회
 
@@ -16,6 +17,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
       따라서 <b>거래 전략 용도가 아닌 참고 용도로의 사용만을 권장</b>하며, 실제 입금을 수행하기 전에는 반드시 <a href="https://upbit.com/service_center/notice">업비트 공지사항</a> 및 <a href="https://upbit.com/service_center/wallet_status">실시간 입출금 현황</a> 페이지를 참고해 주시기를 바랍니다.
   </div>
 
+<br />
+
   <div class="callout-section">
     <div class="callout-title">
       <i class="fa-solid fa-circle-exclamation"></i>  네트워크 타입("net_type")과 네트워크 이름("network_name")
@@ -26,6 +29,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
       네트워크 이름("network_name")은 블록체인 네트워크의 전체 이름(예: Bitcoin)을 나타내는 필드로서, 사람이 인식할 수 있는 정보이며 식별자로 사용할 수 없습니다. 서비스 UI 등에서 블록체인 네트워크를 표현하는 용도로 사용할 수 있습니다.
   </div>
 
+<br />
+
 <div class="accordion-changelog">
     <input type="checkbox" id="api-changelog">
     <label for="api-changelog">
@@ -33,48 +38,46 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     </label>
 
     <div class="accordion-changelog-content">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>반영 버전</th>
-                    <th>반영 일자</th>
-                    <th>변경 사항</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="code-col">-</td>
-                    <td>2023-11-22</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/wallet_network_name">네트워크 명(network_name) 필드 추가</a></td>
-              	</tr>
-								<tr>
-                    <td class="code-col">-</td>
-                    <td>2023-11-22</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
-                </tr>
-								<tr>
-                    <td class="code-col">-</td>
-                    <td></td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/wallet_state">'입출금 서비스 상태 조회' 기능 신규 지원</a></td>
-                </tr>
-            </tbody>
-        </table>
+        
+
+
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>반영 버전</th>
+            <th>반영 일자</th>
+            <th>변경 사항</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="code-col">-</td>
+            <td>2023-11-22</td>
+            <td><a href="https://docs.upbit.com/kr/changelog/wallet_network_name">네트워크 명(network_name) 필드 추가</a></td>
+      	</tr>
+						<tr>
+            <td class="code-col">-</td>
+            <td>2023-11-22</td>
+            <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
+        </tr>
+						<tr>
+            <td class="code-col">-</td>
+            <td></td>
+            <td><a href="https://docs.upbit.com/kr/changelog/wallet_state">'입출금 서비스 상태 조회' 기능 신규 지원</a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
     </div>
 </div>
 
-<div class="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div class="box-rate-limit">
-  초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 [Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-</div>
-
- <br>
-  <div class="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div class="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API 입니다. 별도 권한은 필요하지 않습니다.
-  </div>
-
-<br />
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div><div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API입니다. 별도 권한은 필요하지 않습니다.</div>
 
 # OpenAPI definition
 

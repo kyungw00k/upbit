@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-08-21T12:05:08.000Z
+updatedAt: 2026-10-07T11:33:03.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 주문 생성
 
@@ -12,322 +13,86 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 사용 가능한 주문 유형은 다음과 같습니다.
 
-#### 지정가 주문
+#### **지정가 주문**
 
 지정가 주문은 사용자가 직접 설정한 매수/매도 단가, 또는 더 유리한 가격에 호가가 도달한 경우에만 체결되는 주문 유형입니다. 체결 단가의 상한/하한을 통제할 수 있지만, 시장 가격이 지정한 단가에 도달하지 않을 수 있으므로 체결을 보장할 수 없습니다.
 
-<div className="accordion">
-  <input type="checkbox" id="limit-bid" />
-  <label for="limit-bid">
-    <i className="fa-solid fa-circle-info"></i>
-    지정가 매수/매도 주문 생성 요청 파라미터 사용 예시
-  </label>
+<Accordion title="지정가 매수/매도 주문 생성 요청 파라미터 사용 예시" icon="fa-info-circle">
+  아래 표를 참고하여 지정가 매수/매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
 
-  <div className="accordion-content">
-
-아래 표를 참고하여 지정가 매수/매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
-
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>파라미터</th>
-    <th>필수 여부</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col">market</td>
-    <td>Required</td>
-    <td>페어 코드. <code>KRW-BTC</code> 형식으로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">side</td>
-    <td>Required</td>
-    <td>매수시 <code>bid</code>, 매도시 <code>ask</code>로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">ord_type</td>
-    <td>Required</td>
-    <td><code>limit</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">volume</td>
-    <td>Required</td>
-    <td>주문 수량. 0.1 입력시 지정가로 0.1개의 자산을 매수/매도합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">price</td>
-    <td>Required</td>
-    <td>호가 자산 기준 주문 단가. 예를 들어, KRW-BTC 페어에서 BTC 1개당 1억원(KRW)으로 매수/매도하는 경우 100000000을 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">time_in_force</td>
-    <td>Optional</td>
-    <td><code>ioc</code>, <code>fok</code>, <code>post_only</code>. post_only 옵션은 smp_type 옵션과 함께 사용할 수 없습니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">smp_type</td>
-    <td>Optional</td>
-    <td>자전거래 체결 방지 옵션. <code>cancel_maker</code>,<code>cancel_taker</code>,<code>reduce</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">identifier</td>
-    <td>Optional</td>
-    <td>조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.</td>
-  </tr>
-</tbody>
-
-</table>
-
-  </div>
-</div>
+  | **파라미터**      | **필수 여부** | **설명**                                                                                   |
+  | ------------- | --------- | ---------------------------------------------------------------------------------------- |
+  | market        | Required  | 페어 코드. `KRW-BTC` 형식으로 입력합니다.                                                             |
+  | side          | Required  | 매수시 `bid`, 매도시 `ask`로 입력합니다.                                                             |
+  | ord_type      | Required  | `limit`                                                                                  |
+  | volume        | Required  | 주문 수량.<br />0.1 입력시 지정가로 0.1개의 자산을 매수/매도합니다.                                             |
+  | price         | Required  | 호가 자산 기준 주문 단가.<br />예를 들어, KRW-BTC 페어에서 BTC 1개당 1억원(KRW)으로 매수/매도하는 경우 100000000을 입력합니다. |
+  | time_in_force | Optional  | `ioc`, `fok`, `post_only`.<br />`post_only` 옵션은 `smp_type` 옵션과 함께 사용할 수 없습니다.            |
+  | smp_type      | Optional  | 자전거래 체결 방지 옵션. `cancel_maker`,`cancel_taker`,`reduce`                                    |
+  | identifier    | Optional  | 조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.                                                           |
+</Accordion>
 
 #### 시장가 주문
 
 시장가 주문은 현재 시장에서 가장 유리한 가격으로 즉시 체결되는 주문 유형입니다. 빠른 체결이 보장되지만, 시장 상황에 따라 체결 가격이 변동될 수 있습니다.
 
-<div className="accordion">
-  <input type="checkbox" id="market-bid" />
-  <label for="market-bid">
-    <i className="fa-solid fa-circle-info"></i>
-    시장가 매수 주문 생성 요청 파라미터 사용 예시
-  </label>
+<Accordion title="시장가 매수 주문 생성 요청 파라미터 사용 예시" icon="fa-info-circle">
+  아래 표를 참고하여 시장가 매수 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. `volume` 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
 
-  <div className="accordion-content">
+  | **파라미터**   | **필수 여부** | **설명**                                                                                  |
+  | ---------- | --------- | --------------------------------------------------------------------------------------- |
+  | market     | Required  | 페어 코드. `KRW-BTC` 형식으로 입력합니다.                                                            |
+  | side       | Required  | `bid`                                                                                   |
+  | ord_type   | Required  | `price`                                                                                 |
+  | price      | Required  | 호가 자산 기준 주문 총액.<br />예를 들어, KRW-BTC 페어에서 100000000을 입력하는 경우 시장가로 1억 원어치의 BTC 수량이 매수됩니다. |
+  | smp_type   | Optional  | 자전거래 체결 방지 옵션.<br />`cancel_maker`,`cancel_taker`,`reduce`                              |
+  | identifier | Optional  | 조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.                                                          |
+</Accordion>
 
-아래 표를 참고하여 시장가 매수 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. <code>volume</code> 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
+<Accordion title="시장가 매도 주문 생성 요청 파라미터 사용 예시" icon="fa-info-circle">
+  아래 표를 참고하여 시장가 매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. `price` 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
 
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>파라미터</th>
-    <th>필수 여부</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col">market</td>
-    <td>Required</td>
-    <td>페어 코드. <code>KRW-BTC</code> 형식으로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">side</td>
-    <td>Required</td>
-    <td><code>bid</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">ord_type</td>
-    <td>Required</td>
-    <td><code>price</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">price</td>
-    <td>Required</td>
-    <td>호가 자산 기준 주문 총액. 예를 들어, KRW-BTC 페어에서 100000000을 입력하는 경우 시장가로 1억 원어치의 BTC 수량이 매수됩니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">smp_type</td>
-    <td>Optional</td>
-    <td>자전거래 체결 방지 옵션. <code>cancel_maker</code>,<code>cancel_taker</code>,<code>reduce</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">identifier</td>
-    <td>Optional</td>
-    <td>조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.</td>
-  </tr>
-</tbody>
-
-</table>
-
-  </div>
-</div>
-
-<div className="accordion">
-  <input type="checkbox" id="market-ask" />
-  <label for="market-ask">
-    <i className="fa-solid fa-circle-info"></i>
-    시장가 매도 주문 생성 요청 파라미터 사용 예시
-  </label>
-
-  <div className="accordion-content">
-
-아래 표를 참고하여 시장가 매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. <code>price</code> 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
-
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>파라미터</th>
-    <th>필수 여부</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col">market</td>
-    <td>Required</td>
-    <td>페어 코드. <code>KRW-BTC</code> 형식으로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">side</td>
-    <td>Required</td>
-    <td><code>ask</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">ord_type</td>
-    <td>Required</td>
-    <td><code>market</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">volume</td>
-    <td>Required</td>
-    <td>매도 주문 수량. 예를 들어, KRW-BTC 페어에서 0.1을 입력하는 경우 시장가로 0.1개의 BTC 수량이 매도됩니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">smp_type</td>
-    <td>Optional</td>
-    <td>자전거래 체결 방지 옵션. <code>cancel_maker</code>,<code>cancel_taker</code>,<code>reduce</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">identifier</td>
-    <td>Optional</td>
-    <td>조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.</td>
-  </tr>
-</tbody>
-
-</table>
-
-  </div>
-</div>
+  | **파라미터**   | **필수 여부** | **설명**                                                                    |
+  | ---------- | --------- | ------------------------------------------------------------------------- |
+  | market     | Required  | 페어 코드. `KRW-BTC` 형식으로 입력합니다.                                              |
+  | side       | Required  | `ask`                                                                     |
+  | ord_type   | Required  | `market`                                                                  |
+  | volume     | Required  | 매도 주문 수량.<br />예를 들어, KRW-BTC 페어에서 0.1을 입력하는 경우 시장가로 0.1개의 BTC 수량이 매도됩니다. |
+  | smp_type   | Optional  | 자전거래 체결 방지 옵션.<br />`cancel_maker`,`cancel_taker`,`reduce`                |
+  | identifier | Optional  | 조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.                                            |
+</Accordion>
 
 #### 최유리 지정가 주문
 
 최유리 지정가 주문은 현재 시장에서 가장 유리한 상대 호가를 가격으로 하는 주문 유형입니다. 전량 체결을 항상 보장할 수는 없으나, 빠르게 유리한 가격으로 호가창에 진입하고 싶은 경우 유용합니다.
 
-<div className="accordion">
-  <input type="checkbox" id="best-bid" />
-  <label for="best-bid">
-    <i className="fa-solid fa-circle-info"></i>
-    최유리지정가 매수 주문 생성 요청 파라미터 사용 예시
-  </label>
+<Accordion title="최유리지정가 매수 주문 생성 요청 파라미터 사용 예시" icon="fa-info-circle">
+  아래 표를 참고하여 최유리지정가 매수 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. `volume` 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
 
-  <div className="accordion-content">
+  | **파라미터**      | **필수 여부** | **설명**                                                                                                                                      |
+  | ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+  | market        | Required  | 페어 코드. `KRW-BTC` 형식으로 입력합니다.                                                                                                                |
+  | side          | Required  | `bid`                                                                                                                                       |
+  | ord_type      | Required  | `best`                                                                                                                                      |
+  | price         | Required  | 호가 자산 기준 주문 총액.<br />최유리 호가로 주문 총액에 해당하는 수량을 매수하는 주문이 생성됩니다. 예를 들어, KRW-BTC 페어에서 100000000을 입력하는 경우 최유리 호가로 1억 원어치의 BTC 수량을 매수하는 주문이 생성됩니다. |
+  | time_in_force | Required  | `ioc`,`fok`                                                                                                                                 |
+  | smp_type      | Optional  | 자전거래 체결 방지 옵션. `cancel_maker`,`cancel_taker`,`reduce`                                                                                       |
+  | identifier    | Optional  | 조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.                                                                                                              |
+</Accordion>
 
-아래 표를 참고하여 최유리지정가 매수 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. <code>volume</code> 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
+<Accordion title="최유리지정가 매도 주문 생성 요청 파라미터 사용 예시" icon="fa-info-circle">
+  아래 표를 참고하여 최유리지정가 매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. `price` 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
 
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>파라미터</th>
-    <th>필수 여부</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col">market</td>
-    <td>Required</td>
-    <td>페어 코드. <code>KRW-BTC</code> 형식으로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">side</td>
-    <td>Required</td>
-    <td><code>bid</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">ord_type</td>
-    <td>Required</td>
-    <td><code>best</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">price</td>
-    <td>Required</td>
-    <td>호가 자산 기준 주문 총액. 최유리 호가로 주문 총액에 해당하는 수량을 매수하는 주문이 생성됩니다. 예를 들어, KRW-BTC 페어에서 100000000을 입력하는 경우 최유리 호가로 1억 원어치의 BTC 수량을 매수하는 주문이 생성됩니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">time_in_force</td>
-    <td><b>Required</b></td>
-    <td><code>ioc</code>,<code>fok</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">smp_type</td>
-    <td>Optional</td>
-    <td>자전거래 체결 방지 옵션. <code>cancel_maker</code>,<code>cancel_taker</code>,<code>reduce</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">identifier</td>
-    <td>Optional</td>
-    <td>조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.</td>
-  </tr>
-</tbody>
-
-</table>
-
-  </div>
-</div>
-
-<div className="accordion">
-  <input type="checkbox" id="best-ask" />
-  <label for="best-ask">
-    <i className="fa-solid fa-circle-info"></i>
-    최유리지정가 매도 주문 생성 요청 파라미터 사용 예시
-  </label>
-
-  <div className="accordion-content">
-
-아래 표를 참고하여 최유리지정가 매도 주문 생성 요청 시 사용 가능한 파라미터를 쉽게 확인할 수 있습니다. <code>price</code> 파라미터를 입력하지 않습니다(value에 null로 입력 또는 key 자체를 제외). 각 파라미터에 대한 상세한 설명은 하단 Request Body를 참고해주세요.
-
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>파라미터</th>
-    <th>필수 여부</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col">market</td>
-    <td>Required</td>
-    <td>페어 코드. <code>KRW-BTC</code> 형식으로 입력합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">side</td>
-    <td>Required</td>
-    <td><code>ask</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">ord_type</td>
-    <td>Required</td>
-    <td><code>best</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">volume</td>
-    <td>Required</td>
-    <td>매도 주문 수량. 예를 들어, KRW-BTC 페어에서 0.1을 입력하는 경우 최유리 호가로 0.1개의 BTC 수량을 매도하는 주문이 생성됩니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col">time_in_force</td>
-    <td><b>Required</b></td>
-    <td><code>ioc</code>,<code>fok</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">smp_type</td>
-    <td>Optional</td>
-    <td>자전거래 체결 방지 옵션. <code>cancel_maker</code>,<code>cancel_taker</code>,<code>reduce</code></td>
-  </tr>
-  <tr>
-    <td className="code-col">identifier</td>
-    <td>Optional</td>
-    <td>조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.</td>
-  </tr>
-</tbody>
-
-</table>
-
-  </div>
-</div>
+  | **파라미터**      | **필수 여부** | **설명**                                                                                |
+  | ------------- | --------- | ------------------------------------------------------------------------------------- |
+  | market        | Required  | 페어 코드. `KRW-BTC` 형식으로 입력합니다.                                                          |
+  | side          | Required  | `ask`                                                                                 |
+  | ord_type      | Required  | `best`                                                                                |
+  | volume        | Required  | 매도 주문 수량.<br />예를 들어, KRW-BTC 페어에서 0.1을 입력하는 경우 최유리 호가로 0.1개의 BTC 수량을 매도하는 주문이 생성됩니다. |
+  | time_in_force | Required  | `ioc`,`fok`                                                                           |
+  | smp_type      | Optional  | 자전거래 체결 방지 옵션. `cancel_maker`,`cancel_taker`,`reduce`                                 |
+  | identifier    | Optional  | 조회, 삭제시 사용할 수 있는 사용자 지정 주문 ID.                                                        |
+</Accordion>
 
 <br />
 
@@ -335,142 +100,41 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 주문 옵션으로, 주문 생성 시점의 체결 상황에 따른 주문 처리 방식을 지정할 수 있습니다.
 
-<div className="accordion">
-    <input type="checkbox" id="time_in_force" />
-    <label for="time_in_force">
-      <i className="fa-solid fa-circle-info"></i>
-      사용 가능한 주문 체결 조건(time_in_force) 옵션
-    </label>
-
-<div className="accordion-content">
-
-
-
-
-
-
-
-
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>옵션</th>
-    <th>파라미터 값</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col"><b>IOC(Immediate or Cancel)</b></td>
-    <td><code>ioc</code></td>
-    <td>지정가 조건으로 즉시 체결 가능한 수량만 부분 체결하고, 잔여 수량은 취소합니다. <b>지정가 주문과 최유리 지정가 주문 에서 사용 가능</b>한 옵션입니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col"><b>FOK(Fill or Kill)</b></td>
-    <td><code>fok</code></td>
-    <td>지정가 조건으로 주문량 전량 체결 가능할 때만 주문을 실행하고, 아닌 경우 전량 주문 취소합니다. <b>지정가 주문과 최유리 지정가 주문 에서 사용 가능</b>한 옵션입니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col"><b>Post Only</b></td>
-    <td><code>post_only</code></td>
-    <td>
-      지정가 조건으로 부분 또는 전체에 대해 즉시 체결 가능한 상황인 경우 주문을 실행하지 않고 취소합니다. 
-      즉, 메이커(maker)주문으로 생성될 수 있는 상황에서만 주문이 생성되며 테이커(taker) 주문으로 체결되는 것을 방지합니다. 
-      <b>지정가 주문(ord_type이 limit)에서만 사용 가능</b>한 옵션입니다. <b>자전 거래 체결 방지 옵션과 함께 사용할 수 없습니다.</b>
-    </td>
-  </tr>
-</tbody>
-
-</table>
-
-
-
-
-
-
-
-
-  </div>
-</div>
+<Accordion title="사용 가능한 주문 체결 조건(time_in_force) 옵션" icon="fa-info-circle">
+  | **옵션**                                 | **파라미터 값**  | **설명**                                                                                                                                                                                                         |
+  | -------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | **IOC**<br />**(Immediate or Cancel)** | `ioc`       | 지정가 조건으로 즉시 체결 가능한 수량만 부분 체결하고, 잔여 수량은 취소합니다. **지정가 주문과 최유리 지정가 주문 에서 사용 가능**한 옵션입니다.                                                                                                                          |
+  | **FOK**<br />**(Fill or Kill)**        | `fok`       | 지정가 조건으로 주문량 전량 체결 가능할 때만 주문을 실행하고, 아닌 경우 전량 주문 취소합니다. **지정가 주문과 최유리 지정가 주문 에서 사용 가능**한 옵션입니다.                                                                                                                 |
+  | **Post Only**                          | `post_only` | 지정가 조건으로 부분 또는 전체에 대해 즉시 체결 가능한 상황인 경우 주문을 실행하지 않고 취소합니다. 즉, 메이커(maker)주문으로 생성될 수 있는 상황에서만 주문이 생성되며 테이커(taker) 주문으로 체결되는 것을 방지합니다. **지정가 주문(ord_type이 limit)에서만 사용 가능**한 옵션입니다. 자전 거래 체결 방지 옵션과 함께 사용할 수 없습니다. |
+</Accordion>
 
 <br />
 
 ### 자전거래 체결 방지 옵션(SMP, Self-Matching Prevention)
 
-`smp_type` 파라미터를 설정하여 자전거래 체결 방지 옵션을 원하는 모드로 활성화할 수 있습니다. 자전거래 체결 방지 기능과 관련된 자세한 사항은 [자전거래 체결 방지(Self-Match Prevention, SMP)](https://docs.upbit.com/kr/docs/smp)  페이지를 참고하시기 바랍니다.
+`smp_type` 파라미터를 설정하여 자전거래 체결 방지 옵션을 원하는 모드로 활성화할 수 있습니다. 자전거래 체결 방지 기능과 관련된 자세한 사항은 <Anchor target="_blank" href="https://docs.upbit.com/kr/docs/smp">자전거래 체결 방지(Self-Match Prevention, SMP) </Anchor>페이지를 참고하시기 바랍니다.
 
-<div className="accordion">
-    <input type="checkbox" id="smp_type" />
-    <label for="smp_type">
-      <i className="fa-solid fa-circle-info"></i>
-      사용 가능한 자전 거래 체결 방지(SMP) 옵션
-    </label>
+<Accordion title="사용 가능한 자전 거래 체결 방지(SMP) 옵션" icon="fa-info-circle">
+  * 메이커(maker) 주문과 테이커(taker) 주문에 설정된 SMP 모드가 서로 상이한 경우 테이커 주문 모드에 따라 동작합니다.
+  * 주문 생성 시 설정한 SMP 모드에 따라 기존 주문 또는 신규 주문의 전체 또는 부분 취소되는 경우 취소된 주문 수량과 금액은 주문 생성 응답의 "prevented_volume"필드와 "prevented_locked" 필드로 반환됩니다.
 
-  <div className="accordion-content">
-			<li>메이커(maker) 주문과 테이커(taker) 주문에 설정된 SMP 모드가 서로 상이한 경우 테이커 주문 모드에 따라 동작합니다.</li>
-			<li>주문 생성 시 설정한 SMP 모드에 따라 기존 주문 또는 신규 주문의 전체 또는 부분 취소되는 경우 취소된 주문 수량과 금액은 주문 생성 응답의 "prevented_volume"필드와 "prevented_locked" 필드로 반환됩니다.</li>
-			<br />
-
-
-
-
-
-
-
-
-
-<table className="custom-table">
-<thead>
-  <tr>
-    <th>옵션</th>
-    <th>파라미터 값</th>
-    <th>설명</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td className="code-col"><b>메이커 주문 취소</b></td>
-    <td><code>cancel_maker</code></td>
-    <td>메이커 주문을 취소합니다. 즉, 새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 이전에 생성한 주문을 취소하여 체결을 방지합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col"><b>테이커 주문 취소</b></td>
-    <td><code>cancel_taker</code></td>
-    <td>테이커 주문을 취소합니다. 즉, 새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 새롭게 생성한 주문을 취소하여 체결을 방지합니다.</td>
-  </tr>
-  <tr>
-    <td className="code-col"><b>주문 수량 조정</b></td>
-    <td><code>reduce</code></td>
-    <td>
-      새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 기존 주문과 신규 주문의 주문 수량을 줄여 체결을 방지합니다. 잔량이 0인 경우 주문을 취소합니다.
-    </td>
-  </tr>
-</tbody>
-
-</table>
-
-
-
-
-
-
-
-
-
-  </div>
-</div>
+  | **옵션**        | **파라미터 값**     | **설명**                                                                                |
+  | ------------- | -------------- | ------------------------------------------------------------------------------------- |
+  | **메이커 주문 취소** | `cancel_maker` | 메이커 주문을 취소합니다. 즉, 새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 이전에 생성한 주문을 취소하여 체결을 방지합니다.           |
+  | **테이커 주문 취소** | `cancel_taker` | 테이커 주문을 취소합니다. 즉, 새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 새롭게 생성한 주문을 취소하여 체결을 방지합니다.           |
+  | **주문 수량 조정**  | `reduce`       | 새로운 주문 생성 시 자전 거래 조건이 성립하는 경우 기존 주문과 신규 주문의 주문 수량을 줄여 체결을 방지합니다. 잔량이 0인 경우 주문을 취소합니다. |
+</Accordion>
 
 <br />
 
 ### 체결 대기 중 자산 잠금
 
-주문 생성시 해당 주문에 사용되는 호가 자산(매수 주문의 경우) 또는 기준 자산(매도 주문의 경우)이 즉시 잠금(locked) 상태로 전환되며, 다른 용도로 사용할 수 없게 됩니다. 이는 사용자의 잔고가 주문 체결 시점에도 유효하도록 보장하기 위한 동작이며 <Anchor target="_blank" href="ref:get-balance">포켓 잔고 조회</Anchor>API 를 호출하여 잠금 자산 현황을 확인할 수 있습니다. 자산 잠금은 아래 조건 중 하나가 충족될 때까지 유지됩니다.
-
-\- 주문이 전량 체결되는 경우
-\- 사용자 요청으로 주문이 취소되는 경우
-\- `time_in_force` 조건에 따라 주문이 만료되는 경우
-
-예시 ) KRW-BTC 마켓에서 지정가 매수 주문을 생성할 경우, 지정한 KRW 금액이 체결 전까지 잠금 상태로 유지됩니다.
+* 주문 생성시 해당 주문에 사용되는 호가 자산(매수 주문의 경우) 또는 기준 자산(매도 주문의 경우)이 즉시 잠금(locked) 상태로 전환되며, 다른 용도로 사용할 수 없게 됩니다.
+* 이는 사용자의 잔고가 주문 체결 시점에도 유효하도록 보장하기 위한 동작이며 <Anchor target="_blank" href="https://docs.upbit.com/kr/reference/get-balance">포켓 잔고 조회</Anchor> API 를 호출하여 잠금 자산 현황을 확인할 수 있습니다. 자산 잠금은 아래 조건 중 하나가 충족될 때까지 유지됩니다.
+  * 주문이 전량 체결되는 경우
+  * 사용자 요청으로 주문이 취소되는 경우
+  * `time_in_force` 조건에 따라 주문이 만료되는 경우
+* 예시) KRW-BTC 마켓에서 지정가 매수 주문을 생성할 경우, 지정한 KRW 금액이 체결 전까지 잠금 상태로 유지됩니다.
 
 <br />
 
@@ -478,110 +142,32 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 마켓(호가 자산)과 기준 자산 단가에 따라 주문 시 사용 가능한 주문 가격 단위와 최소 주문 금액이 상이합니다. 마켓별 호가 정책은 아래 가이드를 참고하시기 바랍니다.
 
-\- [원화(KRW) 마켓 주문 가격 단위 / 최소 주문 가능 금액](https://docs.upbit.com/kr/docs/krw-market-info)
-\- [BTC 마켓 주문 가격 단위 / 최소 주문 가능 금액](https://docs.upbit.com/kr/docs/btc-market-info)
-\- [USDT 마켓 주문 가격 단위 / 최소 주문 가능 금액](https://docs.upbit.com/kr/docs/usdt-market-info)
+* <Anchor target="_blank" href="https://docs.upbit.com/kr/docs/krw-market-info">원화(KRW) 마켓 주문 가격 단위 / 최소 주문 가능 금액</Anchor>
+* <Anchor target="_blank" href="https://docs.upbit.com/kr/docs/btc-market-info">BTC 마켓 주문 가격 단위 / 최소 주문 가능 금액</Anchor>
+* <Anchor target="_blank" href="https://docs.upbit.com/kr/docs/usdt-market-info">USDT 마켓 주문 가격 단위 / 최소 주문 가능 금액</Anchor>
 
 <br />
 
 ### 클라이언트 주문 식별자(identifier)
 
-주문 생성 시 업비트 시스템에서 주문을 고유하게 식별하기 위한 UUID와는 별도로, 사용자 클라이언트에서 각 주문을 식별하기 위해 직접 지정하는 값입니다. 사용자가 자체적인 주문 ID 체계를 통해 주문을 관리(조회 및 취소)하고자 할 때 활용됩니다.
-
-identifier는 사용자 계정 내 전체 주문 기준으로 고유해야 하며, 이미 사용된 값은 해당 주문의 생성 또는 체결 여부와 관계없이 재사용할 수 없습니다. 또한 identifier의 최대 길이는 64자로 제한됩니다.
+* 주문 생성 시 업비트 시스템에서 주문을 고유하게 식별하기 위한 UUID와는 별도로, 사용자 클라이언트에서 각 주문을 식별하기 위해 직접 지정하는 값입니다. 사용자가 자체적인 주문 ID 체계를 통해 주문을 관리(조회 및 취소)하고자 할 때 활용됩니다.
+* identifier는 사용자 계정 내 전체 주문 기준으로 고유해야 하며, 이미 사용된 값은 해당 주문의 생성 또는 체결 여부와 관계없이 재사용할 수 없습니다. 또한 identifier의 최대 길이는 64자로 제한됩니다.
 
 <br />
 
-<div className="callout-section callout-section--danger">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i> POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.
-      </div>
-    Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <b>반드시 JSON 형식으로 요청 본문(Body)을 전송</b>해주시기 바랍니다.
-  </div>
+<Callout icon="fad fa-circle-exclamation" theme="error">
+  #### **POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.**
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+  Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <span style="color: #943E50;">**반드시 JSON 형식으로 요청 본문(Body)을 전송해주시기 바랍니다.**</span>
+</Callout>
 
-    <div className="accordion-changelog-content">
-        
+<br />
 
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 12회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [order 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-
-
-
-
-
-
-
-
-
-
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">v1.5.8</td>
-            <td>2025-07-07</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/post_only"><code>Post Only</code> 주문 옵션 신규 지원</a></td>
-      	</tr>
-<tr>
-            <td className="code-col">v1.5.8</td>
-            <td>2025-07-02</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/smp"> 자전거래 체결 방지(SMP) 기능<br />신규 지원에 따른 파라미터 추가<br /><code>smp_type</code>,<code>prevented_volume</code>,<code>prevented_locked</code></a></td>
-        </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2024-12-04</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/myorder_identifier"> <code>identifier</code> 필드 신규 지원</a></td>
-     	 	</tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2024-04-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_ord_type_expand"> 최유리지정가 주문 유형 신규 지원<br />주문 옵션(time_in_force) 추가 지원</a></td>
-        </tr>
-
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 12회 호출할 수 있습니다. 포켓 단위로 측정되며 \[주문 생성 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -633,7 +219,7 @@ identifier는 사용자 계정 내 전체 주문 기준으로 고유해야 하�
           "cancel_taker",
           "reduce"
         ],
-        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n"
       },
       "Order": {
         "type": "object",
@@ -1039,7 +625,7 @@ identifier는 사용자 계정 내 전체 주문 기준으로 고유해야 하�
                         "$ref": "#/components/schemas/SmpTypeEnum"
                       }
                     ],
-                    "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+                    "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n"
                   }
                 }
               }

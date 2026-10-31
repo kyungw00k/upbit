@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-30T02:37:44.000Z
+updatedAt: 2026-10-07T11:30:12.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 포켓별 API Key 목록 조회
 
@@ -35,29 +36,11 @@ created_at
 expired_at"]
 ```
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-<br />
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit">초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
 <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-<div className="box-rate-limit">
-  <a href="auth">인증</a>이 필요한 API로, 메인포켓만 사용 가능합니다.
-  <br />
-
-메인포켓 키발급 페이지에서 \[포켓관리] 권한이 설정된 API Key를 사용해야 합니다. <br />
-
-권한 오류(out\_of\_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-
-</div>
-
-<br />
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API입니다.<strong>메인포켓</strong>에서 발급한 API Key만 사용할 수 있으며, [포켓관리] 권한이 설정된 API Key가 필요합니다.<br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
