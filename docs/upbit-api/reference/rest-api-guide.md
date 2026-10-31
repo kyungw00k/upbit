@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-08-31T04:37:05.000Z
+updatedAt: 2026-10-06T05:15:18.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # REST API 사용 및 에러 안내
 
@@ -50,190 +51,126 @@ REST API 요청 수 제한 정책은 [요청 수 제한(Rate Limits)](https://do
 
 ## 응답 상태 코드 및 에러 안내
 
-업비트 REST API 응답으로 반환되는 HTTP 상태 코드 목록과 각 코드의 의미는 아래와 같습니다.
+업비트 REST API에서 반환하는 주요 HTTP 상태 코드와 의미는 다음과 같습니다.
 
-<style>
-th.max-width {
-  max-width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  }
-th.min-width {
-  min-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  }
-.custom-table {
-  table-layout: fixed;
-  width: 100%;
-}
-</style>
-
-<table className="custom-table">
-  <thead>
-    <tr>
-      <th>HTTP Status Code</th>
-      <th className="max-width">관련 에러 코드</th>
-      <th className="min-width">발생 이유</th>
-      <th>에러 해결 방법</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td className="code-col">200 OK</td>
-      <td></td>
-      <td>정상 응답</td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td className="code-col">201 Created</td>
-      <td></td>
-      <td>요청으로 인한<br />생성 완료</td>
-      <td></td>
-    </tr>
-
-    <tr>
-      <td className="code-col" rowspan="7">400 Bad Request</td>
-      <td><code>create_ask_error</code>,<br /><code>create_bid_error</code></td>
-      <td>주문 요청 정보가 올바르지 않습니다.</td>
-      <td>시장가 주문임에도 가격을 입력하는 경우 발생할 수 있습니다. 주문 생성 문서를 참고해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>insufficient_funds_ask</code>,<br /><code>insufficient_funds_bid</code></td>
-      <td>매수/매도 가능<br />잔고가 부족합니다.</td>
-      <td>잔고를 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>under_min_total_ask</code>,<br /><code>under_min_total_bid</code></td>
-      <td>최소 주문 금액에<br />미달합니다.</td>
-      <td>페어별 최소 주문 금액 확인 후 재요청해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>withdraw_address<br />_not_registered</code></td>
-      <td>허용되지 않은<br />출금 주소입니다.</td>
-      <td>등록된 출금 주소 목록에 포함되어 있는지 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>validation_error</code></td>
-      <td>잘못된<br />API 요청입니다.</td>
-      <td>필수 파라미터 누락<br />여부를 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>invaild_parameter</code></td>
-      <td>잘못된<br />파라미터입니다.</td>
-      <td>입력한<br />파라미터를 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>duplicated_identifier</code></td>
-      <td>이미 등록된<br />identifier입니다.</td>
-      <td>이미 등록된 identifier입니다. 새로운 identifier를 입력해 주세요.</td>
-    </tr>
-
-    <tr>
-      <td className="code-col" rowspan="6">401 Unauthorized</td>
-      <td><code>invalid_query_payload</code></td>
-      <td>JWT 페이로드가<br />올바르지 않습니다.</td>
-      <td><a href="auth">인증</a> 가이드 문서를 참고하여 서명이 올바르게 생성 되었는지 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>jwt_verification</code></td>
-      <td>JWT 검증에<br />실패했습니다.</td>
-      <td>토큰의 생성 및 서명 상태를 점검해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>expired_access_key</code></td>
-      <td>API 키가<br />만료되었습니다.</td>
-      <td>새로운 키를 발급받아 사용해주세요.</td>
-    </tr>
-
-    <tr>
-      <td><code>nonce_used</code></td>
-      <td>이미 사용된<br />nonce 값입니다.</td>
-      <td>JWT에는 매 요청마다 새로운 nonce 값을 사용해야 합니다.</td>
-    </tr>
-
-    <tr>
-      <td><code>no_authorization_ip</code></td>
-      <td>등록되지 않은 IP에서<br />요청되었습니다.</td>
-      <td>API 키 발급 시 등록한 IP 환경에서 호출 중인지 점검해주세요.</td>
-    </tr>
-
-	<tr>
-      <td><code>no_authorization_token</code></td>
-      <td>인증 토큰이<br />누락되었습니다.</td>
-      <td>인증 헤더가 요청에 포함되었는지 확인해주세요.</td>
-    </tr>
-
-    <tr>
-      <td className="code-col" rowspan="2">403 Forbidden</td>
-      <td><code>out_of_scope</code></td>
-      <td>권한이 부족합니다.</td>
-      <td>현재 호출에 사용한 API 키에 권한이 없습니다. 권한이 이 부여된 API 키로 다시 요청해 주세요. 해당에 부여된 권한 조회는 <a href="https://docs.upbit.com/kr/reference/list-pocket-api-keys">포켓별 API Key 목록 조회</a>에서 확인 가능합니다. <br /> API 도메인(ex.포켓, 입출금, 주문)마다 HTTP 상태 코드(401,403)가 일관되지 않을 수 있습니다. 예외처리 시 에러코드 문자열(out_of_scope)을 기준으로 검증하는 것을 권장합니다.</td>
-    </tr>
-    
-     <tr> <td><code>open_api_withdraw_locked</code></td>
-      <td>출금 안심차단을 해지하지 않았습니다.</td>
-      <td>Open API 출금이 잠금 상태입니다. 업비트 모바일 앱 > 더보기 > 인증/보안 > Open API 관리에서 출금 잠금을 해제해주세요.</td>
-    </tr>
-
-
-
-    <tr>
-      <td className="code-col" rowspan="3">404 Not Found</td>
-      <td></td>
-      <td>존재하지 않는<br />데이터에 접근</td>
-      <td>주문, 출금, 입금, 체결 등 요청 항목이 존재하지 않는 경우</td>
-    </tr>
-
-	<tr>
-      <td><code>pocket_not_found</code></td>
-      <td>포켓을 찾지 못했습니다.</td>
-      <td>포켓 UUID를 확인해주세요. 포켓 UUID는 <a href="https://docs.upbit.com/kr/reference/list-pockets">포켓 정보 조회 API</a>에서 확인 가능합니다.</td>
-    </tr>
-
-	<tr>
-      <td><code>currency_not_found</code></td>
-      <td>자산을 찾지 못했습니다.</td>
-      <td>입력한 currency 값이 조회 가능한 자산 코드인지 확인해주세요. 자산 코드는 대문자로 입력해야하며, 존재하지 않거나 지원되지 않는 자산 코드를 입력한 경우 해당 자산을 찾을 수 없습니다.</td>
-    </tr>
-
-    <tr>
-      <td className="code-col">418 I'm a teapot</td>
-      <td></td>
-      <td>과도한 요청으로<br />인해 거부되었습니다.</td>
-      <td>IP 차단 등으로 요청이 제한됩니다.</td>
-    </tr>
-
-    <tr>
-      <td className="code-col">429 Too Many Requests</td>
-      <td></td>
-      <td>요청 제한을<br />초과했습니다.</td>
-      <td>API 호출 한도를 초과했습니다.</td>
-    </tr>
-
-    <tr>
-      <td className="code-col">500 Internal Server Error</td>
-      <td></td>
-      <td>서버 내부 오류</td>
-      <td>서비스 점검 또는 시스템 오류로 인한 처리 불가</td>
-    </tr>
-
-  </tbody>
-</table>
+| HTTP Status Code            | 설명                                      |
+| --------------------------- | --------------------------------------- |
+| `200 OK`                    | 요청이 정상적으로 처리되었습니다.                      |
+| `201 Created`               | 요청한 리소스가 정상적으로 생성되었습니다.                 |
+| `400 Bad Request`           | 요청 형식이나 파라미터가 올바르지 않습니다.                |
+| `401 Unauthorized`          | API 인증에 실패했습니다.                         |
+| `403 Forbidden`             | API Key 권한 또는 보안 설정으로 인해 요청이 허용되지 않습니다. |
+| `404 Not Found`             | 요청한 리소스를 찾을 수 없습니다.                     |
+| `418 I'm a teapot`          | 과도한 요청이 반복되어 요청이 제한되었습니다.               |
+| `429 Too Many Requests`     | 요청 수 제한을 초과했습니다.                        |
+| `500 Internal Server Error` | 서버 내부 오류로 요청을 처리할 수 없습니다.               |
 
 <br />
 
-에러 발생 시, 응답은 다음과 같은 JSON 형식으로 반환됩니다. `name` 필드는 해당 에러의 코드를, `message` 필드는 오류와 관련된 메세지를 반환합니다. Quotation API는 정수 형식의 `name` 필드를, Exchange API는 문자열 형식의 `name` 필드를 반환합니다. 각 API 별 오류 예시는 API Reference 문서 우측 하단 응답 예시 영역을 참고하시기 바랍니다.
+### 400 Bad Request
+
+요청 형식이나 파라미터가 올바르지 않은 경우 발생합니다.
+
+| 에러 코드                             | 원인 및 해결 방법                                                                                                                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `create_ask_error`                | **발생 이유**<br />매도 주문 요청 정보가 올바르지 않습니다.<br /><br />**해결 방법**<br />주문 유형에 필요한 파라미터와 입력값을 확인해 주세요. 시장가 주문에 가격을 입력하는 등 주문 조건에 맞지 않는 파라미터 조합으로 요청한 경우 발생할 수 있습니다.                            |
+| `create_bid_error`                | **발생 이유**<br />매수 주문 요청 정보가 올바르지 않습니다.<br /><br />**해결 방법**<br />주문 유형에 필요한 파라미터와 입력값을 확인해 주세요. 시장가 주문에 가격을 입력하는 등 주문 조건에 맞지 않는 파라미터 조합으로 요청한 경우 발생할 수 있습니다.                            |
+| `insufficient_funds_ask`          | **발생 이유**<br />매도 가능한 잔고가 부족합니다.<br /><br />**해결 방법**<br />주문 가능한 자산 잔고를 확인해 주세요.                                                                                                       |
+| `insufficient_funds_bid`          | **발생 이유**<br />매수 가능한 잔고가 부족합니다.<br /><br />**해결 방법**<br />주문 가능한 자산 잔고를 확인해 주세요.                                                                                                       |
+| `under_min_total_ask`             | **발생 이유**<br />최소 매도 주문 금액에 미달합니다.<br /><br />**해결 방법**<br />마켓별 최소 주문 금액을 확인한 후 다시 요청해 주세요.                                                                                            |
+| `under_min_total_bid`             | **발생 이유**<br />최소 매수 주문 금액에 미달합니다.<br /><br />**해결 방법**<br />마켓별 최소 주문 금액을 확인한 후 다시 요청해 주세요.                                                                                            |
+| `withdraw_address_not_registered` | **발생 이유**<br />허용되지 않은 출금 주소입니다.<br /><br />**해결 방법**<br />Open API 출금 허용 주소로 등록된 주소인지 확인해 주세요.                                                                                         |
+| `validation_error`                | **발생 이유**<br />API 요청 형식이 올바르지 않습니다.<br /><br />**해결 방법**<br />필수 파라미터 누락 여부와 요청 데이터 형식을 확인해 주세요.                                                                                       |
+| `invalid_parameter`               | **발생 이유**<br />요청한 파라미터가 올바르지 않습니다.<br /><br />**해결 방법**<br />파라미터의 형식, 허용값 및 입력 범위를 확인해 주세요.                                                                                           |
+| `invalid_post_only`               | **발생 이유**<br />`post_only`와 함께 사용할 수 없는 `smp_type` 값을 지정한 경우 발생합니다.<br /><br />**해결 방법**<br />`time_in_force=post_only` 주문에서는 `smp_type`을 지정할 수 없습니다. `smp_type` 파라미터를 제외하고 다시 요청해 주세요. |
+| `duplicated_identifier`           | **발생 이유**<br />이미 사용 중인 `identifier`입니다.<br /><br />**해결 방법**<br />이전 주문에 사용하지 않은 새로운 `identifier`로 요청해 주세요.                                                                            |
+
+<br />
+
+### 401 Unauthorized
+
+JWT 토큰, API Key 또는 허용 IP 인증에 실패한 경우 발생합니다.
+
+| 에러 코드                    | 원인 및 해결 방법                                                                                                                                               |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `invalid_query_payload`  | **발생 이유**<br />JWT 페이로드가 올바르지 않습니다.<br /><br />**해결 방법**<br />[인증](https://docs.upbit.com/kr/reference/auth) 문서를 참고하여 JWT 페이로드와 서명이 올바르게 생성되었는지 확인해 주세요. |
+| `jwt_verification`       | **발생 이유**<br />JWT 검증에 실패했습니다.<br /><br />**해결 방법**<br />JWT 생성 과정과 서명에 사용한 Secret Key를 확인해 주세요.                                                         |
+| `expired_access_key`     | **발생 이유**<br />API Key가 만료되었습니다.<br /><br />**해결 방법**<br />새로운 API Key를 발급받아 사용해 주세요.                                                                    |
+| `nonce_used`             | **발생 이유**<br />이미 사용된 `nonce` 값입니다.<br /><br />**해결 방법**<br />JWT를 생성할 때마다 새로운 `nonce` 값을 사용해 주세요.                                                       |
+| `no_authorization_ip`    | **발생 이유**<br />API Key에 등록되지 않은 IP에서 요청했습니다.<br /><br />**해결 방법**<br />요청을 전송한 IP가 해당 API Key의 허용 IP로 등록되어 있는지 확인해 주세요.                                  |
+| `no_authorization_token` | **발생 이유**<br />인증 토큰이 요청에 포함되지 않았습니다.<br /><br />**해결 방법**<br />요청의 `Authorization` 헤더에 `Bearer {JWT}` 형식의 인증 토큰이 포함되어 있는지 확인해 주세요.                      |
+
+<br />
+
+### 403 Forbidden
+
+API Key 권한 또는 Open API 보안 설정으로 인해 요청이 허용되지 않은 경우 발생합니다.
+
+| 에러 코드                      | 원인 및 해결 방법                                                                                                                                                                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `out_of_scope`             | **발생 이유**<br />요청에 필요한 API Key 권한이 없습니다.<br /><br />**해결 방법**<br />사용 중인 API Key에 해당 API를 호출할 수 있는 권한이 부여되어 있는지 확인해 주세요. API Key별 권한은 [포켓별 API Key 목록 조회](https://docs.upbit.com/kr/reference/list-pocket-api-keys)에서 확인할 수 있습니다. |
+| `open_api_withdraw_locked` | **발생 이유**<br />Open API 출금이 잠금 상태입니다.<br /><br />**해결 방법**<br />업비트 모바일 앱의 **더보기 > 인증/보안 > Open API 관리**에서 출금 잠금을 해제해 주세요.                                                                                                        |
+
+<Callout icon="fad fa-circle-info" theme="info">
+  API 영역에 따라 `out_of_scope` 에러와 함께 반환되는 HTTP 상태 코드가 `401 Unauthorized` 또는 `403 Forbidden`으로 다를 수 있습니다.
+
+  에러 처리 시 HTTP 상태 코드만으로 분기하지 말고, 응답의 `error.name` 값도 함께 확인해 주세요.
+</Callout>
+
+<br />
+
+### 404 Not Found
+
+요청한 리소스가 존재하지 않거나 조회할 수 없는 경우 발생합니다.
+
+| 에러 코드                | 원인 및 해결 방법                                                                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| —                    | **발생 이유**<br />요청한 주문, 출금, 입금 또는 체결 등의 데이터를 찾을 수 없습니다.<br /><br />**해결 방법**<br />요청에 사용한 UUID, `identifier` 또는 조회 조건을 확인해 주세요.                                           |
+| `pocket_not_found`   | **발생 이유**<br />요청한 포켓을 찾을 수 없습니다.<br /><br />**해결 방법**<br />포켓 UUID를 확인해 주세요. 포켓 UUID는 [포켓 정보 조회](https://docs.upbit.com/kr/reference/list-pockets)에서 확인할 수 있습니다.        |
+| `currency_not_found` | **발생 이유**<br />요청한 자산을 찾을 수 없습니다.<br /><br />**해결 방법**<br />`currency` 값이 조회 가능한 자산 코드인지 확인해 주세요. 자산 코드는 대문자로 입력해야 하며, 존재하지 않거나 지원되지 않는 자산 코드를 입력한 경우 해당 에러가 발생할 수 있습니다. |
+
+<br />
+
+### 418 I'm a teapot
+
+과도한 요청이 반복되어 요청이 제한된 경우 발생합니다.
+
+| 에러 코드 | 원인 및 해결 방법                                                                                                                                                                          |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| —     | **발생 이유**<br />과도한 요청으로 인해 요청 제한이 적용되었습니다.<br /><br />**해결 방법**<br />추가 요청을 중단하고, 이후에는 [요청 수 제한(Rate Limits)](https://docs.upbit.com/kr/reference/rate-limits) 정책에 맞게 호출량을 조정해 주세요. |
+
+<br />
+
+### 429 Too Many Requests
+
+허용된 요청 수 제한을 초과한 경우 발생합니다.
+
+| 에러 코드 | 원인 및 해결 방법                                                                                                                                                        |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| —     | **발생 이유**<br />API 호출 한도를 초과했습니다.<br /><br />**해결 방법**<br />[요청 수 제한(Rate Limits)](https://docs.upbit.com/kr/reference/rate-limits) 문서를 참고하여 요청 간격과 호출량을 조정해 주세요. |
+
+<br />
+
+### 500 Internal Server Error
+
+서버 내부 오류로 요청을 처리할 수 없는 경우 발생합니다.
+
+| 에러 코드 | 원인 및 해결 방법                                                                                                                             |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| —     | **발생 이유**<br />서비스 점검 또는 일시적인 시스템 오류로 요청을 처리할 수 없습니다.<br /><br />**해결 방법**<br />잠시 후 다시 요청해 주세요. 오류가 계속 발생하는 경우 요청 시각과 응답 내용을 확인해 주세요. |
+
+<br />
+
+### 에러 응답 형식
+
+에러가 발생하면 다음과 같은 JSON 형식으로 응답이 반환됩니다.
+
+* `error.name`: 에러 코드
+* `error.message`: 에러와 관련된 메시지
+
+시세(Quotation) API는 정수 형식의 `name` 값을 반환하며, 거래 및 자산 관리(Exchange) API는 문자열 형식의 `name` 값을 반환합니다.
+
+각 API의 상세 오류 예시는 API Reference 문서 우측 하단의 응답 예시 영역에서 확인할 수 있습니다.
 
 ```json Quotation API Error Response
 {
@@ -243,10 +180,22 @@ th.min-width {
   }
 }
 ```
+
 ```json Exchange API Error Response
 {
   "error": {
-    "name": "ERRPR_CODE",
+    "name": "ERROR_CODE",
+    "message": "ERROR_MESSAGE"
+  }
+}
+```
+
+에러 발생 시, 응답은 다음과 같은 JSON 형식으로 반환됩니다. `name` 필드는 해당 에러의 코드를, `message` 필드는 오류와 관련된 메세지를 반환합니다. Quotation API는 정수 형식의 `name` 필드를, Exchange API는 문자열 형식의 `name` 필드를 반환합니다. 각 API 별 오류 예시는 API Reference 문서 우측 하단 응답 예시 영역을 참고하시기 바랍니다.
+
+```json Quotation API Error Response
+{
+  "error": {
+    "name": 400,
     "message": "ERROR_MESSAGE"
   }
 }
