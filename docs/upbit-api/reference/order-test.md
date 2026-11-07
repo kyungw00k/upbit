@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-04T07:51:18.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 주문 생성 테스트
 
@@ -16,59 +17,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
   * 만약 `market_offline` 오류가 반환된다면 해당 페어는 아직 주문이 불가능한 상태임을 의미합니다.
 * 테스트 주문은 실제 주문과 동일한 검증 과정을 거치지만, 주문이 실제로 생성되지는 않습니다. **따라서 응답으로 반환된 UUID (혹은 identifier)는 주문 조회나 취소 요청에 사용할 수 없습니다.**
 
-<br />
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 8회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [order-test 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-    <div className="accordion-changelog-content">
-        
-
-
-
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">v1.6.1</td>
-            <td>2025-10-27</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/order-test">주문 테스트 기능 신규 지원</a></td>
-      	</tr>
-
-
-    </tbody>
-</table>
-
-
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 8회 호출할 수 있습니다. 포켓 단위로 측정되며 \[주문 테스트 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-</div>
-
-<br />
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -113,15 +66,6 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         ],
         "description": "주문 체결 조건.\n\n* `fok`: Fill or Kill\n* `ioc`: Immediate or Cancel\n* `post_only`: 메이커 전용 주문\n"
       },
-      "SmpTypeEnum": {
-        "type": "string",
-        "enum": [
-          "cancel_maker",
-          "cancel_taker",
-          "reduce"
-        ],
-        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
-      },
       "Order": {
         "type": "object",
         "required": [
@@ -138,6 +82,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
           "paid_fee",
           "locked",
           "trades_count",
+          "smp_type",
           "prevented_volume",
           "prevented_locked"
         ],
@@ -261,21 +206,22 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
             "enum": [
               "reduce",
               "cancel_maker",
-              "cancel_taker"
+              "cancel_taker",
+              "none"
             ],
-            "description": "자전거래 체결 방지(Self-Match Prevention) 모드",
+            "description": "주문에 적용된 자전거래 체결 방지(SMP) 타입",
             "example": "cancel_maker"
           },
           "prevented_volume": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 취소된 수량.\n\n동일 사용자의 주문 간 체결이 발생하지 않도록 설정(SMP)에 따라 취소된 주문 수량입니다.\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 주문 수량",
             "example": 2
           },
           "prevented_locked": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 해제된 자산.\n자전거래 체결 방지 설정으로 인해 취소된 주문의 잔여 자산입니다.\n  - 매수 주문의 경우: 취소된 금액\n  - 매도 주문의 경우: 취소된 수량\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 금액 또는 수량\n매수 주문은 수수료를 포함한 금액, 매도 주문은 주문 수량",
             "example": 2000
           },
           "trades": {
@@ -467,12 +413,15 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                     "description": "주문 체결 조건.\n\n* `fok`: Fill or Kill\n* `ioc`: Immediate or Cancel\n* `post_only`: 메이커 전용 주문\n"
                   },
                   "smp_type": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/SmpTypeEnum"
-                      }
+                    "description": "주문에 적용할 자전거래 체결 방지(SMP) 타입.\n`smp_type`을 지정하지 않으면 `cancel_maker`가 기본값으로 적용됩니다.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n* `none`: SMP 미적용\n",
+                    "type": "string",
+                    "enum": [
+                      "cancel_maker",
+                      "cancel_taker",
+                      "reduce",
+                      "none"
                     ],
-                    "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+                    "default": "cancel_maker"
                   }
                 }
               }
@@ -492,11 +441,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                     "value": {
                       "market": "KRW-BTC",
                       "uuid": "cdd92199-2897-4e14-9448-f923320408ad",
-                      "side": "ask",
+                      "side": "bid",
                       "ord_type": "limit",
                       "price": "140000000",
                       "state": "wait",
-                      "created_at": "2025-07-04T15:00:00+09:00",
+                      "created_at": "2026-11-09T15:00:00+09:00",
                       "volume": "1.0",
                       "remaining_volume": "1.0",
                       "reserved_fee": "70000.0",
@@ -504,6 +453,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       "paid_fee": "0.0",
                       "locked": "0.0",
                       "executed_volume": "0.0",
+                      "smp_type": "cancel_maker",
                       "prevented_volume": "0",
                       "prevented_locked": "0",
                       "trades_count": 0
