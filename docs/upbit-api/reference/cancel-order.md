@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-04T07:51:18.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 개별 주문 취소 접수
 
@@ -23,6 +24,12 @@ UUID 또는 Identifier로 주문을 취소합니다.
 
     <div className="accordion-changelog-content">
         
+
+
+
+
+
+
 
 
 
@@ -52,24 +59,20 @@ UUID 또는 Identifier로 주문을 취소합니다.
 
 
 
+
+
+
+
+
+
     </div>
 </div>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit"> 초당 최대 30회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [default 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
-<div className="box-rate-limit">
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -103,6 +106,7 @@ UUID 또는 Identifier로 주문을 취소합니다.
           "paid_fee",
           "locked",
           "trades_count",
+          "smp_type",
           "prevented_volume",
           "prevented_locked"
         ],
@@ -226,21 +230,22 @@ UUID 또는 Identifier로 주문을 취소합니다.
             "enum": [
               "reduce",
               "cancel_maker",
-              "cancel_taker"
+              "cancel_taker",
+              "none"
             ],
-            "description": "자전거래 체결 방지(Self-Match Prevention) 모드",
+            "description": "주문에 적용된 자전거래 체결 방지(SMP) 타입",
             "example": "cancel_maker"
           },
           "prevented_volume": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 취소된 수량.\n\n동일 사용자의 주문 간 체결이 발생하지 않도록 설정(SMP)에 따라 취소된 주문 수량입니다.\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 주문 수량",
             "example": 2
           },
           "prevented_locked": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 해제된 자산.\n자전거래 체결 방지 설정으로 인해 취소된 주문의 잔여 자산입니다.\n  - 매수 주문의 경우: 취소된 금액\n  - 매도 주문의 경우: 취소된 수량\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 금액 또는 수량\n매수 주문은 수수료를 포함한 금액, 매도 주문은 주문 수량",
             "example": 2000
           },
           "trades": {
@@ -416,6 +421,7 @@ UUID 또는 Identifier로 주문을 취소합니다.
                       "remaining_fee": "70000.0",
                       "paid_fee": "0.0",
                       "locked": "140070000.0",
+                      "smp_type": "none",
                       "prevented_volume": "0",
                       "prevented_locked": "0",
                       "trades_count": 0
