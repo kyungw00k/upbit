@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-08-25T02:28:33.000Z
+updatedAt: 2026-11-04T07:51:18.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 취소 후 재주문
 
@@ -60,81 +61,23 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 본 API 요청시 신규 주문은 반드시 이전 주문의 취소가 완료된 이후 생성됩니다. API가 성공적으로 요청되더라도, 기존 주문의 취소 처리가 완료되기 전에 전량 체결되어 취소가 불가능한 경우 신규 주문은 생성되지 않습니다.
 
-<div className="callout-section">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i>  취소 요청 시 prev_order_uuid 또는 prev_order_identifier를 반드시 포함해야 합니다.
-      </div>
-    두 파라미터 모두 선택(Optional) 파라미터이지만, 취소 대상 주문 지정을 위해 반드시 하나의 파라미터를 포함해야 합니다. 
-  </div>
+<Callout icon="fad fa-circle-info" theme="info">
+  **취소 요청 시&#x20;**`prev_order_uuid`**&#x20;또는&#x20;**`prev_order_identifier`**를 반드시 포함해야 합니다.**<br />두 파라미터 모두 선택(Optional) 파라미터이지만, 취소 대상 주문 지정을 위해 반드시 하나의 파라미터를 포함해야 합니다.
+</Callout>
 
-<div className="callout-section callout-section--danger">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i> POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.
-      </div>
-    Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <b>반드시 JSON 형식으로 요청 본문(Body)을 전송</b>해주시기 바랍니다.
-  </div>
+<Callout icon="fad fa-circle-exclamation" theme="error">
+  #### **POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.**
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+  Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <span style="color: #943E50;">**반드시 JSON 형식으로 요청 본문(Body)을 전송해주시기 바랍니다.**</span>
+</Callout>
 
-    <div className="accordion-changelog-content">
-        
+<br />
 
+<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div><div className="box-rate-limit">초당 최대 12회 호출할 수 있습니다.</br>포켓 단위로 측정되며 [order 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다. </div>
 
+<div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
 
-
-
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
- 		 <tbody>
-<tr>
-            <td className="code-col">v1.5.8</td>
-            <td className="code-col">2025-07-02</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/post_only"><code>Post Only</code> 주문 옵션 신규 지원</a></td>
-      	</tr>
-        <tr>
-            <td className="code-col">v1.5.8</td>
-            <td>2025-07-02</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/smp"> 자전거래 체결 방지(SMP) 기능<br />신규 지원에 따른 필드 추가<br /><code>smp_type</code>,<code>prevented_volume</code>,<code>prevented_locked</code></a></td>
-       	</tr>
-<tr>
-            <td>-</td>
-            <td>2025-02-05 </td>
-            <td><a href="https://docs.upbit.com/kr/changelog/cancel_and_new_oreder"> "취소 후 재주문" API 신규 지원</a></td>
-        </tr>
-
-    </tbody>
-</table>
-
-
-
-
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-  초당 최대 12회 호출할 수 있습니다. 포켓 단위로 측정되며 [주문 생성 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
+ <div className="box-rate-limit"> <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />권한 오류(out_of_scope)가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.</div>
 
 # OpenAPI definition
 
@@ -176,39 +119,17 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         "enum": [
           "cancel_maker",
           "cancel_taker",
-          "reduce"
+          "reduce",
+          "none"
         ],
-        "description": "자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+        "description": "자전거래 체결 방지(SMP) 타입\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n* `none`: SMP 미적용"
       },
-      "Order": {
+      "CancelAndNewOrder": {
         "type": "object",
-        "required": [
-          "market",
-          "uuid",
-          "side",
-          "ord_type",
-          "state",
-          "created_at",
-          "remaining_volume",
-          "executed_volume",
-          "reserved_fee",
-          "remaining_fee",
-          "paid_fee",
-          "locked",
-          "trades_count",
-          "prevented_volume",
-          "prevented_locked"
-        ],
         "properties": {
-          "market": {
-            "type": "string",
-            "description": "페어(거래쌍)의 코드\n",
-            "example": "KRW-BTC"
-          },
           "uuid": {
             "type": "string",
-            "description": "주문의 유일 식별자",
-            "example": "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
+            "description": "취소할 주문의 고유 아이디"
           },
           "side": {
             "type": "string",
@@ -216,8 +137,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
               "ask",
               "bid"
             ],
-            "description": "주문 방향(매수/매도)",
-            "example": "ask"
+            "description": "취소할 주문의 주문 종류"
           },
           "ord_type": {
             "type": "string",
@@ -227,14 +147,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
               "market",
               "best"
             ],
-            "description": "주문 유형.",
-            "example": "limit"
+            "description": "취소할 주문의 주문 방식"
           },
           "price": {
             "type": "string",
-            "format": "decimal",
-            "description": "주문 단가 또는 총액\n\n지정가 주문의 경우 단가, 시장가 매수 주문의 경우 매수 총액입니다.\n",
-            "example": 1000
+            "description": "취소할 주문의 가격"
           },
           "state": {
             "type": "string",
@@ -244,151 +161,90 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
               "done",
               "cancel"
             ],
-            "description": "주문 상태\n\n- `wait`: 체결 대기\n- `watch`: 예약 주문 대기\n- `done`: 체결 완료\n- `cancel`: 주문 취소\n",
-            "example": "wait"
+            "description": "취소할 주문의 주문 상태"
+          },
+          "market": {
+            "type": "string",
+            "description": "취소할 주문 마켓의 유일키"
           },
           "created_at": {
             "type": "string",
-            "description": "주문 생성 시각 (KST 기준)\n\n[형식] yyyy-MM-ddTHH:mm:ss+09:00\n",
-            "example": "2025-06-25T15:42:25+09:00"
+            "description": "취소할 주문의 주문 생성 시간"
           },
           "volume": {
             "type": "string",
-            "format": "decimal",
-            "description": "주문 요청 수량",
-            "example": 10
+            "description": "취소할 주문의 사용자가 입력한 주문 양"
           },
           "remaining_volume": {
             "type": "string",
-            "format": "decimal",
-            "description": "체결 후 남은 주문 양",
-            "example": 8
-          },
-          "executed_volume": {
-            "type": "string",
-            "format": "decimal",
-            "description": "체결된 양",
-            "example": 2
+            "description": "취소할 주문의 체결 후 남은 주문 양"
           },
           "reserved_fee": {
             "type": "string",
-            "format": "decimal",
-            "description": "수수료로 예약된 비용",
-            "example": 5
+            "description": "취소할 주문의 수수료로 예약된 비용"
           },
           "remaining_fee": {
             "type": "string",
-            "format": "decimal",
-            "description": "남은 수수료",
-            "example": 5
+            "description": "취소할 주문의 남은 수수료"
           },
           "paid_fee": {
             "type": "string",
-            "format": "decimal",
-            "description": "사용된 수수료",
-            "example": 0
+            "description": "취소할 주문의 사용된 수수료"
           },
           "locked": {
             "type": "string",
-            "format": "decimal",
-            "description": "거래에 사용 중인 비용",
-            "example": 0
+            "description": "취소할 주문의 거래에 사용 중인 금액 또는 수량"
+          },
+          "executed_volume": {
+            "type": "string",
+            "description": "취소할 주문의 체결된 양"
           },
           "trades_count": {
             "type": "integer",
-            "description": "해당 주문에 대한 체결 건수",
-            "example": 1
+            "description": "취소할 주문에 걸린 체결 수"
           },
           "time_in_force": {
-            "type": "string",
-            "enum": [
-              "fok",
-              "ioc",
-              "post_only"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimeInForceEnum"
+              }
             ],
-            "description": "주문 체결 옵션",
-            "example": "ioc"
+            "description": "취소할 주문의 IOC, FOK, Post Only 설정"
           },
           "identifier": {
             "type": "string",
-            "description": "주문 생성시 클라이언트가 지정한 주문 식별자.\n* identifier 필드는 2024년 10월 18일 이후 생성된 주문에 대해서만 제공됩니다.\n",
-            "example": "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
-          },
-          "smp_type": {
-            "type": "string",
-            "enum": [
-              "reduce",
-              "cancel_maker",
-              "cancel_taker"
-            ],
-            "description": "자전거래 체결 방지(Self-Match Prevention) 모드",
-            "example": "cancel_maker"
+            "description": "취소할 주문의 조회용 사용자 지정값.\n* `identifier` 필드는 2024-10-18 이후에 생성된 주문에 대해서만 제공합니다.\n"
           },
           "prevented_volume": {
             "type": "string",
-            "format": "decimal",
-            "description": "자전거래 방지로 인해 취소된 수량.\n\n동일 사용자의 주문 간 체결이 발생하지 않도록 설정(SMP)에 따라 취소된 주문 수량입니다.\n",
-            "example": 2
+            "description": "취소할 주문에서 자전거래 체결 방지(SMP)로 인해 취소된 주문 수량"
           },
           "prevented_locked": {
             "type": "string",
-            "format": "decimal",
-            "description": "자전거래 방지로 인해 해제된 자산.\n자전거래 체결 방지 설정으로 인해 취소된 주문의 잔여 자산입니다.\n  - 매수 주문의 경우: 취소된 금액\n  - 매도 주문의 경우: 취소된 수량\n",
-            "example": 2000
+            "description": "취소할 주문에서 자전거래 체결 방지(SMP)로 인해 취소된 금액 또는 수량\n매수 주문은 수수료를 포함한 금액, 매도 주문은 주문 수량"
           },
-          "trades": {
-            "type": "array",
-            "description": "체결 목록 (개별 주문 조회 시 반환)",
-            "items": {
-              "type": "object",
-              "properties": {
-                "market": {
-                  "type": "string",
-                  "description": "페어(거래쌍)의 코드",
-                  "example": "KRW-BTC"
-                },
-                "uuid": {
-                  "type": "string",
-                  "description": "체결의 유일 식별자",
-                  "example": "795dff29-bba6-49b2-baab-63473ab7931c"
-                },
-                "price": {
-                  "type": "string",
-                  "format": "decimal",
-                  "description": "체결 단가",
-                  "example": "1375"
-                },
-                "volume": {
-                  "type": "string",
-                  "format": "decimal",
-                  "description": "체결 수량",
-                  "example": "5.377594"
-                },
-                "funds": {
-                  "type": "string",
-                  "format": "decimal",
-                  "description": "체결 금액",
-                  "example": "7394.19175"
-                },
-                "trend": {
-                  "type": "string",
-                  "description": "체결 방향 (up/down)",
-                  "example": "down"
-                },
-                "created_at": {
-                  "type": "string",
-                  "description": "체결 시각",
-                  "example": "2025-08-09T16:44:00.597751+09:00"
-                },
-                "side": {
-                  "type": "string",
-                  "description": "주문 방향",
-                  "example": "ask"
-                }
+          "smp_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmpTypeEnum"
               }
-            }
+            ],
+            "description": "취소할 주문에 적용된 자전거래 체결 방지(SMP) 타입"
+          },
+          "new_order_uuid": {
+            "type": "string",
+            "description": "주문 성공 시 신규 주문의 UUID"
+          },
+          "new_order_identifier": {
+            "type": "string",
+            "description": "주문 성공 시 신규 주문의 조회용 사용자 지정값"
           }
-        }
+        },
+        "required": [
+          "prevented_volume",
+          "prevented_locked",
+          "smp_type"
+        ]
       },
       "Error": {
         "type": "object",
@@ -519,12 +375,15 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                     "description": "신규 주문 체결 조건.\n\n* `fok`: Fill or Kill\n* `ioc`: Immediate or Cancel\n* `post_only`: 메이커 전용 주문\n"
                   },
                   "new_smp_type": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/SmpTypeEnum"
-                      }
+                    "description": "신규 주문에 적용할 자전거래 체결 방지(SMP) 타입.\n`new_smp_type`을 지정하지 않으면 `cancel_maker`가 기본값으로 적용됩니다.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 자전거래가 발생할 수량만큼 메이커·테이커 주문 수량 차감\n* `none`: SMP 미적용\n",
+                    "type": "string",
+                    "enum": [
+                      "cancel_maker",
+                      "cancel_taker",
+                      "reduce",
+                      "none"
                     ],
-                    "description": "신규 주문의 자전거래 체결 방지(SMP) 모드.\n\n* `cancel_maker`: 메이커 주문 취소\n* `cancel_taker`: 테이커 주문 취소\n* `reduce`: 수량 감소\n"
+                    "default": "cancel_maker"
                   }
                 }
               }
@@ -533,70 +392,33 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         },
         "responses": {
           "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                },
-                "examples": {
-                  "Successful Example": {
-                    "summary": "Successful Example",
-                    "value": {
-                      "uuid": "ad217e24-ed02-469c-9b30-c08dbbda6908",
-                      "side": "bid",
-                      "ord_type": "limit",
-                      "price": "100000000",
-                      "state": "wait",
-                      "market": "KRW-BTC",
-                      "created_at": "2025-07-04T15:00:00+09:00",
-                      "volume": "1",
-                      "remaining_volume": "1",
-                      "executed_volume": "0.0",
-                      "reserved_fee": "70000.0",
-                      "remaining_fee": "70000.0",
-                      "paid_fee": "0.0",
-                      "locked": "100070000.0",
-                      "prevented_volume": "0",
-                      "prevented_locked": "0",
-                      "trades_count": 0,
-                      "new_order_uuid": "4b07aa31-4747-485c-8bce-ac5495e4a639",
-                      "new_order_identifier": "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          },
-          "201": {
             "description": "Object of cancel-and-new order result",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Order"
-                    },
-                    {
-                      "type": "object",
-                      "required": [
-                        "new_order_uuid"
-                      ],
-                      "properties": {
-                        "new_order_uuid": {
-                          "type": "string",
-                          "description": "신규 생성된 주문의 유일 식별자",
-                          "example": "4b07aa31-4747-485c-8bce-ac5495e4a639"
-                        },
-                        "new_order_identifier": {
-                          "type": "string",
-                          "description": "신규 생성된 주문의 클라이언트 지정 식별자",
-                          "example": "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/CancelAndNewOrder"
+                },
+                "example": {
+                  "uuid": "ad217e24-ed02-469c-9b30-c08dbbda6908",
+                  "side": "bid",
+                  "ord_type": "limit",
+                  "price": "100000000",
+                  "state": "wait",
+                  "market": "KRW-BTC",
+                  "created_at": "2025-07-04T15:00:00+09:00",
+                  "volume": "1",
+                  "remaining_volume": "1",
+                  "executed_volume": "0.0",
+                  "reserved_fee": "70000.0",
+                  "remaining_fee": "70000.0",
+                  "paid_fee": "0.0",
+                  "locked": "100070000.0",
+                  "smp_type": "none",
+                  "prevented_volume": "0",
+                  "prevented_locked": "0",
+                  "trades_count": 0,
+                  "new_order_uuid": "4b07aa31-4747-485c-8bce-ac5495e4a639",
+                  "new_order_identifier": "9ca023a5-851b-4fec-9f0a-48cd83c2eaae"
                 }
               }
             }

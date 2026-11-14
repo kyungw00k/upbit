@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:48:42.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 캔들 API로 지정한 기간의 시세 데이터를 CSV 파일로 출력하기
 
