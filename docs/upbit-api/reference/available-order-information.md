@@ -1,130 +1,55 @@
 ---
-updatedAt: 2026-08-20T12:03:34.000Z
+updatedAt: 2026-11-25T17:30:46.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 페어별 주문 가능 정보 조회
 
 지정한 페어의 주문 가능 정보를 조회합니다.
 
-종목 주문 가능 정보는 다음과 같은 주요 항목을 포함합니다.
+지정한 페어의 주문 가능 정보를 조회합니다.
 
-<table className="custom-table">
-  <thead>
-    <tr>
-      <th>주요 항목</th>
-      <th>관련 응답 필드</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td className="code-col">*적용 수수료율</td>
-      <td><code>bid_fee</code>,<code>ask_fee</code>,<br /><code>maker_bid_fee</code>,<code>maker_ask_fee</code><br />*'적용 수수료율'은 Open API를 통한 주문 요청 시점의 수수료율을 기준으로 합니다.</td>
-    </tr>
-    <tr>
-      <td className="code-col">지원 주문 방향 및 주문 유형</td>
-      <td><code>market.order_sides</code>,<code>market.bid_types</code><br /><code>market.ask_types</code></td>
-    </tr>
-    <tr>
-      <td className="code-col">기준 자산, 호가 자산의 통화 및<br />최소/최대 주문 가능 금액</td>
-      <td><code>market.bid</code>,<code>market.ask</code>,<code>market.max_total</code></td>
-    </tr>
-    <tr>
-      <td className="code-col">기준 자산, 호가 자산의 계정 잔고</td>
-      <td><code>bid_account</code>,<code>ask_account</code></td>
-    </tr>
-  </tbody>
-</table>
+주문 가능 정보는 다음과 같은 주요 항목을 포함합니다.
 
-<div className="callout-section callout-section--danger">
-  <div className="callout-title">
-    <i className="fa-solid fa-circle-exclamation"></i><code>market.order_types</code> 지원 종료 안내 (Deprecated)
-	</div>
-  종목 지원 주문 유형을 반환하는 order_types 필드는 지원이 종료될 예정입니다. 지원 종료 이후 응답에서 해당 필드가 제거될 예정이오니, 해당 필드를 사용하고 계신 경우 대체 필드인 ask_types, bid_types 필드를 사용해주시기 바랍니다
-</div>
+| 주요 항목                             | 관련 응답 필드                                                                                                 |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 적용 수수료율                           | `bid_fee`, `ask_fee`, `maker_bid_fee`, `maker_ask_fee`<br />※ 적용 수수료율은 API를 통한 주문 요청 시점의 수수료율을 기준으로 합니다. |
+| 지원 주문 방향 및 주문 유형                  | `market.order_sides`, `market.bid_types`, `market.ask_types`                                             |
+| 기준 자산 및 호가 자산의 통화, 최소·최대 주문 가능 금액 | `market.bid`, `market.ask`, `market.max_total`                                                           |
+| 기준 자산 및 호가 자산의 계정 잔고              | `bid_account`, `ask_account`                                                                             |
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+<Callout icon="far fa-octagon-exclamation" theme="error">
+  #### `market.order_types`**&#x20;지원 종료 안내(Deprecated)**
 
-    <div className="accordion-changelog-content">
-        
+  지원 주문 유형을 반환하는 `market.order_types` 필드는 지원이 종료될 예정이며, 이후 API 응답에서 제거될 수 있습니다.
 
+  해당 필드를 사용하고 있다면 대체 필드인 `market.bid_types`와 `market.ask_types`를 사용해 주세요.
+</Callout>
 
+***
 
+#### Rate Limit
 
+초당 최대 30회 호출할 수 있습니다.
 
+포켓 단위로 측정되며, \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits">`default` 그룹]</Anchor>에 속한 API는 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보를 위해 제한 또는 조정될 수 있습니다.
 
+#### API Key Permission
 
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[주문조회] 권한이 설정된 API Key를 사용해야 합니다.
 
+권한 오류(`out_of_scope`)가 발생하면 [API Key 관리](https://www.upbit.com/mypage/open_api_management) 메뉴에서 권한 설정을 확인해 주세요.
 
-
-
-
-
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">-</td>
-            <td>2024-04-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_ord_type_expand"> 최유리지정가 주문 유형 신규 지원<br />주문 옵션(time_in_force) 추가 지원</a></td>
-      	</tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2022-10-14</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/open-api-변경-사항-안내-적용-일자-1014"><code>market.order_types</code> 필드 Deprected,<code>ask_types</code>, <code>bid_types</code> 필드 추가<br /></a></td>
-        </tr>
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-<br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -460,8 +385,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -596,7 +521,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid parameter error": {
+                  "invalid_parameter": {
                     "value": {
                       "error": {
                         "name": "invalid_parameter",
@@ -604,7 +529,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       }
                     }
                   },
-                  "not found market error": {
+                  "notfoundmarket": {
                     "value": {
                       "error": {
                         "name": "notfoundmarket",
@@ -623,7 +548,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [주문 생성](https://docs.upbit.com/kr/reference/new-order.md)
 * [주문 생성 테스트](https://docs.upbit.com/kr/reference/order-test.md)

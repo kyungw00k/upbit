@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T18:09:02.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 디지털 자산 출금 요청
 
@@ -26,91 +27,40 @@ API를 통한 디지털 자산 출금시 출금 대상 주소를 **반드시 사
 
 일반 출금과 바로 출금에 관한 자세한 사항은 [업비트 고객센터 - 자주하는 질문](https://support.upbit.com/hc/ko/articles/34786146778009-%EC%9D%BC%EB%B0%98-%EC%B6%9C%EA%B8%88%EA%B3%BC-%EB%B0%94%EB%A1%9C-%EC%B6%9C%EA%B8%88%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%B4-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)를 참고하시기 바랍니다.
 
-  <div className="callout-section">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i>  네트워크 타입("net_type")은 필수 파라미터입니다.
-      </div>
-      <b>네트워크 타입("net_type")</b>은 디지털 자산 입출금시 실제 자산이 이동되는 블록체인 네트워크(대상 체인)를 지정하기 위한 식별자 필드(예: BTC)입니다. 디지털 자산 출금 시 필수 파라미터로, 정상적인 입출금 진행을 위해 정확한 식별자 값을 사용해야 합니다.
-      디지털 자산 출금 API 호출 시 사전에 출금 <a href="list-withdrawal-addresses">허용 주소 목록 조회 API</a>를 호출하여 응답으로부터 정확한 네트워크 타입 값을 참조하여 사용하시기 바랍니다. 
-  </div>
+<Callout icon="far fa-circle-info" theme="info">
+  #### 네트워크 타입("net_type")은 필수 파라미터입니다.
 
-<div className="callout-section callout-section--danger">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i> POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.
-      </div>
-    Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <b>반드시 JSON 형식으로 요청 본문(Body)을 전송</b>해주시기 바랍니다.
-  </div>
+  네트워크 타입("net_type")은 디지털 자산 입출금시 실제 자산이 이동되는 블록체인 네트워크(대상 체인)를 지정하기 위한 식별자 필드(예: BTC)입니다. 디지털 자산 출금 시 필수 파라미터로, 정상적인 입출금 진행을 위해 정확한 식별자 값을 사용해야 합니다. 디지털 자산 출금 API 호출 시 사전에 출금 [허용 주소 목록 조회 API](https://docs.upbit.com/kr/reference/list-withdrawal-addresses)를 호출하여 응답으로부터 정확한 네트워크 타입 값을 참조하여 사용하시기 바랍니다.
+</Callout>
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+<Callout icon="far fa-octagon-exclamation" theme="error">
+  #### POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.
 
-    <div className="accordion-changelog-content">
-        
+  Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다.**&#x20;반드시 JSON 형식으로 요청 본문(Body)을 전송**해주시기 바랍니다.
+</Callout>
 
+***
 
+#### Rate Limit
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">-</td>
-            <td>2023-05-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
-      </tr>
-tr>
-            <td className="code-col">-</td>
-            <td>2020-05-29</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_feature_0529"><code>transaction_type</code> 필드 추가</a></td>
-        </tr>
-tr>
-            <td className="code-col">-</td>
-            <td>2019-04-23</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/open-api-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%95%88%EB%82%B4-%EC%A0%81%EC%9A%A9-%EC%9D%BC%EC%9E%90-423-1100">바로 출금 기능 지원</a></td>
-        </tr>
+초당 최대 30회 호출할 수 있습니다.&#x20;
 
-    </tbody>
-</table>
+포켓 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#:~:text=%ED%98%B8%EA%B0%80%20%EC%A0%95%EC%B1%85%20%EC%A1%B0%ED%9A%8C-,Exchange%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`default` 그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
 
+#### API Key Permission
 
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [출금하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[출금하기] 권한이 설정된 API Key를 사용해야 합니다. 권한 오류(`out_of_scope`)가 발생하면 <Anchor target="_blank" href="https://www.upbit.com/mypage/open_api_management">API Key 관리</Anchor> 메뉴에서 권한 설정을 확인해 주세요.
 
 <br />
 
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -246,8 +196,8 @@ tr>
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -380,7 +330,7 @@ tr>
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid enum error": {
+                  "validation_error": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -388,11 +338,31 @@ tr>
                       }
                     }
                   },
-                  "invalid parameter error": {
+                  "invalid_parameter": {
                     "value": {
                       "error": {
                         "name": "invalid_parameter",
                         "message": "잘못된 파라미터"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "error object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "withdrawal_destination_restricted": {
+                    "value": {
+                      "error": {
+                        "name": "withdrawal_destination_restricted",
+                        "message": "해당 거래소로의 출금이 현재 제한되어 요청을 처리할 수 없습니다. 동일한 거래소로의 반복 요청을 중단하고, 출금 가능한 다른 거래소를 이용해 주세요."
                       }
                     }
                   }
@@ -407,7 +377,7 @@ tr>
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [출금 가능 정보 조회](https://docs.upbit.com/kr/reference/available-withdrawal-information.md)
 * [출금 허용 주소 목록 조회](https://docs.upbit.com/kr/reference/list-withdrawal-addresses.md)

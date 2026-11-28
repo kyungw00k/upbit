@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T14:12:47.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 개발환경 설정
 
@@ -35,13 +36,13 @@ Upbit API를 처음 사용하는 경우, 다음 순서로 진행하는 것을 �
 * [Node.js 개발 환경 설정](https://docs.upbit.com/kr/docs/dev-environment-nodejs)\
   Node.js 설치, 패키지 관리, REST API 및 WebSocket 호출을 위한 라이브러리 설정을 포함합니다.
 
-# Sub pages
+# 하위 페이지
 
 * [Python](https://docs.upbit.com/kr/docs/dev-environment-python.md)
 * [Java](https://docs.upbit.com/kr/docs/dev-environment-java.md)
 * [Node.js](https://docs.upbit.com/kr/docs/dev-environment-nodejs.md)
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [Upbit API 이용 준비](https://docs.upbit.com/kr/docs/api-setup.md)
 * [Public API 호출](https://docs.upbit.com/kr/docs/first-quotation-api-call.md)

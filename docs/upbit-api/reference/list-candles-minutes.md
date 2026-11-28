@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-28T05:31:35.000Z
+updatedAt: 2026-11-25T17:08:47.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 분(Minute) 캔들 조회
 
@@ -12,19 +13,19 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 분 캔들 조회 API는 Unit Path 파라미터를 지원합니다. Unit은 분단위 내에서 캔들 하나당 조회 단위(캔들의 너비)를 지정하기 위한 파라미터 입니다. 현재 1, 3, 5, 10, 15, 30, 60, 240분 단위로 캔들 너비를 조정할 수 있으며, 예를 들어 `/v1/candles/minutes/5` 로 요청하는 경우 체결 정보를 5분 단위로 Group하여 캔들을 조회합니다.
 
-[block:html]
-{
-  "html": "<div class=\"callout-section callout-section--danger\">\n    <div class=\"callout-title\">\n      <i class=\"fa-solid fa-circle-exclamation\"></i> 캔들은 해당 시간대에 체결이 발생한 경우에만 생성됩니다.\n      </div>\n    해당 캔들의 시작시각부터 종료시각까지 체결이 발생하지 않은 경우 캔들이 생성되지 않으며, 응답에도 포함되지 않습니다. \n    예를 들어, candle_date_time이 2024-08-31T22:25:00인 분 캔들의 경우 22:25:00(이상)부터 22:26:00(미만)까지 체결이 발생하지 않은 경우 생성되지 않습니다.\n  </div>"
-}
-[/block]
+<Callout icon="far fa-circle-info" theme="info">
+  #### 캔들은 해당 시간대에 체결이 발생한 경우에만 생성됩니다.
 
-[block:html]
-{
-  "html": "<div class=\"accordion-changelog\">\n    <input type=\"checkbox\" id=\"api-changelog\">\n    <label for=\"api-changelog\">\n        <div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Revision History <i class=\"fa-solid fa-angle-right\"></i> </div>\n    </label>\n\n    <div class=\"accordion-changelog-content\">\n        <table class=\"custom-table\">\n            <thead>\n                <tr>\n                    <th>반영 버전</th>\n                    <th>반영 일자</th>\n                    <th>변경 사항</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"code-col\"></td>\n                    <td>2018-06-21</td>\n                    <td>API 신규 지원</td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Rate Limit</div>\n<div class=\"box-rate-limit\">\n  초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 [캔들 그룹] 내에서 요청 가능 횟수를 공유합니다.\n</div>"
-}
-[/block]
+  해당 캔들의 시작시각부터 종료시각까지 체결이 발생하지 않은 경우 캔들이 생성되지 않으며, 응답에도 포함되지 않습니다. 예를 들어, candle_date_time이 2024-08-31T22:25:00인 분 캔들의 경우 22:25:00(이상)부터 22:26:00(미만)까지 체결이 발생하지 않은 경우 생성되지 않습니다.
+</Callout>
 
-# OpenAPI definition
+***
+
+#### Rate Limit
+
+초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#quotation-rest-api:~:text=%EB%8A%98%EB%A6%B4%20%EC%88%98%20%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Quotation%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`candle`그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다.
+
+# OpenAPI 정의
 
 ```json
 {
@@ -361,7 +362,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [초(Second) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-seconds.md)
 * [일(Day) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-days.md)

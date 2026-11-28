@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:48:42.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 캔들 API로 지정한 기간의 시세 데이터를 CSV 파일로 출력하기
 
@@ -511,7 +512,7 @@ datetime 객체를 문자열로 변환하는 메서드입니다. 업비트의 �
         return floored.strftime("%Y-%m-%dT%H:%M:%SZ")
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [REST API를 이용한 시세 조회](https://docs.upbit.com/kr/docs/upbit-quotation-restful-api.md)
 * [WebSocket으로 실시간 캔들 차트 생성](https://docs.upbit.com/kr/docs/how-to-subscribe-quotation-stream.md)

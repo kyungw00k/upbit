@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-09T13:23:10.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 기술 레퍼런스
 
@@ -290,6 +291,6 @@ uv run upbit-strategy-toolkit backtest run strategies/examples/sma_cross.json \
 
 <br />
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [지표 정의](https://docs.upbit.com/kr/docs/upbit-strategy-toolkit-indicators.md)

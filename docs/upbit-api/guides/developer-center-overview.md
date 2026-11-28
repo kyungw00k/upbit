@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T09:43:56.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 업비트 개발자 센터 안내
 
@@ -42,6 +43,6 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 [/block]
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [주요 용어 안내](https://docs.upbit.com/kr/docs/terms.md)

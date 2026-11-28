@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T17:49:17.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # id로 주문 목록 조회
 
@@ -12,86 +13,34 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
 
 주문 식별자 없이 특정 페어의 전체 주문 내역을 조회하고자 하시는 경우, 또는 시간을 조회 기준으로 적용해야 하는 경우 [체결 대기 주문 목록 조회](https://docs.upbit.com/kr/reference/list-open-orders) 또는 [종료 주문 목록 조회](https://docs.upbit.com/kr/reference/list-closed-orders) API를 사용할 수 있습니다.
 
-<div className="callout-section">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i>  조회 요청 시 uuid[] 또는 identifier[]를 반드시 포함해야 합니다.
-      </div>
-    두 파라미터 모두 선택(Optional) 파라미터이지만, 조회하고자 하는 주문 지정을 위해 반드시 하나의 파라미터를 포함해야 합니다. 두 파라미터를 동시에 사용할 수 없습니다.
-</div>
+<Callout icon="far fa-circle-info" theme="info">
+  #### 조회 요청 시 uuid 또는 identifier 중 하나는 반드시 포함해야 합니다.
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+  두 파라미터 모두 선택(Optional) 파라미터이지만, 조회하고자 하는 주문 지정을 위해 반드시 하나의 파라미터는 포함해야 합니다. uuid와 identifier를 모두 사용하는 경우, uuid를 기준으로 조회됩니다.
+</Callout>
 
-    <div className="accordion-changelog-content">
-        
+***
 
+#### Rate Limit
 
+초당 최대 30회 호출할 수 있습니다.
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">v1.5.8</td>
-            <td>2025-07-02</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/smp"> 자전거래 체결 방지(SMP) 기능<br />신규 지원에 따른 필드 추가<br /><code>smp_type</code>,<code>prevented_volume</code>,<code>prevented_locked</code></a></td>
-      	</tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2024-12-04</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/myorder_identifier"> <code>identifier</code> 필드 신규 지원</a></td>
-      	</tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2024-06-27</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_get_orders"> '지정 주문 목록 조회' 기능 신규 지원</a></td>
-        </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2024-04-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_ord_type_expand"> 최유리지정가 주문 유형 신규 지원<br />주문 옵션(time_in_force) 추가 지원</a></td>
-        </tr>
-    </tbody>
-</table>
+포켓 단위로 측정되며, \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#:~:text=%ED%98%B8%EA%B0%80%20%EC%A0%95%EC%B1%85%20%EC%A1%B0%ED%9A%8C-,Exchange%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`default` 그룹</Anchor>]에 속한 API는 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보를 위해 제한 또는 조정될 수 있습니다.
 
+#### **API Key Permission**<br />
 
+<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/auth">인증</Anchor>이 필요한 API로, \[주문조회] 권한이 설정된 API Key를 사용해야 합니다.
 
+권한 오류(out\_of\_scope)가 발생하면[ API Key 관리 메뉴](https://www.upbit.com/mypage/open_api_management?tab=api_key)에서 권한 설정을 확인해 주세요.
 
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-<br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -116,6 +65,7 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
           "paid_fee",
           "locked",
           "trades_count",
+          "smp_type",
           "prevented_volume",
           "prevented_locked"
         ],
@@ -239,21 +189,22 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
             "enum": [
               "reduce",
               "cancel_maker",
-              "cancel_taker"
+              "cancel_taker",
+              "none"
             ],
-            "description": "자전거래 체결 방지(Self-Match Prevention) 모드",
+            "description": "주문에 적용된 자전거래 체결 방지(SMP) 타입",
             "example": "cancel_maker"
           },
           "prevented_volume": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 취소된 수량.\n\n동일 사용자의 주문 간 체결이 발생하지 않도록 설정(SMP)에 따라 취소된 주문 수량입니다.\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 주문 수량",
             "example": 2
           },
           "prevented_locked": {
             "type": "string",
             "format": "decimal",
-            "description": "자전거래 방지로 인해 해제된 자산.\n자전거래 체결 방지 설정으로 인해 취소된 주문의 잔여 자산입니다.\n  - 매수 주문의 경우: 취소된 금액\n  - 매도 주문의 경우: 취소된 수량\n",
+            "description": "자전거래 체결 방지(SMP)로 인해 체결이 방지된 금액 또는 수량\n매수 주문은 수수료를 포함한 금액, 매도 주문은 주문 수량",
             "example": 2000
           },
           "trades": {
@@ -339,8 +290,8 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -466,6 +417,7 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
                         "created_at": "2025-08-09T16:52:49+09:00",
                         "volume": "0.0001",
                         "remaining_volume": "0.0001",
+                        "smp_type": "none",
                         "prevented_volume": "0",
                         "reserved_fee": "7.7886",
                         "remaining_fee": "7.7886",
@@ -484,6 +436,7 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
                         "created_at": "2025-08-09T16:44:00+09:00",
                         "volume": "5.377594",
                         "remaining_volume": "0",
+                        "smp_type": "none",
                         "prevented_volume": "0",
                         "reserved_fee": "0",
                         "remaining_fee": "0",
@@ -507,7 +460,7 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid parameter error": {
+                  "invalid_parameter": {
                     "value": {
                       "error": {
                         "name": "invalid_parameter",
@@ -526,7 +479,7 @@ UUID 또는 Identifier 목록으로 주문을 조회합니다.
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [페어별 주문 가능 정보 조회](https://docs.upbit.com/kr/reference/available-order-information.md)
 * [주문 생성](https://docs.upbit.com/kr/reference/new-order.md)

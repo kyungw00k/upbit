@@ -1,97 +1,60 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T17:47:26.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # id로 주문 목록 취소 접수
 
 UUID 또는 Identifier 목록으로 취소 대상 주문을 지정 취소합니다. 한 번의 요청으로 최대 20개의 주문을 취소할 수 있습니다.
 
-<div className="callout-section callout-section--danger">
-  <div className="callout-title">
-    <i className="fa-solid fa-circle-exclamation"></i> 주문 취소 요청이 거절되는 경우
-    </div>
-    다음과 같은 사유로 주문 취소 요청이 거절될 수 있습니다.
-    <li>이미 전량 체결 완료되어 취소가 불가한 주문</li>
-    <li>이미 취소가 완료된 주문</li>
-    <li>해당 주문의 페어가 리브랜딩 등의 이유로 서비스를 일시 정지한 경우</li>
-</div>
+<Callout icon="far fa-octagon-exclamation" theme="error">
+  #### 주문 취소 요청이 거절되는 경우
 
-<div className="callout-section callout-section--danger">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i> 이 API는 쿼리 파라미터 형식만 지원합니다.
-      </div>
-    모든 요청 파라미터는 쿼리 파라미터 형식으로만 요청할 수 있습니다. Request Body를 통한 form 형식 또는 json 형식의 파라미터 요청을 지원하지 않습니다. 
-		<br /><br />
-    [예시] /v1/orders/uuids?uuids[]=1234567890&uuids[]=1234567891
-  </div>
+  다음과 같은 사유로 주문 취소 요청이 거절될 수 있습니다.
 
-<div className="callout-section">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i>  취소 요청 시 uuid[] 또는 identifier[]를 반드시 포함해야 합니다.
-      </div>
-    두 파라미터 모두 선택(Optional) 파라미터이지만, 취소 대상 주문 지정을 위해 반드시 하나의 파라미터를 포함해야 합니다. 두 파라미터를 동시에 사용할 수 없습니다.
-  </div>
+  * 이미 전량 체결 완료되어 취소가 불가한 주문
+  * 이미 취소가 완료된 주문
+  * 해당 주문의 페어가 리브랜딩 등의 이유로 서비스를 일시 정지한 경우
+</Callout>
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+<Callout icon="far fa-circle-info" theme="info">
+  #### **이 API는 쿼리 파라미터 형식만 지원합니다.**
 
-    <div className="accordion-changelog-content">
-        
+  모든 요청 파라미터는 쿼리 파라미터 형식으로만 요청할 수 있습니다. Request Body를 통한 form 형식 또는 json 형식의 파라미터 요청을 지원하지 않습니다.
 
+  \[예시] /v1/orders/uuids?uuids\[]=1234567890\&uuids\[]=1234567891
+</Callout>
 
+<Callout icon="far fa-circle-info" theme="info">
+  #### 취소 시 uuid 또는 identifier 중 하나는 반드시 포함해야 합니다.
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">-</td>
-            <td>2024-12-11</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_delete_orders"> '지정 주문 목록 취소' 기능 신규 지원</a></td>
-        </tr>
-    </tbody>
-</table>
+  두 파라미터 모두 선택(Optional) 파라미터이지만, 취소하고자 하는 주문 지정을 위해 반드시 하나의 파라미터는 포함해야 합니다. uuid와 identifier를 모두 사용하는 경우, uuid를 기준으로 취소됩니다.
+</Callout>
 
+***
 
+#### Rate Limit
 
+초당 최대 30회 호출할 수 있습니다.
 
-    </div>
-</div>
+포켓 단위로 측정되며, \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#:~:text=%ED%98%B8%EA%B0%80%20%EC%A0%95%EC%B1%85%20%EC%A1%B0%ED%9A%8C-,Exchange%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`default` 그룹</Anchor>]에 속한 API는 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보를 위해 제한 또는 조정될 수 있습니다.
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+#### **API Key Permission**<br />
 
-<div className="box-rate-limit">
+<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/auth">인증</Anchor>이 필요한 API로, \[주문하기] 권한이 설정된 API Key를 사용해야 합니다.
 
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
+권한 오류(out\_of\_scope)가 발생하면[ API Key 관리 메뉴](https://www.upbit.com/mypage/open_api_management?tab=api_key)에서 권한 설정을 확인해 주세요.
 
-</div>
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [주문하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -224,8 +187,8 @@ UUID 또는 Identifier 목록으로 취소 대상 주문을 지정 취소합니�
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -346,7 +309,7 @@ UUID 또는 Identifier 목록으로 취소 대상 주문을 지정 취소합니�
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "body parameter not supported error": {
+                  "QUERY_PARAMETER_NOT_SUPPORTED": {
                     "value": {
                       "error": {
                         "name": "QUERY_PARAMETER_NOT_SUPPORTED",
@@ -354,7 +317,7 @@ UUID 또는 Identifier 목록으로 취소 대상 주문을 지정 취소합니�
                       }
                     }
                   },
-                  "bad request error": {
+                  "bad_request": {
                     "value": {
                       "error": {
                         "name": "bad_request",
@@ -373,7 +336,7 @@ UUID 또는 Identifier 목록으로 취소 대상 주문을 지정 취소합니�
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [페어별 주문 가능 정보 조회](https://docs.upbit.com/kr/reference/available-order-information.md)
 * [주문 생성](https://docs.upbit.com/kr/reference/new-order.md)

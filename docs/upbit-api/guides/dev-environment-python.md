@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:41:32.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Python
 
@@ -190,7 +191,7 @@ ws.run_forever(ping_interval=30, ping_timeout=10, reconnect=2)
 }
 [/block]
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [Java](https://docs.upbit.com/kr/docs/dev-environment-java.md)
 * [Node.js](https://docs.upbit.com/kr/docs/dev-environment-nodejs.md)

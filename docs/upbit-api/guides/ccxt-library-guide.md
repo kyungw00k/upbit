@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T07:01:20.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # CCXT 라이브러리 연동 안내
 
@@ -696,7 +697,7 @@ CCXT를 통해 실행한 업비트 API 호출 결과를 다음과 같이 확인�
 
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [개요](https://docs.upbit.com/kr/docs/upbit-ai-agent-overview.md)
 * [Upbit SDK](https://docs.upbit.com/kr/docs/upbit-sdk.md)

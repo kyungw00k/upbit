@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-07T15:49:56.000Z
+updatedAt: 2026-11-25T12:49:11.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Upbit API 이용 준비
 
@@ -137,7 +138,7 @@ Upbit API 사용 전, 사용 목적을 먼저 확인하세요.
 
       <td>
         - 메인포켓 :&#x20;
-          - <Anchor target="_blank" href="ref : post-universal-transfer">메인포켓 자산 이전</Anchor>
+          - <Anchor target="_blank" href="ref: post-universal-transfer">메인포켓 자산 이전</Anchor>
         - 서브포켓 :&#x20;
           - <Anchor target="_blank" href="ref: post-transfer">서브포켓 자산 이전</Anchor>
       </td>
@@ -231,6 +232,74 @@ Upbit API 사용 전, 사용 목적을 먼저 확인하세요.
         - 출금 안심차단 1회<br />해지 필요
       </td>
     </tr>
+
+    <tr>
+      <td>
+        [코인빌리기](https://docs.upbit.com/kr/reference/lending-overview)
+      </td>
+
+      <td>
+        필요
+      </td>
+
+      <td>
+        미지원
+      </td>
+
+      <td>
+        코인빌리기
+      </td>
+
+      <td>
+        - 권한 설정 시 이용 자격(고객 확인, 약관 동의 등) 확인
+        - 신청 테스트·신청·추가신청은 DAXA 온라인 교육 이수 필요
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [공지사항 수신](https://docs.upbit.com/kr/reference/websocket-announcement)
+      </td>
+
+      <td>
+        필요
+      </td>
+
+      <td>
+        필요
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Private WebSocket으로 수신<br />별도 권한 설정 불필요
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [기술적 지표 수신](https://docs.upbit.com/kr/reference/websocket-indicator)
+      </td>
+
+      <td>
+        필요
+      </td>
+
+      <td>
+        필요
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        - Private WebSocket으로 수신<br />별도 권한 설정 불필요
+        - [기술적 지표 값](https://docs.upbit.com/kr/reference/websocket-indicator) / [기술적 지표 시그널](https://docs.upbit.com/kr/reference/websocket-indicator-signal)
+      </td>
+    </tr>
   </tbody>
 </Table>
 
@@ -241,12 +310,14 @@ Upbit API 사용 전, 사용 목적을 먼저 확인하세요.
 
   권한 또는 출금허용주소가 사전에 설정되지 않은 경우 API 호출 시 오류가 발생할 수 있습니다.
 
-  - **401 Unauthorized(out\_of\_scope)**
+  - **401 Unauthorized(out_of_scope)**
     - API Key에 필요한 권한이 포함되어 있지 않은 경우 발생합니다. 필요한 권한 선택 후 새로 Key를 발급 받길 바랍니다.
-  - **400 Bad Request(withdraw\_address\_not\_registered)**
+  - **400 Bad Request(withdraw_address_not_registered)**
     - 출금허용주소가 등록되지 않은 경우 발생합니다. 출금주소를 등록하시길 바랍니다.
-  - **403 Forbidden (open\_api\_withdraw\_locked)**
+  - **403 Forbidden (open_api_withdraw_locked)**
     - 해당 API Key는 출금 안심차단이 설정되어 있어 출금이 불가능합니다.<br />\[업비트 앱 > 더보기 > 인증/보안 > Open API 관리]에서 해당 키의 출금 안심차단을 해지해주세요.
+  - **403 Forbidden (not_agreed_daxa_education)**
+    - DAXA 온라인 교육을 이수하지 않은 상태에서 코인빌리기 신청 테스트, 신청, 추가신청을 요청한 경우 발생합니다. 교육을 이수한 뒤 다시 요청해 주세요.
 </Callout>
 
 <br />
@@ -258,15 +329,13 @@ Upbit API 사용 전, 사용 목적을 먼저 확인하세요.
 * [개인지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw-private-wallet)
 * [개발환경 설정](https://docs.upbit.com/kr/docs/dev-environment)
 
-<br />
-
-# Sub pages
+# 하위 페이지
 
 * [API Key 발급 받기](https://docs.upbit.com/kr/docs/api-key.md)
 * [거래소 지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw_access_register.md)
 * [개인지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw-private-wallet.md)
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [개발환경 설정](https://docs.upbit.com/kr/docs/dev-environment.md)
 * [Public API 호출](https://docs.upbit.com/kr/docs/first-quotation-api-call.md)

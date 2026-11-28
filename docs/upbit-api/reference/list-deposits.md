@@ -1,85 +1,36 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T18:20:50.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 입금 목록 조회
 
 최신 입금 목록을 조회합니다.
 
-조회 조건을 설정하여 해당 조건을 만족하는 입금 목록만 조회할 수 있습니다. 통화, 입금 진행 상태, UUID 목록 또는 TXID 목록을 필터 파라미터로 사용할 수 있습니다. 조건을 별도로 지정하지 않는 경우 최근 100개 출금 이력이 반환됩니다
+조회 조건을 설정하여 해당 조건을 만족하는 입금 목록만 조회할 수 있습니다. 통화, 입금 진행 상태, UUID 목록 또는 TXID 목록을 필터 파라미터로 사용할 수 있습니다. 조건을 별도로 지정하지 않는 경우 최근 100개 출금 이력이 반환됩니다.
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+***
 
-    <div className="accordion-changelog-content">
-        
+#### Rate Limit
 
+초당 최대 30회 호출할 수 있습니다.&#x20;
 
+포켓 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#:~:text=%ED%98%B8%EA%B0%80%20%EC%A0%95%EC%B1%85%20%EC%A1%B0%ED%9A%8C-,Exchange%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`default` 그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">-</td>
-            <td>2023-05-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
-      </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2020-05-29</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/new_feature_0529"><code>transaction_type</code> 필드 추가</a></td>
-        </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2019-07-04</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/open-api-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%95%88%EB%82%B4-%EC%A0%81%EC%9A%A9-%EC%9D%BC%EC%9E%90-0704-1500"><code>state</code><code>uuid</code><code>txid</code> 파라미터 신규 지원</a></td>
-        </tr>
+#### API Key Permission
 
-    </tbody>
-</table>
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[입금조회] 권한이 설정된 API Key를 사용해야 합니다. 권한 오류(`out_of_scope`)가 발생하면 <Anchor target="_blank" href="https://www.upbit.com/mypage/open_api_management">API Key 관리</Anchor> 메뉴에서 권한 설정을 확인해 주세요.
 
-
-
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [입금조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -158,7 +109,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
           "amount": {
             "type": "string",
             "format": "decimal",
-            "description": "입금하고자 하는 원화의 금액.",
+            "description": "입금된 수량",
             "example": "10000"
           },
           "fee": {
@@ -208,8 +159,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -407,7 +358,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid enum error": {
+                  "validation_error": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -427,7 +378,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid query payload error": {
+                  "invalid_query_payload": {
                     "value": {
                       "error": {
                         "name": "invalid_query_payload",
@@ -446,7 +397,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [디지털 자산 입금 가능 정보 조회](https://docs.upbit.com/kr/reference/available-deposit-information.md)
 * [입금 주소 생성 요청](https://docs.upbit.com/kr/reference/create-deposit-address.md)

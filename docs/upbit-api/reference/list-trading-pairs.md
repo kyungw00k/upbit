@@ -1,59 +1,19 @@
 ---
-updatedAt: 2026-07-29T11:04:10.000Z
+updatedAt: 2026-11-25T16:23:15.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 페어 목록 조회
 
 업비트에서 지원하는 모든 페어 목록을 조회합니다.
 
-<HTMLBlock>{`
-<div class="accordion-changelog">
-    <input type="checkbox" id="api-changelog">
-    <label for="api-changelog">
-        <div class="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i class="fa-solid fa-angle-right"></i> </div>
-    </label>
+#### Rate Limit
 
-    <div class="accordion-changelog-content">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>반영 버전</th>
-                    <th>반영 일자</th>
-                    <th>변경 사항</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="code-col">-</td>
-                    <td>2024-11-20</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/mytrade_market_warning_deprecated_11_20"> market_event 필드 신규 지원,<br>market_warning 필드 필수 여부 변경 </a></td>
-              	</tr>
-								<tr>
-                    <td class="code-col">-</td>
-                    <td>2024-02-22</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/voc_update"> 페어별 시장경보 조회 지원</a></td>
-                </tr>
-								<tr>
-                    <td class="code-col">-</td>
-                    <td>-</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/open-api-개선사항-안내-투자-유의-종목-필드-추가"> is_details 파라미터 지원</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 \[[`market`그룹](https://docs.upbit.com/kr/reference/rate-limits#quotation-rest-api:~:text=%EB%8A%98%EB%A6%B4%20%EC%88%98%20%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Quotation%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9)] 내에서 요청 가능 횟수를 공유합니다.
 
-<div class="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-<div class="box-rate-limit">
-  초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 [마켓 그룹] 내에서 요청 가능 횟수를 공유합니다.
-</div>
-`}</HTMLBlock>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {

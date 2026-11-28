@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T13:45:43.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 업비트 어시스턴트 이용 안내
 
@@ -74,7 +75,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 업비트 어시스턴트는 현재 베타(Beta) 버전으로 제공되며, 기능 개선과 문서 범위 확대가 예정되어 있습니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [개요](https://docs.upbit.com/kr/docs/upbit-ai-agent-overview.md)
 * [Upbit SDK](https://docs.upbit.com/kr/docs/upbit-sdk.md)

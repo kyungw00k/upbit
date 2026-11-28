@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-14T09:05:34.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # RSI 지표 산출
 
@@ -331,6 +332,6 @@ Upbit Strategy Toolkit은 이용자가 직접 정의한 규칙을 과거 데이�
 
 <br />
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [24시간 누적 거래대금 확인](https://docs.upbit.com/kr/docs/24-hour-accumulated-trade-volume.md)

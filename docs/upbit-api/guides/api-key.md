@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-07T15:19:22.000Z
+updatedAt: 2026-11-25T15:22:23.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # API Key 발급 받기
 
@@ -40,7 +41,9 @@ API Key로 수행하고자 하는 API 기능 권한을 모두 선택합니다. �
 
 #### 메인포켓
 
-![](https://files.readme.io/3fb0fd456aea02e499f8a6b628e2e49b2fcc3cab642d04dc5d1d07506e1ee4b4-openapi_key01.png)
+![](https://files.readme.io/f3dbaa1aa788b4ca08141f4dc92a38dd09adf59a1d5b0df833b1c51b667d7907-api-key1.png)
+
+<br />
 
 <Callout icon="fad fa-circle-exclamation" theme="warn">
   ### '출금하기' 권한 포함하여 API Key 발급 시 **출금 안심차단**이 완료되어야 출금이 가능합니다.
@@ -90,13 +93,29 @@ API Key 발급 인증을 위해 표시되는 인증 안내 팝업에서 사용�
 
 ## 자주 들어오는 질문
 
-**Q. 출금 안심차단은 어디서 해지 가능한가요?**
+<Accordion title="출금 안심차단은 어디서 해지 가능한가요?" icon="fa-info-circle">
+  업비트 모바일 앱에 로그인 완료 후 \[인증/보안 > Open API 관리 > 활성] 페이지에서 차단을 해지할 Key를 선택해 안심차단을 해지해주세요.
+</Accordion>
 
-* 업비트 모바일 앱에 로그인 완료 후 \[인증/보안 > Open API 관리 > 활성] 페이지에서 차단을 해지할 Key를 선택해 안심차단을 해지해주세요.
+<Accordion title="출금 안심차단 출금 차단 범위는 어디까지인가요?" icon="fa-info-circle">
+  원화 및 디지털 자산 모두 출금이 불가능합니다.
+</Accordion>
 
-**Q. 출금 안심차단 출금 차단 범위는 어디까지인가요?**
+<Accordion title="코인빌리기 API를 이용하고 싶어요. 어떻게 이용할 수 있나요?" icon="fa-info-circle">
+  코인빌리기 API를 이용하려면 **코인빌리기 권한이 설정된 API Key**가 필요합니다. 해당 권한은 고객확인(KYC), 약관 동의 등 기본 요건을 충족한 후 설정할 수 있습니다.
 
-* 원화 및 디지털 자산 모두 출금이 불가능합니다.
+  ![](https://files.readme.io/e4bc9e27edf8611603d3017a2858b6e45f3ec119eb87cc2d345a7c3993bff153-lending-api-mangement1.png)
+
+  API Key 발급 시 \[Open API 관리 > Open API Key 관리]에서 메인포켓을 선택한 후, **\[코인빌리기] 권한**을 선택해 주세요. 권한 추가를 위한 동의 안내창이 표시되면 **\[필수] 질권설정 계약 동의** 내용을 확인하고, **\[동의하고 권한 추가]** 버튼을 선택한 후 API Key 발급을 진행할 수 있습니다.
+
+  단, 코인빌리기 권한 설정과 실제 서비스 이용 조건은 다릅니다. 코인빌리기를 신청하려면 **레벨 1 이상**이어야 하며, 보유 자산, 최근 매매 이력, DAXA 교육 이수 등 별도의 이용 조건을 충족해야 합니다.
+
+  자세한 자격 요건은 아래 '회원 조건'**을, 대여한도 및 레벨별 이용 기준은** '이용 조건'을 참고해 주세요.
+</Accordion>
+
+**Q. 코인빌리기 API를 이용하고 싶어요. 어떻게 이용할 수 있나요?**
+
+*
 
 **Q. 에러 해결 방법이 궁금해요?**
 
@@ -144,7 +163,7 @@ API Key 발급 조건이 만족되지 않은 경우 Open API Key 발급 버튼�
 
 해당 팝업이 노출되는 경우, \[만료된 Key] 탭으로 이동하여 조회되는 만료된 Key를 삭제하시고 다시 등록해보시길 바랍니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [거래소 지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw_access_register.md)
 * [개인지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw-private-wallet.md)

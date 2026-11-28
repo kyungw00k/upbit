@@ -1,20 +1,19 @@
 ---
-updatedAt: 2026-07-28T06:00:15.000Z
+updatedAt: 2026-11-25T17:11:53.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 연(Year) 캔들 조회
 
 연 단위 캔들 목록을 조회합니다.
 
-[block:html]
-{
-  "html": "<div class=\"accordion-changelog\">\n    <input type=\"checkbox\" id=\"api-changelog\">\n    <label for=\"api-changelog\">\n        <div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Revision History <i class=\"fa-solid fa-angle-right\"></i> </div>\n    </label>\n\n    <div class=\"accordion-changelog-content\">\n        <table class=\"custom-table\">\n            <thead>\n                <tr>\n                    <th>반영 버전</th>\n                    <th>반영 일자</th>\n                    <th>변경 사항</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"code-col\">-</td>\n                    <td>2024-10-30</td>\n                    <td><a href=\"https://docs.upbit.com/kr/changelog/year_sec_candles\"> 초캔들, 연캔들 신규 지원</a></td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Rate Limit</div>\n<div class=\"box-rate-limit\">\n  초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 [캔들 그룹] 내에서 요청 가능 횟수를 공유합니다.\n</div>"
-}
-[/block]
+#### Rate Limit
 
-# OpenAPI definition
+초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#quotation-rest-api:~:text=%EB%8A%98%EB%A6%B4%20%EC%88%98%20%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Quotation%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`candle`그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다.
+
+# OpenAPI 정의
 
 ```json
 {
@@ -303,7 +302,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [초(Second) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-seconds.md)
 * [분(Minute) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-minutes.md)

@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-28T12:53:26.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 트래블룰 검증
 
@@ -26,13 +27,13 @@ Open API를 통해 해외 거래소로부터 출금한 자산의 업비트 입�
 
 <br />
 
-# Sub pages
+# 하위 페이지
 
 * [계정주 확인 서비스 지원 거래소 목록 조회](https://docs.upbit.com/kr/reference/list-travelrule-vasps.md)
 * [입금 UUID로 계정주 검증 요청](https://docs.upbit.com/kr/reference/verify-travelrule-by-uuid.md)
 * [입금 TxID로 계정주 검증 요청](https://docs.upbit.com/kr/reference/verify-travelrule-by-txid.md)
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [디지털 자산 입금 가능 정보 조회](https://docs.upbit.com/kr/reference/available-deposit-information.md)
 * [입금 주소 생성 요청](https://docs.upbit.com/kr/reference/create-deposit-address.md)

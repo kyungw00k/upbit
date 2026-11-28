@@ -1,26 +1,33 @@
 ---
-updatedAt: 2026-07-28T05:30:58.000Z
+updatedAt: 2026-11-25T17:07:57.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 초(Second) 캔들 조회
 
 초 단위 캔들 목록을 조회합니다.
 
-[block:html]
-{
-  "html": "<div class=\"callout-section\">\n    <div class=\"callout-title\">\n      <i class=\"fa-solid fa-circle-exclamation\"></i>  초 캔들(초봉) 조회 지원 기간은 최대 3개월입니다.\n      </div>\n      초 단위 캔들 조회 API는 요청 시점을 기준으로 최근 3개월 이내의 데이터만 제공합니다. 조회 가능 기간을 초과한 경우, 응답이 빈 리스트로 반환되거나, 요청한 개수(count)만큼 반환되지 않을 수 있습니다. 조회 가능 기간은 to 파라미터를 활용하여 확인하시기 바랍니다.\n</div>\n<div class=\"callout-section callout-section--danger\">\n    <div class=\"callout-title\">\n      <i class=\"fa-solid fa-circle-exclamation\"></i> 캔들은 해당 시간대에 체결이 발생한 경우에만 생성됩니다.\n      </div>\n    해당 캔들의 시작 시각부터 종료 시각까지 체결이 발생하지 않은 경우 캔들이 생성되지 않으며, 응답에도 포함되지 않습니다. \n    예를 들어, candle_date_time이 2024-08-31T22:25:00인 초 캔들의 경우 22:25:00(이상)부터 22:25:01(미만)까지 체결이 발생하지 않은 경우 생성되지 않습니다.\n  </div>\n"
-}
-[/block]
+<Callout icon="far fa-circle-info" theme="info">
+  #### 초 캔들(초봉) 조회 지원 기간은 최대 3개월입니다.
 
-[block:html]
-{
-  "html": "<div class=\"accordion-changelog\">\n    <input type=\"checkbox\" id=\"api-changelog\">\n    <label for=\"api-changelog\">\n        <div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Revision History <i class=\"fa-solid fa-angle-right\"></i> </div>\n    </label>\n\n    <div class=\"accordion-changelog-content\">\n        <table class=\"custom-table\">\n            <thead>\n                <tr>\n                    <th>반영 버전</th>\n                    <th>반영 일자</th>\n                    <th>변경 사항</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"code-col\">-</td>\n                    <td>2024-10-30</td>\n                    <td><a href=\"https://docs.upbit.com/kr/changelog/year_sec_candles\"> 초 캔들, 연 캔들 신규 지원</a></td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div class=\"APISectionHeader-heading4MUMLbp4_nLs\">Rate Limit</div>\n<div class=\"box-rate-limit\">\n  초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 [캔들 그룹] 내에서 요청 가능 횟수를 공유합니다.\n</div>"
-}
-[/block]
+  초 단위 캔들 조회 API는 요청 시점을 기준으로 최근 3개월 이내의 데이터만 제공합니다. 조회 가능 기간을 초과한 경우, 응답이 빈 리스트로 반환되거나, 요청한 개수(count)만큼 반환되지 않을 수 있습니다. 조회 가능 기간은 to 파라미터를 활용하여 확인하시기 바랍니다.
+</Callout>
 
-# OpenAPI definition
+<Callout icon="far fa-circle-info" theme="info">
+  #### 캔들은 해당 시간대에 체결이 발생한 경우에만 생성됩니다.
+
+  해당 캔들의 시작 시각부터 종료 시각까지 체결이 발생하지 않은 경우 캔들이 생성되지 않으며, 응답에도 포함되지 않습니다. 예를 들어, candle_date_time이 2024-08-31T22:25:00인 초 캔들의 경우 22:25:00(이상)부터 22:25:01(미만)까지 체결이 발생하지 않은 경우 생성되지 않습니다.
+</Callout>
+
+***
+
+#### Rate Limit
+
+초당 최대 10회 호출할 수 있습니다. IP 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#quotation-rest-api:~:text=%EB%8A%98%EB%A6%B4%20%EC%88%98%20%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.-,Quotation%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`candle`그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다.
+
+# OpenAPI 정의
 
 ```json
 {
@@ -288,7 +295,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [분(Minute) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-minutes.md)
 * [일(Day) 캔들 조회](https://docs.upbit.com/kr/reference/list-candles-days.md)

@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T06:58:28.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 원화(KRW) 마켓 주문 가격 단위 / 최소 주문 가능 금액
 
@@ -49,7 +50,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 **참고: [업비트(UPbit) 고객센터  이용자 가이드  거래 이용 안내 바로가기](https://support.upbit.com/hc/ko/articles/4403838454809-%EA%B1%B0%EB%9E%98-%EC%9D%B4%EC%9A%A9-%EC%95%88%EB%82%B4)**
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [BTC 마켓 주문 가격 단위 / 최소 주문 가능 금액](https://docs.upbit.com/kr/docs/btc-market-info.md)
 * [USDT 마켓 주문 가격 단위 / 최소 주문 가능 금액](https://docs.upbit.com/kr/docs/usdt-market-info.md)

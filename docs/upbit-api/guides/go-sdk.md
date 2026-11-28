@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-07T12:48:19.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Go
 
@@ -304,7 +305,7 @@ fmt.Println(response.StatusCode)
 fmt.Printf("%+v\n", accounts)
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [Python ](https://docs.upbit.com/kr/docs/python-sdk.md)
 * [TypeScript](https://docs.upbit.com/kr/docs/typescript-sdk.md)

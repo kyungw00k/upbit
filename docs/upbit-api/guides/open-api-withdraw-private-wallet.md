@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-06-01T02:39:00.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 개인지갑 주소 등록
 
@@ -70,7 +71,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 주소 관리는 [디지털 자산 출금 주소 관리](https://upbit.com/mypage/open_api_management?tab=fund_source) 메뉴에서 가능합니다.<br />삭제하려는 주소를 선택한 후, 좌측 상단의 \[삭제] 버튼을 클릭하고 2채널 인증을 완료하면, 해당 출금 주소가 삭제 처리됩니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [API Key 발급 받기](https://docs.upbit.com/kr/docs/api-key.md)
 * [거래소 지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw_access_register.md)

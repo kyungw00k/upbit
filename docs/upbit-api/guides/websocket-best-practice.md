@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-08-26T10:05:07.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # WebSocket 연동 Best Practice
 
@@ -1186,6 +1187,6 @@ if __name__ == "__main__":
 
 업비트 WebSocket의 운영 정책을 준수하면서 안정적인 연동환경을 구축하기 위한 Best Practice 구현을 간단한 동기 클라이언트 예제를 통해 살펴보았습니다. 본 가이드에서 설명한 내용 외에도 [REST API 연동 Best Practice](https://docs.upbit.com/kr/docs/rest-api-best-practice) 에서 소개된 것과 같이 Logging 등의 모듈을 추가하는 등의 개선을 반영할 수 있습니다. 아래 페이지 중 하나로 이동하여, WebSocket에 대한 더 많은 정보를 확인하세요.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [REST API 연동 Best Practice](https://docs.upbit.com/kr/docs/rest-api-best-practice.md)

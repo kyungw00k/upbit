@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-09T15:00:17.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 지표 정의
 
@@ -294,6 +295,6 @@ Upbit Strategy Toolkit이 제공하는 기술적 지표 15종의 정의·출력 
 
 <br />
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [기술 레퍼런스](https://docs.upbit.com/kr/docs/upbit-strategy-toolkit-reference.md)
