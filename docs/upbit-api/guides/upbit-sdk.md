@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-07T04:21:28.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Upbit SDK
 
@@ -42,13 +43,13 @@ Upbit SDK는 업비트 API(REST API, WebSocket)를 다양한 프로그래밍 언
 * [Upbit CLI](https://docs.upbit.com/kr/docs/upbit-cli)
 * [Upbit GitHub](https://github.com/upbit-official)
 
-# Sub pages
+# 하위 페이지
 
 * [Python ](https://docs.upbit.com/kr/docs/python-sdk.md)
 * [TypeScript](https://docs.upbit.com/kr/docs/typescript-sdk.md)
 * [Go](https://docs.upbit.com/kr/docs/go-sdk.md)
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [개요](https://docs.upbit.com/kr/docs/upbit-ai-agent-overview.md)
 * [Upbit CLI](https://docs.upbit.com/kr/docs/upbit-cli.md)

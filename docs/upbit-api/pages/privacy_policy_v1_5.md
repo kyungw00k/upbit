@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-12T01:23:44.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 두나무 업비트 개발자 센터 개인정보처리방침
 
@@ -12,7 +13,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 [/block]
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [업비트 개발자 센터 개인정보처리방침](https://docs.upbit.com/kr/page/privacy_policy_v1_4.md)
 * [업비트 Open API 기술 지원 안내](https://docs.upbit.com/kr/page/upbit_open_api_support.md)

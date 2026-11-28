@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-14T09:05:34.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 지정가 매수 주문 생성
 
@@ -607,6 +608,6 @@ def get_order(uuid: str) -> Mapping:
 
 <br />
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [시장가 매도 주문 생성](https://docs.upbit.com/kr/docs/market-ask-order-creation.md)

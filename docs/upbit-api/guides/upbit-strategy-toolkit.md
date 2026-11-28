@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-08T04:48:59.000Z
+updatedAt: 2026-11-23T16:09:50.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Upbit Strategy Toolkit
 
@@ -419,12 +420,12 @@ Total Fees   12,345
 
 <br />
 
-# Sub pages
+# 하위 페이지
 
 * [기술 레퍼런스](https://docs.upbit.com/kr/docs/upbit-strategy-toolkit-reference.md)
 * [지표 정의](https://docs.upbit.com/kr/docs/upbit-strategy-toolkit-indicators.md)
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [개요](https://docs.upbit.com/kr/docs/upbit-ai-agent-overview.md)
 * [Upbit SDK](https://docs.upbit.com/kr/docs/upbit-sdk.md)

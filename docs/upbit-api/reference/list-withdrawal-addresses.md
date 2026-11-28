@@ -1,8 +1,9 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T18:05:03.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 출금 허용 주소 목록 조회
 
@@ -20,97 +21,50 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 
 출금 허용 주소 등록시 업비트는 트래블룰 준수를 위해 해당 주소를 발급한 상대 거래소로 주소 검증을 요청합니다. 상대 거래소가 이를 수신 또는 승인하지 않거나 검증 실패인 경우 출금이 제한될 수 있으므로, 출금 허용 주소 등록 전 해당 거래소에서 지원하는 주소인지 여부를 반드시 확인하시기 바랍니다.
 
-  <div className="callout-section">
-    <div className="callout-title">
-      <i className="fa-solid fa-circle-exclamation"></i>  네트워크 타입("net_type")과 네트워크 이름("network_name")
-      </div>
-      네트워크 타입(net_type)은 디지털 자산 입출금시 실제 자산이 이동되는 블록체인 네트워크(대상 체인)를 지정하기 위한 식별자 필드(예: BTC)입니다. 디지털 자산 출금 시 필수 파라미터로, 정상적인 입출금 진행을 위해 정확한 식별자 값을 사용해야 합니다.
-      디지털 자산 출금 API 호출 시 사전에 출금 허용 주소 목록 조회 API를 호출한 뒤 응답으로부터 정확한 네트워크 타입 값을 참조하여 사용하시기 바랍니다. 
-      <br /><br />
-      네트워크 이름(network_name)은 블록체인 네트워크의 전체 이름(예: Bitcoin)을 나타내는 필드로서, 사람이 인식할 수 있는 정보이며 식별자로 사용할 수 없습니다. 서비스 UI 등에서 블록체인 네트워크를 표현하는 용도로 사용할 수 있습니다.
-  </div>
+<Callout icon="far fa-circle-info" theme="info">
+  #### 네트워크 타입("net_type")과 네트워크 이름("network_name")
 
-<div className="callout-section">
-  <div className="callout-title">
-    <i className="fa-solid fa-circle-exclamation"></i> 출금 허용 주소의 종류에 따라 일부 응답 필드가 null로 반환될 수 있습니다.</div>
-  <b>[주소 종류에 따른 응답 필드 차이]</b><br />
-    <li><b>개인 지갑 주소</b>인 경우 <code>beneficiary_name</code>필드에는 회원의 이름이, <code>wallet_type</code>필드에는 개인 지갑 이름이 반환됩니다. <code>exchange_name</code>, <code>beneficiary_type</code> 필드가 null로 반환됩니다. </li>
-    <li><b>거래소 지갑</b>인 경우  <code>exchange_name</code>필드에는 해당 지갑의 거래소 이름이,<code>beneficiary_name</code>필드에는 회원의 이름이 반환되며 <code>wallet_type</code> 필드가 null로 반환됩니다. <code>beneficiary_type</code>은 소유주 유형에 따라 아래와 같이 반환됩니다.</li> 
-    <br /><br />
-    <b>[주소 소유주 유형에 따른 응답 필드 차이]</b><br />
-    <li><b>개인 소유 주소</b>인 경우 <code>beneficiary_type</code>이 <code>individual</code>로 반환되며 이때 <code>beneficiary_company_name</code> 필드는 null로 반환됩니다. </li>
-    <li><b>법인 소유 주소</b>인 경우 <code>beneficiary_type</code>이 <code>corporate</code>로 반환되며 이때 <code>beneficiary_company_name</code> 필드에 해당 법인명이 반환됩니다. </li>
-</div>
+  네트워크 타입(net_type)은 디지털 자산 입출금시 실제 자산이 이동되는 블록체인 네트워크(대상 체인)를 지정하기 위한 식별자 필드(예: BTC)입니다. 디지털 자산 출금 시 필수 파라미터로, 정상적인 입출금 진행을 위해 정확한 식별자 값을 사용해야 합니다. 디지털 자산 출금 API 호출 시 사전에 출금 허용 주소 목록 조회 API를 호출한 뒤 응답으로부터 정확한 네트워크 타입 값을 참조하여 사용하시기 바랍니다.
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+  네트워크 이름(network_name)은 블록체인 네트워크의 전체 이름(예: Bitcoin)을 나타내는 필드로서, 사람이 인식할 수 있는 정보이며 식별자로 사용할 수 없습니다. 서비스 UI 등에서 블록체인 네트워크를 표현하는 용도로 사용할 수 있습니다.
+</Callout>
 
-    <div className="accordion-changelog-content">
-        
+<Callout icon="far fa-circle-info" theme="info">
+  #### 출금 허용 주소의 종류에 따라 일부 응답 필드가 null로 반환될 수 있습니다.
 
+  \[주소 종류에 따른 응답 필드 차이]
 
+  * **개인 지갑 주소**인 경우 `beneficiary_name`필드에는 회원의 이름이, `wallet_type`필드에는 개인 지갑 이름이 반환됩니다. `exchange_name`, `beneficiary_type` 필드가 null로 반환됩니다.
+  * **거래소 지갑**인 경우 `exchange_name`필드에는 해당 지갑의 거래소 이름이`beneficiary_name`필드에는 회원의 이름이 반환되며 `wallet_type` 필드가 null로 반환됩니다. `beneficiary_type`은 소유주 유형에 따라 아래와 같이 반환됩니다.
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">v1.5.8</td>
-            <td>2025-07-07</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/coin_addresses_update">수신 계정 관련 필드 추가<br />(exchange_name, wallet_type, beneficiary_type,beneficiary_name, beneficiary_company_name)</a></td>
-     	  </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2023-11-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/wallet_network_name">네트워크 명(network_name) 필드 추가</a></td>
-        </tr>
-<tr>
-            <td className="code-col">-</td>
-            <td>2023-05-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
-        </tr>
-    </tbody>
-</table>
+  \[주소 소유주 유형에 따른 응답 필드 차이]
 
+  * **개인 소유 주소**인 경우 `beneficiary_type`이 `individual`로 반환되며 이때 `beneficiary_company_name` 필드는 null로 반환됩니다.
+  * **법인 소유 주소**인 경우 `beneficiary_type`이 `corporate`로 반환되며 이때 `beneficiary_company_name` 필드에 해당 법인명이 반환됩니다.
+</Callout>
 
+***
 
+#### Rate Limit
 
-    </div>
-</div>
+초당 최대 30회 호출할 수 있습니다.
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+포켓 단위로 측정되며,[ \[default 그룹\]](https://docs.upbit.com/kr/reference/rate-limits)에 속한 API는 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보를 위해 제한 또는 조정될 수 있습니다.
 
-<div className="box-rate-limit">
+#### API Key Permission
 
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[출금조회] 권한이 설정된 API Key를 사용해야 합니다.
 
-</div>
+권한 오류(out\_of\_scope)가 발생한다면, [API Key 관리](https://www.upbit.com/mypage/open_api_management) 메뉴에서 권한 설정을 확인해주세요.
 
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [출금조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -186,8 +140,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -266,7 +220,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [출금 가능 정보 조회](https://docs.upbit.com/kr/reference/available-withdrawal-information.md)
 * [디지털 자산 출금 요청](https://docs.upbit.com/kr/reference/withdraw.md)

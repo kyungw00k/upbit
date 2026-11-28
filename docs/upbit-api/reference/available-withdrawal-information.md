@@ -1,112 +1,53 @@
 ---
-updatedAt: 2026-07-29T11:04:00.000Z
+updatedAt: 2026-11-25T18:05:27.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 출금 가능 정보 조회
 
 지정한 통화에 대한 출금 가능 정보를 조회합니다. 해당 통화의 출금 정책과 사용자 잔고를 확인할 수 있습니다.
 
-통화 출금 가능 정보는 다음과 같은 주요 항목을 포함합니다.
+주요 조회 항목과 관련 응답 필드는 다음과 같습니다.
 
-<table className="custom-table">
-    <thead>
-      <tr>
-        <th>주요 항목</th>
-        <th>관련 주요 응답 필드</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="code-col"><b>통화 정보:</b><br />출금 수수료, 출금 및 지갑 상태</td>
-        <td><code>currency.withdraw_fee</code>,
-            <br /><code>currency.wallet_state</code>,
-            <br /><code>currency.wallet_support</code></td>
-      </tr>
-      <tr>
-        <td className="code-col"><b>통화 잔고</b></td>
-        <td><code>account.balance</code>,<code>account.locked</code>,
-            <br /><code>account.avg_buy_price</code></td>
-      </tr>
-      <tr>
-        <td className="code-col"><b>출금 한도:</b><br />1회/일일/잔여한도</td>
-        <td><code>withdraw_limit.onetime</code>,
-            <br /><code>withdraw_limit.daily</code>,
-            <br /><code>withdraw_limit.remaining_daily</code>,
-            <br /><code>withdraw_limit.minimum</code>,
-            <br /><code>withdraw_limit.can_withdraw</code></td>
-      </tr>
-      <tr>
-        <td className="code-col"><b>출금 관련 계정 정보:</b><br />수수료 레벨, 인증 여부</td>
-        <td><code>member_level.fee_level</code>,
-            <br /><code>member_level.bank_account_verified</code>,
-            <br /><code>member_level.two_factor_auth_verified</code>,
-            <br /><code>member_level.locked</code>,
-            <br /><code>member_level.wallet_locked</code></td>
-      </tr>
-    </tbody>
-  </table>
+| 조회 정보            | 주요 응답 필드                                                                      |
+| ---------------- | ----------------------------------------------------------------------------- |
+| 출금 수수료           | `currency.withdraw_fee`                                                       |
+| 입출금 지원 상태        | `currency.wallet_state`, `currency.wallet_support`                            |
+| 사용 가능 잔고 및 잠긴 잔고 | `account.balance`, `account.locked`                                           |
+| 평균 매수가           | `account.avg_buy_price`                                                       |
+| 통합 1일 잔여 출금 한도   | `withdraw_limit.remaining_daily_fiat`                                         |
+| 최소 출금 금액·수량      | `withdraw_limit.minimum`                                                      |
+| 출금 수량 소수점 자릿수    | `withdraw_limit.fixed`                                                        |
+| 출금 지원 여부         | `withdraw_limit.can_withdraw`                                                 |
+| 출금 지연 금액         | `withdraw_limit.withdraw_delayed_fiat`                                        |
+| 수수료 등급           | `member_level.fee_level`                                                      |
+| 계좌 및 2차 인증 여부    | `member_level.bank_account_verified`, `member_level.two_factor_auth_verified` |
+| 계정 및 출금 제한 상태    | `member_level.locked`, `member_level.wallet_locked`                           |
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+***
 
-    <div className="accordion-changelog-content">
-        
+#### Rate Limit
 
+초당 최대 30회 호출할 수 있습니다.
 
+포켓 단위로 측정되며,\[ [`default` 그룹\]](https://docs.upbit.com/kr/reference/rate-limits)에 속한 API는 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보를 위해 제한 또는 조정될 수 있습니다.
 
-<table className="custom-table">
-    <thead>
-        <tr>
-            <th>반영 버전</th>
-            <th>반영 일자</th>
-            <th>변경 사항</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="code-col">-</td>
-            <td>2023-05-22</td>
-            <td><a href="https://docs.upbit.com/kr/changelog/net_type">네트워크 타입(net_type) 필드 추가</a></td>
-        </tr>
-    </tbody>
-</table>
+#### API Key Permission
 
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[출금조회] 권한이 설정된 API Key를 사용해야 합니다.
 
+권한 오류(`out_of_scope`)가 발생한다면, [API Key 관리](https://www.upbit.com/mypage/open_api_management) 메뉴에서 권한 설정을 확인해 주세요.
 
-
-    </div>
-</div>
-
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
-
-<div className="box-rate-limit">
-
-초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 \[Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-
-</div>
-
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [출금조회] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
-
-<br />
-
-# OpenAPI definition
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -392,8 +333,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -527,7 +468,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "invalid enum error": {
+                  "validation_error": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -535,7 +476,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       }
                     }
                   },
-                  "invalid parameter error": {
+                  "invalid_parameter": {
                     "value": {
                       "error": {
                         "name": "invalid_parameter",
@@ -554,7 +495,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [출금 허용 주소 목록 조회](https://docs.upbit.com/kr/reference/list-withdrawal-addresses.md)
 * [디지털 자산 출금 요청](https://docs.upbit.com/kr/reference/withdraw.md)

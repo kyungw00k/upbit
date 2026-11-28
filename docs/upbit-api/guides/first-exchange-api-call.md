@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-07-14T09:05:34.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 인증 API 호출
 
@@ -276,7 +277,7 @@ fi
 
 cURL을 활용하여 쉽고 빠르게 업비트 API를 호출해보았습니다. 충분한 테스트를 통해 업비트 API를 이해하셨다면, 이제 실제로 매매 전략을 구현하기 위한 개발환경을 설정해보세요. [개발 환경 설정 가이드](https://docs.upbit.com/kr/docs/dev-environment) 로 이동하여 cURL이 아닌 언어별 개발 환경을 설정하거나, [REST API 연동 Best Practice](https://docs.upbit.com/kr/docs/rest-api-best-practice) 로 이동하여 보다 고도화된 REST API 연동 방식을 확인할 수 있습니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [Upbit API 이용 준비](https://docs.upbit.com/kr/docs/api-setup.md)
 * [개발환경 설정](https://docs.upbit.com/kr/docs/dev-environment.md)

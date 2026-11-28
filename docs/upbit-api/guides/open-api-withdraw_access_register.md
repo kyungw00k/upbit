@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-06-01T02:38:44.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 거래소 지갑 주소 등록
 
@@ -66,7 +67,7 @@ Open API를 통해 거래소 지갑 주소로 출금하려면, 해당 주소가 
 
 <br />
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [API Key 발급 받기](https://docs.upbit.com/kr/docs/api-key.md)
 * [개인지갑 주소 등록](https://docs.upbit.com/kr/docs/open-api-withdraw-private-wallet.md)

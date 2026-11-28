@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:48:12.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # REST API 연동 Best Practice
 
@@ -730,6 +731,6 @@ if __name__ == "__main__":
 * [24시간 누적 거래대금 확인](https://docs.upbit.com/kr/docs/24-hour-accumulated-trade-volume) 튜토리얼 페이지로 이동하여 업비트 API를 활용한 더 많은 사용 예제를 살펴보세요.
 * 또는 [REST API 사용 및 에러 안내](https://docs.upbit.com/kr/reference/rest-api-guide) 페이지와 [인증](https://docs.upbit.com/kr/reference/auth), [요청 수 제한(Rate Limits)](https://docs.upbit.com/kr/reference/rate-limits) 페이지로 이동하여 업비트 API 정책을 확인하고 나만의 Best Practice 구현을 즉시 시작할 수 있습니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [WebSocket 연동 Best Practice](https://docs.upbit.com/kr/docs/websocket-best-practice.md)

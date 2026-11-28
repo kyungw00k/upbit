@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:48:42.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # REST API를 이용한 시세 조회
 
@@ -376,7 +377,7 @@ curl --request GET \
 
 조회 시점을 기준으로 최고 매수 호가와 최저 매도 호가의 쌍이 `orderbook_units` 필드의 첫번째 객체로 반환됩니다. 위 데이터의 경우 `159399000` 원의 최저 매도 호가에 0.50775343 개의 BTC 수량이, `159396000` 원의 최고 매수 호가에 0.30813376 개의 BTC 수량이 체결 대기 중임을 의미합니다. 두 번째 객체는 각각 두번째 순위의 매수 호가와 매도 호가의 쌍입니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [WebSocket으로 실시간 캔들 차트 생성](https://docs.upbit.com/kr/docs/how-to-subscribe-quotation-stream.md)
 * [캔들 API로 지정한 기간의 시세 데이터를 CSV 파일로 출력하기](https://docs.upbit.com/kr/docs/how-to-download-candle-data.md)

@@ -1,74 +1,47 @@
 ---
-updatedAt: 2026-07-28T12:58:02.000Z
+updatedAt: 2026-11-25T18:26:15.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # 입금 TxID로 계정주 검증 요청
 
 입금의 TxID로 트래블룰 검증(입금 계정주 확인)을 요청합니다.
 
-[block:html]
-{
-  "html": "<div class=\"callout-section\">\n    <div class=\"callout-title\">\n      <i class=\"fa-solid fa-circle-exclamation\"></i>  계정주 검증이 완료된 이후 입금 반영이 진행됩니다.\n      </div>\n    계정주 검증이 완료되지 않는 경우 업비트 신원 확인 과정에서 입력한 이름, 생년월일 정보와 상대 거래소에 입력된 정보가 동일한지 여부를 확인해주세요. <br>\n    검증이 완료 시 즉시 입금 반영이 진행되나, 블록체인 네트워크 지연등으로 검증 이후에도 입금 자체가 아직 처리중인 경우 입금이 완료된 이후 입금 반영이 진행됩니다.\n  </div>"
-}
-[/block]
+<Callout icon="far fa-circle-check" theme="success">
+  #### 계정주 검증이 완료된 이후 입금 반영이 진행됩니다.
 
-[block:html]
-{
-  "html": "<div class=\"callout-section callout-section--danger\">\n    <div class=\"callout-title\">\n      <i class=\"fa-solid fa-circle-exclamation\"></i> POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.\n      </div>\n    Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다. <b>반드시 JSON 형식으로 요청 본문(Body)을 전송</b>해주시기 바랍니다.\n  </div>"
-}
-[/block]
+  계정주 검증이 완료되지 않는 경우 업비트 신원 확인 과정에서 입력한 이름, 생년월일 정보와 상대 거래소에 입력된 정보가 동일한지 여부를 확인해주세요.
+  검증이 완료 시 즉시 입금 반영이 진행되나, 블록체인 네트워크 지연등으로 검증 이후에도 입금 자체가 아직 처리중인 경우 입금이 완료된 이후 입금 반영이 진행됩니다.
+</Callout>
 
-<div className="accordion-changelog">
-    <input type="checkbox" id="api-changelog" />
-    <label for="api-changelog">
-        <div className="APISectionHeader-heading4MUMLbp4_nLs">Revision History <i className="fa-solid fa-angle-right"></i> </div>
-    </label>
+<Callout icon="far fa-octagon-exclamation" theme="error">
+  #### POST API에 대한 Form 방식 요청은 2022년 3월 1일부로 지원이 종료되었습니다.
 
-    <div className="accordion-changelog-content">
-        <table className="custom-table">
-            <thead>
-                <tr>
-                    <th>반영 버전</th>
-                    <th>반영 일자</th>
-                    <th>변경 사항</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td className="code-col">-</td>
-                    <td>2024-04-24</td>
-                    <td><a href="https://docs.upbit.com/kr/changelog/travelrule_verification"> '입금 TxID로 트래블룰 검증 요청' 기능 신규 지원</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+  Form 방식 지원 종료에 따라 Urlencoded Form 방식으로 전송하는 POST 요청에 대한 정상적인 동작을 보장하지 않습니다.**&#x20;반드시 JSON 형식으로 요청 본문(Body)을 전송**해주시기 바랍니다.
+</Callout>
 
-<div className="APISectionHeader-heading4MUMLbp4_nLs">Rate Limit</div>
+***
 
-<div className="box-rate-limit">
-  초당 최대 30회 호출할 수 있습니다. 포켓 단위로 측정되며 [Exchange 기본 그룹] 내에서 요청 가능 횟수를 공유합니다. 단, 동일 입금건에 대해서는 <span style="color: #C92532;">10분당 최대 1회</span> 호출할 수 있습니다. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
-</div>
+#### Rate Limit
 
-  <br />
-  <div className="APISectionHeader-heading4MUMLbp4_nLs">API Key Permission</div>
-  <div className="box-rate-limit">
-    <a href="auth">인증</a>이 필요한 API로, [입금하기] 권한이 설정된 API Key를 사용해야 합니다. <br />
-    권한 오류(out_of_scope) 오류가 발생한다면, <a href="https://upbit.com/mypage/open_api_management">API Key 관리 메뉴</a>에서 권한 설정을 확인해주세요.
-  </div>
+초당 최대 30회 호출할 수 있습니다.&#x20;
 
-<br />
+포켓 단위로 측정되며 \[<Anchor target="_blank" href="https://docs.upbit.com/kr/reference/rate-limits#:~:text=%ED%98%B8%EA%B0%80%20%EC%A0%95%EC%B1%85%20%EC%A1%B0%ED%9A%8C-,Exchange%20REST%20API,-Rate%20Limit%20%EA%B7%B8%EB%A3%B9">`default` 그룹</Anchor>] 내에서 요청 가능 횟수를 공유합니다. 단, <span style="color: #C92532;">동일 입금건에 대해서는 10분당 최대 1회 호출할 수 있습니다</span>. Rate Limit은 요청 처리량을 보장하는 기준이 아니며, 트래픽 상황이나 서비스 안정성 확보 필요에 따라 제한 또는 조정될 수 있습니다.
 
-# OpenAPI definition
+#### API Key Permission
+
+[인증](https://docs.upbit.com/kr/reference/auth)이 필요한 API로, \[입금하기] 권한이 설정된 API Key를 사용해야 합니다. 권한 오류(`out_of_scope`)가 발생하면 <Anchor target="_blank" href="https://www.upbit.com/mypage/open_api_management">API Key 관리</Anchor> 메뉴에서 권한 설정을 확인해 주세요.
+
+# OpenAPI 정의
 
 ```json
 {
   "openapi": "3.0.2",
   "info": {
     "title": "EXCHANGE API",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "servers": [
     {
@@ -76,6 +49,14 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     }
   ],
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "요청 쿼리 파라미터 또는 본문(Body)을 API Key로 서명한 JWT Token을 입력합니다.\n자세한 사항은 https://docs.upbit.com/reference/auth 를 참고해주세요.\n\n`예시` Bearer <ACCESS_TOKEN>\n"
+      }
+    },
     "schemas": {
       "Error": {
         "type": "object",
@@ -140,8 +121,8 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
     "samples-languages": [
       "shell",
       "python",
-      "java",
-      "node"
+      "node",
+      "java"
     ]
   },
   "paths": {
@@ -152,6 +133,11 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
         "description": "입금의 TxID로 트래블룰 검증(입금 계정주 확인)을 요청합니다.",
         "tags": [
           "Exchange"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "x-readme": {
           "code-samples": [
@@ -211,12 +197,12 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   },
                   "currency": {
                     "type": "string",
-                    "description": "조회하고자 하는 통화 코드",
+                    "description": "검증하고자 하는 통화 코드",
                     "example": "BTC"
                   },
                   "net_type": {
                     "type": "string",
-                    "description": "디지털 자산 입출금에 사용되는 블록체인 네트워크 식별자.\n\n조회 대상을 네트워크 식별자로 한정하기 위한 필터 파라미터입니다.\n",
+                    "description": "디지털 자산 입출금에 사용되는 블록체인 네트워크 식별자.\n\n검증 대상을 네트워크 식별자로 한정하기 위한 필터 파라미터입니다.\n",
                     "example": "BTC"
                   }
                 }
@@ -252,7 +238,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "empty parameter error": {
+                  "validation_error (empty parameter)": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -260,7 +246,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       }
                     }
                   },
-                  "invalid value error": {
+                  "validation_error (invalid value)": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -268,7 +254,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       }
                     }
                   },
-                  "missing required parameter error": {
+                  "validation_error (missing required parameter)": {
                     "value": {
                       "error": {
                         "name": "validation_error",
@@ -276,7 +262,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                       }
                     }
                   },
-                  "already have deposit transaction error": {
+                  "already_have_deposit_transaction": {
                     "value": {
                       "error": {
                         "name": "already_have_deposit_transaction",
@@ -296,7 +282,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
                   "$ref": "#/components/schemas/Error"
                 },
                 "examples": {
-                  "not found deposit error": {
+                  "deposit_not_found": {
                     "value": {
                       "error": {
                         "name": "deposit_not_found",
@@ -315,7 +301,7 @@ Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. U
 }
 ```
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [계정주 확인 서비스 지원 거래소 목록 조회](https://docs.upbit.com/kr/reference/list-travelrule-vasps.md)
 * [입금 UUID로 계정주 검증 요청](https://docs.upbit.com/kr/reference/verify-travelrule-by-uuid.md)

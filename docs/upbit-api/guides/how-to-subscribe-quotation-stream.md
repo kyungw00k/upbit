@@ -1,8 +1,9 @@
 ---
 updatedAt: 2026-05-04T05:48:42.000Z
+agentTools:
+  siteIndex: https://docs.upbit.com/llms.txt
+  projectIndex: https://docs.upbit.com/kr/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.upbit.com/kr/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # WebSocket으로 실시간 캔들 차트 생성
 
@@ -314,7 +315,7 @@ plt.show()
 
 본 튜토리얼에서는 WebSocket을 이용하여 실시간 캔들 데이터를 수신하고, 해당 데이터로 실시간 차트를 생성하는 예제를 함께 구현해보았습니다. 예제를 변형하여 데이터를 파일로 저장하거나 실시간 분석 기능을 구현해 투자 전략 도출에 활용할 수 있습니다.
 
-# Sibling pages
+# 같은 수준의 페이지
 
 * [REST API를 이용한 시세 조회](https://docs.upbit.com/kr/docs/upbit-quotation-restful-api.md)
 * [캔들 API로 지정한 기간의 시세 데이터를 CSV 파일로 출력하기](https://docs.upbit.com/kr/docs/how-to-download-candle-data.md)
